@@ -21,6 +21,11 @@ support - mylifedesign143@gmail.com
   font-weight: normal;
   font-style: normal; }
 
+.img-fluid {
+    margin-top: 10px; /* Espacio hacia arriba */
+    margin-bottom: 10px; /* Espacio hacia abajo */
+}
+
 /*
 Basic of template
 */
