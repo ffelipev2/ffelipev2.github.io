@@ -83,49 +83,50 @@
                 <h3 class="text-primary center-title text-center mb40 h1">Mis proyectos </h3>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 mb40">
-                        <a href="https://www.facebook.com/arduinoproyectos/videos/553170040915613" class="folio-card">
+                        <a href="https://www.youtube.com/watch?v=be3q9TfS0z8" class="folio-card">
                             <img src="images/img1.jpg" alt="" class="img-fluid">
                             <h4>Visión Artificial + App + Esp32</h4>
                             <span>Reconocimiento de colores utilizando la cámara huskylens</span>
                         </a>                     
                     </div><!--col-->
                     <div class="col-lg-4 col-md-6 mb40">
-                        <a href="https://www.facebook.com/arduinoproyectos/videos/491421222594173" class="folio-card">
+                        <a href="https://www.youtube.com/watch?v=TMQDseOsFwY" class="folio-card">
                             <img src="images/img2.jpg" alt="" class="img-fluid">
                             <h4>Sensor Higrow (Esp 32) + App </h4>
                             <span>Medición de variables mediante Wifi, utilizando el módulo Higrow</span>
                         </a>                     
                     </div><!--col-->
                     <div class="col-lg-4 col-md-6 mb40">
-                        <a href="https://www.facebook.com/arduinoproyectos/videos/431655833852687/" class="folio-card">
+                        <a href="https://www.youtube.com/watch?v=VRg4iup6pJo" class="folio-card">
                             <img src="images/img3.jpg" alt="" class="img-fluid">
                             <h4>Shield Ethernet + Sensor biométrico</h4>
                             <span>Registro de huella dactilar utilizando IOT</span>
                         </a>                     
                     </div><!--col-->
                     <div class="col-lg-4 col-md-6 mb40">
-                        <a href="https://www.facebook.com/arduinoproyectos/videos/626009424417326/" class="folio-card">
+                        <a href="https://www.youtube.com/watch?v=YGljAV9_wCI" class="folio-card">
                             <img src="images/img4.jpg" alt="" class="img-fluid">
                             <h4>Robot Otto RC - Arduino + Impresión 3D</h4>
                             <span>Robot bípedo construido con impresión 3D que funciona a control remoto</span>
                         </a>                     
                     </div><!--col-->
                     <div class="col-lg-4 col-md-6 mb40">
-                        <a href="https://www.facebook.com/arduinoproyectos/videos/580057609012508" class="folio-card">
+                        <a href="https://www.youtube.com/watch?v=chEfriniOsw" class="folio-card">
                             <img src="images/img5.jpg" alt="" class="img-fluid">
                             <h4>Arduino UNO + Módulo Bluetooth + Relé</h4>
                             <span>Ejemplo de domótica a través de una APP por medio de bluetooth</span>
                         </a>                     
                     </div><!--col-->
                     <div class="col-lg-4 col-md-6 mb40">
-                        <a href="https://www.facebook.com/arduinoproyectos/videos/533173413700928" class="folio-card">
+                        <a href="https://www.youtube.com/watch?v=NBvcwBon6Zs" class="folio-card">
                             <img src="images/img6.jpg" alt="" class="img-fluid">
                             <h4> Vehículo con Arduino + RC + Cámara wifi</h4>
                             <span>Vehículo radio controlado utilizando un Arduino MEGA </span>
                         </a>                     
                     </div><!--col-->
                 </div>
-            </div><!--container pORTFOLIO-->
+            </div>
+            <!--container pORTFOLIO-->
             <div class="container pt60 pb60">
                 <h3 class="text-primary center-title mb50 h1 text-center">Habilidades y Competencias Técnicas</h3>
                 <div class="row">
@@ -424,11 +425,56 @@
                 </div>
             </footer><!--fOOTER-->
         </section><!--main wrapper for boxed layout-->
-
+        <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="videoModalLabel">Reproducción del Video</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Contenedor del video -->
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" id="videoFrame" src="" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--back to top-->
         <a href="#" class="back-to-top" id="back-to-top"><i class="ti-angle-up"></i></a>
         <!-- jQuery first, then Tether, then Bootstrap JS. -->
         <script src="js/plugins/plugins.js"></script> 
         <script src="js/resumeCv.custom.js"></script>
+        <script>
+            // Captura los clics en los enlaces y abre el modal
+            document.querySelectorAll('.folio-card').forEach(function (element) {
+                element.addEventListener('click', function (e) {
+                    e.preventDefault(); // Evita la redirección
+
+                    // Obtener el enlace del video
+                    const videoURL = this.getAttribute('href');
+                    let videoID = videoURL.split('v=')[1].split('&')[0]; // Extrae el ID del video
+                    let startTime = videoURL.includes('t=') ? videoURL.split('t=')[1].replace('s', '') : 0; // Extrae el tiempo de inicio
+
+                    // Construir la URL de embed
+                    const embedURL = `https://www.youtube.com/embed/${videoID}?start=${startTime}&autoplay=1`;
+
+                    // Actualizar el iframe del modal con el video
+                    document.getElementById('videoFrame').src = embedURL;
+
+                    // Mostrar el modal
+                    $('#videoModal').modal('show');
+                });
+            });
+
+            // Limpia el src del iframe cuando se cierra el modal
+            $('#videoModal').on('hidden.bs.modal', function () {
+                document.getElementById('videoFrame').src = '';
+            });
+        </script>
+
     </body>
 </html>
