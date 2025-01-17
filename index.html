@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,13 +9,22 @@
         <link href="css/plugins/plugins.css" rel="stylesheet">
         <link href="css/style-resumeCv.css" rel="stylesheet">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-WP5Z8BHZ');</script>
+        <!-- End Google Tag Manager -->
     </head>
-
     <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WP5Z8BHZ"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
         <div id="preloader">
             <div id="preloader-inner"></div>
         </div><!--/preloader-->
-
         <section class="site-wrapper">
             <div class="container no-padding resume-header bg-dark">
                 <div class="row no-margin align-items-center">
@@ -428,7 +435,9 @@
                             &copy; Copyright 2025. All Right Reserved. Felipe Flores.
                         </div>
                     </div>
-
+                    <div id="visit-counter" class="text-center">
+                        <p>Visitas: <span id="counter"></span></p>
+                    </div>
                 </div>
             </footer><!--fOOTER-->
         </section><!--main wrapper for boxed layout-->
@@ -455,32 +464,6 @@
         <!-- jQuery first, then Tether, then Bootstrap JS. -->
         <script src="js/plugins/plugins.js"></script> 
         <script src="js/resumeCv.custom.js"></script>
-        <script>
-            // Captura los clics en los enlaces y abre el modal
-            document.querySelectorAll('.folio-card').forEach(function (element) {
-                element.addEventListener('click', function (e) {
-                    e.preventDefault(); // Evita la redirección
-
-                    // Obtener el enlace del video
-                    const videoURL = this.getAttribute('href');
-                    let videoID = videoURL.split('v=')[1].split('&')[0]; // Extrae el ID del video
-                    let startTime = videoURL.includes('t=') ? videoURL.split('t=')[1].replace('s', '') : 0; // Extrae el tiempo de inicio
-
-                    // Construir la URL de embed
-                    const embedURL = `https://www.youtube.com/embed/${videoID}?start=${startTime}&autoplay=1`;
-
-                    // Actualizar el iframe del modal con el video
-                    document.getElementById('videoFrame').src = embedURL;
-
-                    // Mostrar el modal
-                    $('#videoModal').modal('show');
-                });
-            });
-
-            // Limpia el src del iframe cuando se cierra el modal
-            $('#videoModal').on('hidden.bs.modal', function () {
-                document.getElementById('videoFrame').src = '';
-            });
-        </script>
+        <script src="js/miScript.js"></script>
     </body>
 </html>
