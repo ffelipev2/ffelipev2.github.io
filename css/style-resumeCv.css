@@ -946,6 +946,26 @@ Preloader style
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg); } }
 
+/* Mantener los botones en la misma fila y con separación */
+.resume-header-text .buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .resume-header-text .buttons {
+    flex-wrap: nowrap; /* evita que uno baje de línea en desktop */
+  }
+}
+
+/* Centrar texto en todos los botones */
+.btn {
+  display: inline-flex;
+  align-items: center;   /* centra verticalmente */
+  justify-content: center; /* centra horizontalmente */
+  text-align: center;
+}
 /*
 Resume header
 */
