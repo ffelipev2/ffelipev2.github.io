@@ -1097,3 +1097,26 @@ Responsive style
     font-size: 2rem; }
   .social-buttons {
     display: inline-block; } }
+
+/* Contenedor de botones del header */
+.resume-header-text .buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;        /* nunca se vayan a segunda línea */
+  justify-content: center;  /* centrados */
+}
+
+/* Los botones comparten el ancho de la fila */
+.resume-header-text .buttons .btn {
+  flex: 1 1 auto;           /* cada botón se ajusta al espacio disponible */
+  text-align: center;
+  white-space: nowrap;      /* evita que se parta el texto en 2 líneas */
+}
+
+/* Ajuste específico en móviles */
+@media (max-width: 576px) {
+  .resume-header-text .buttons .btn {
+    font-size: 14px;        /* texto un poco más pequeño */
+    padding: 8px 10px;      /* menos padding para que quepan los 3 */
+  }
+}
