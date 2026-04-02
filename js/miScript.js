@@ -23,3 +23,34 @@ document.querySelectorAll('.folio-card').forEach(function (element) {
 $('#videoModal').on('hidden.bs.modal', function () {
     document.getElementById('videoFrame').src = '';
 });
+
+// Revelado suave de secciones y tarjetas al entrar en pantalla
+document.addEventListener('DOMContentLoaded', function () {
+    const revealTargets = document.querySelectorAll(
+        '.section-intro, .section-portfolio, .section-skills, .section-experience, .section-education, .section-certifications, .section-publications, .footer, .folio-card, .section-experience .col-md-8, .section-certifications .col-md-3, .section-publications article, .section-education .col-md-8'
+    );
+
+    if (!('IntersectionObserver' in window)) {
+        revealTargets.forEach(function (element) {
+            element.classList.add('is-visible');
+        });
+        return;
+    }
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal-item', 'is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.16,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealTargets.forEach(function (element) {
+        element.classList.add('reveal-item');
+        observer.observe(element);
+    });
+});
