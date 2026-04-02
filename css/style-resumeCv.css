@@ -1282,47 +1282,6 @@ Progress bars
 }
 
 /*
-Testimonials
-*/
-.carousel-testimonial {
-    position: relative;
-}
-.carousel-testimonial p {
-    font-family: "Droid Serif", serif;
-    font-weight: 400;
-    font-style: italic;
-}
-.carousel-testimonial .owl-nav {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 0;
-}
-.carousel-testimonial .owl-nav .owl-prev {
-    left: 0;
-    position: absolute;
-}
-.carousel-testimonial .owl-nav .owl-next {
-    right: 0;
-    position: absolute;
-}
-.carousel-testimonial.owl-theme .owl-nav [class*=owl-] {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    line-height: 32px;
-    text-align: center;
-    padding: 0px;
-    background-color: #34495E;
-    color: #fff;
-    margin: 0px;
-}
-.carousel-testimonial.owl-theme .owl-nav [class*=owl-] i {
-    display: block;
-    line-height: 32px;
-}
-
-/*
 Resume footer
 */
 .footer {

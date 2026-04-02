@@ -1,8 +1,4 @@
 $(function () {
-    //tooltip
-    $('[data-toggle="tooltip"]').tooltip();
-    //popover
-    $('[data-toggle="popover"]').popover();
     //preloader
     $(window).preloader({
         delay: 500
@@ -37,41 +33,6 @@ $(function () {
             }, 420, 'linear');
         });
     }
-    /**youtube video popup**/
-    $('.modal-video').magnificPopup({
-        type: 'iframe'
-    });
-    wow = new WOW(
-            {
-                boxClass: 'wow',
-                animateClass: 'animated',
-                offset: 0,
-                mobile: true,
-                live: true
-            }
-    );
-        /**Carousel Clients**/
-    $('.carousel-testimonial').owlCarousel({
-        loop: true,
-        margin: 15,
-        nav: true,
-        autoHeight: true,
-        dots: false,
-        navText: [
-            "<i class='ti-angle-left'></i>",
-            "<i class='ti-angle-right'></i>"],
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            }
-        }
-    });
 });
 
 
