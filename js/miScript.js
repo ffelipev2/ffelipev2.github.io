@@ -27,10 +27,12 @@ $('#videoModal').on('hidden.bs.modal', function () {
 // Revelado suave de secciones y tarjetas al entrar en pantalla
 document.addEventListener('DOMContentLoaded', function () {
     const revealTargets = document.querySelectorAll(
-        '.section-intro, .section-portfolio, .section-skills, .section-experience, .section-education, .section-certifications, .section-publications, .footer, .folio-card, .section-experience .col-md-8, .section-certifications .col-md-3, .section-publications article, .section-education .col-md-8'
+        '.folio-card, .section-skills .col-md-8, .section-experience .col-md-8, .section-certifications .col-md-3, .section-publications article, .section-education .col-md-8'
     );
+    const isSmallScreen = window.matchMedia('(max-width: 767px)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!('IntersectionObserver' in window)) {
+    if (isSmallScreen || prefersReducedMotion || !('IntersectionObserver' in window)) {
         revealTargets.forEach(function (element) {
             element.classList.add('is-visible');
         });
@@ -45,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }, {
-        threshold: 0.16,
-        rootMargin: '0px 0px -40px 0px'
+        threshold: 0.12,
+        rootMargin: '0px 0px -24px 0px'
     });
 
     revealTargets.forEach(function (element) {

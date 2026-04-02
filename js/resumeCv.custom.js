@@ -10,8 +10,8 @@ $(function () {
     //smooth scroll
     smoothScroll.init({
         selector: '[data-scroll]', // Selector for links (must be a class, ID, data attribute, or element tag)
-        speed: 1000, // Integer. How fast to complete the scroll in milliseconds
-        easing: 'easeInOutCubic', // Easing pattern to use
+        speed: 550, // Integer. How fast to complete the scroll in milliseconds
+        easing: 'easeInOutQuad', // Easing pattern to use
         offset: 0, // Integer. How far to offset the scrolling anchor location in pixels
         callback: function (anchor, toggle) {} // Function to run after scrolling
     });
@@ -32,9 +32,9 @@ $(function () {
         });
         $('#back-to-top').on('click', function (e) {
             e.preventDefault();
-            $('html,body').animate({
+            $('html,body').stop(true).animate({
                 scrollTop: 0
-            }, 700);
+            }, 420, 'linear');
         });
     }
     /**youtube video popup**/
