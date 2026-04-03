@@ -2648,6 +2648,14 @@ pre.bg-faded {
     margin-bottom: 16px !important;
 }
 
+.section-certifications .cert-drone {
+    max-height: 84px !important;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 12px !important;
+}
+
 .section-certifications .col-md-3 h5 {
     color: var(--page-ink) !important;
     font-size: 0.98rem;
