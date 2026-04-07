@@ -2336,10 +2336,10 @@ pre.bg-faded {
 
 .hero-photo {
     display: block;
-    width: calc(100% - 56px);
-    height: calc(100% - 56px);
-    min-height: 572px;
-    margin: 28px !important;
+    width: calc(100% - 80px);
+    height: calc(100% - 80px);
+    min-height: 524px;
+    margin: 40px !important;
     object-fit: cover;
     object-position: center top;
     filter: grayscale(0.08) contrast(1.06);
