@@ -1,33 +1,62 @@
-// Captura los clics en los enlaces y abre el modal
+function getYouTubeEmbedData(videoURL) {
+    try {
+        const url = new URL(videoURL);
+        const startTime = (url.searchParams.get('t') || url.searchParams.get('start') || '0').replace('s', '');
+
+        if (url.hostname.includes('youtu.be')) {
+            return {
+                videoId: url.pathname.replace('/', ''),
+                startTime: startTime
+            };
+        }
+
+        return {
+            videoId: url.searchParams.get('v') || '',
+            startTime: startTime
+        };
+    } catch (error) {
+        return {
+            videoId: '',
+            startTime: '0'
+        };
+    }
+}
+
+// Captura los clics en los enlaces y abre el modal solo si el video es válido.
 document.querySelectorAll('.folio-card').forEach(function (element) {
     element.addEventListener('click', function (e) {
-        e.preventDefault(); // Evita la redirección
+        const videoFrame = document.getElementById('videoFrame');
 
-        // Obtener el enlace del video
-        const videoURL = this.getAttribute('href');
-        let videoID = videoURL.split('v=')[1].split('&')[0]; // Extrae el ID del video
-        let startTime = videoURL.includes('t=') ? videoURL.split('t=')[1].replace('s', '') : 0; // Extrae el tiempo de inicio
+        if (!videoFrame) {
+            return;
+        }
 
-        // Construir la URL de embed
-        const embedURL = `https://www.youtube.com/embed/${videoID}?start=${startTime}&autoplay=1`;
+        const videoData = getYouTubeEmbedData(this.getAttribute('href'));
 
-        // Actualizar el iframe del modal con el video
-        document.getElementById('videoFrame').src = embedURL;
+        if (!videoData.videoId) {
+            return;
+        }
 
-        // Mostrar el modal
+        e.preventDefault();
+
+        videoFrame.src = `https://www.youtube.com/embed/${videoData.videoId}?start=${videoData.startTime}&autoplay=1`;
         $('#videoModal').modal('show');
     });
 });
 
-// Limpia el src del iframe cuando se cierra el modal
+// Limpia el src del iframe cuando se cierra el modal.
 $('#videoModal').on('hidden.bs.modal', function () {
-    document.getElementById('videoFrame').src = '';
+    const videoFrame = document.getElementById('videoFrame');
+
+    if (videoFrame) {
+        videoFrame.src = '';
+    }
 });
 
 // Revelado suave de secciones y tarjetas al entrar en pantalla
 document.addEventListener('DOMContentLoaded', function () {
     const revealTargets = document.querySelectorAll(
-        '.folio-card, .section-skills .col-md-8, .section-experience .col-md-8, .section-certifications .col-md-3, .section-publications article, .section-education .col-md-8'
+        '.highlight-card, .folio-card, .section-skills .col-md-8, .section-experience .col-md-8, .section-certifications .col-md-3, .section-publications article, .section-education .col-md-8'
     );
     const isSmallScreen = window.matchMedia('(max-width: 767px)').matches;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

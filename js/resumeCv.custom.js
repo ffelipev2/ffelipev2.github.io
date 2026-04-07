@@ -1,16 +1,14 @@
 $(function () {
-    //preloader
-    $(window).preloader({
-        delay: 500
-    });
     //smooth scroll
-    smoothScroll.init({
-        selector: '[data-scroll]', // Selector for links (must be a class, ID, data attribute, or element tag)
-        speed: 550, // Integer. How fast to complete the scroll in milliseconds
-        easing: 'easeInOutQuad', // Easing pattern to use
-        offset: 0, // Integer. How far to offset the scrolling anchor location in pixels
-        callback: function (anchor, toggle) {} // Function to run after scrolling
-    });
+    if (typeof smoothScroll !== 'undefined') {
+        smoothScroll.init({
+            selector: '[data-scroll]', // Selector for links (must be a class, ID, data attribute, or element tag)
+            speed: 550, // Integer. How fast to complete the scroll in milliseconds
+            easing: 'easeInOutQuad', // Easing pattern to use
+            offset: 0, // Integer. How far to offset the scrolling anchor location in pixels
+            callback: function (anchor, toggle) {}
+        });
+    }
     //back to top
     if ($('#back-to-top').length) {
         var scrollTrigger = 100, // px
