@@ -2078,6 +2078,29 @@ body.portfolio-page {
     }
 }
 
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1200;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00adb5 0%, #00d6c7 100%);
+    box-shadow: 0 0 12px rgba(0, 173, 181, 0.35);
+    transition: width 0.12s linear;
+}
+
+.section-skills .progress.progress-default .progress-bar {
+    transition: width 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-progress,
+    .section-skills .progress.progress-default .progress-bar {
+        transition: none !important;
+    }
+}
+
 /*
 Route 2 industrial override
 */
