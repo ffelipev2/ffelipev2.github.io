@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (!prefersReducedMotion) {
-        const staggerColumns = window.matchMedia('(min-width: 992px)').matches ? 3 : 2;
+        const staggerColumns = isSmallScreen ? 1 : (window.matchMedia('(min-width: 992px)').matches ? 3 : 2);
 
         portfolioCards.forEach(function (card, index) {
             const staggerIndex = index % staggerColumns;
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', updatePageProgress, { passive: true });
     window.addEventListener('resize', updatePageProgress);
 
-    if (isSmallScreen || prefersReducedMotion || !('IntersectionObserver' in window)) {
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
         revealTargets.forEach(function (element) {
             element.classList.add('is-visible');
         });
@@ -128,8 +128,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }, {
-        threshold: 0.12,
-        rootMargin: '0px 0px -24px 0px'
+        threshold: isSmallScreen ? 0.08 : 0.12,
+        rootMargin: isSmallScreen ? '0px 0px -12px 0px' : '0px 0px -24px 0px'
     });
 
     revealTargets.forEach(function (element) {
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }, {
-            threshold: 0.25
+            threshold: isSmallScreen ? 0.16 : 0.25
         });
 
         skillObserver.observe(skillSection);
