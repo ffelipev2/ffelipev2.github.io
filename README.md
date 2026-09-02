@@ -24,19 +24,17 @@ Este repositorio contiene el código fuente del sitio personal y portfolio profe
 
 ## Ejecución local
 
-El proyecto no define un servidor de desarrollo propio. Para generar y validar el sitio:
+Para previsualizar el sitio con un origen HTTP local —necesario para que los videos de YouTube se reproduzcan dentro de la página— ejecuta:
 
 ```bash
-npm run build
+npm run dev
 ```
 
-Para servir la raíz del proyecto localmente con Python 3:
+Luego abre:
 
-```bash
-python -m http.server 4173
-```
+`http://127.0.0.1:4173/`
 
-Luego abre `http://localhost:4173/`.
+Para regenerar páginas, sitemap y el worker estático antes de previsualizar, ejecuta también `npm run build`.
 
 ## Build
 

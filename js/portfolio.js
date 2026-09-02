@@ -2,6 +2,9 @@
     'use strict';
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canEmbedYouTube = /^https?:$/.test(window.location.protocol) && window.location.origin !== 'null';
+    const youtubeWatchUrl = (videoId) => 'https://www.youtube.com/watch?v=' + encodeURIComponent(videoId);
+    const openVideoOnYouTube = (videoId) => window.open(youtubeWatchUrl(videoId), '_blank', 'noopener');
     const menuToggle = document.querySelector('.menu-toggle-v2');
     const mobileMenu = document.querySelector('.mobile-menu');
     const menuOverlay = document.querySelector('.menu-overlay');
@@ -142,12 +145,19 @@
 
     const createVideoFrame = (videoId, title) => {
         const iframe = document.createElement('iframe');
-        iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videoId) + '?rel=0';
+        const pageOrigin = /^https?:$/.test(window.location.protocol) && window.location.origin !== 'null'
+            ? window.location.origin
+            : 'https://felipeflores.tech';
+        const playerUrl = new URL('https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videoId));
+        playerUrl.searchParams.set('rel', '0');
+        playerUrl.searchParams.set('origin', pageOrigin);
+        playerUrl.searchParams.set('widget_referrer', pageOrigin);
         iframe.title = 'Demostración: ' + title;
         iframe.loading = 'lazy';
         iframe.allow = 'accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share';
         iframe.referrerPolicy = 'strict-origin-when-cross-origin';
         iframe.allowFullscreen = true;
+        iframe.src = playerUrl.toString();
         return iframe;
     };
 
@@ -162,6 +172,10 @@
             const videoId = button.dataset.videoId || '';
             const title = button.dataset.videoTitle || 'Proyecto';
             if (!videoId) return;
+            if (!canEmbedYouTube) {
+                openVideoOnYouTube(videoId);
+                return;
+            }
 
             clearDialogVideo();
             dialogVideo.append(createVideoFrame(videoId, title));
@@ -197,6 +211,10 @@
             const videoId = button.dataset.inlineVideo || '';
             const title = button.dataset.videoTitle || 'Proyecto';
             if (!container || !videoId) return;
+            if (!canEmbedYouTube) {
+                openVideoOnYouTube(videoId);
+                return;
+            }
 
             const existingFrame = container.querySelector('iframe');
             if (existingFrame) {

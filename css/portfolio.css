@@ -2903,6 +2903,23 @@ body.portfolio-page {
     padding-inline: 3px;
 }
 
+.breadcrumb {
+    align-items: center;
+    column-gap: 6px;
+    row-gap: 2px;
+}
+
+.breadcrumb > li {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}
+
+.breadcrumb > li[aria-hidden="true"] {
+    color: var(--color-muted);
+    font-size: 0.9em;
+}
+
 .acknowledgement summary {
     cursor: pointer;
 }
