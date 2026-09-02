@@ -1,1 +1,52 @@
+# Dependencias instaladas localmente
+node_modules/
+
+# Salida generada por el build del worker estático
+dist/
+
+# Variables de entorno locales
+.env
+.env.*
+!.env.example
+
+# Credenciales, certificados y almacenes locales
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials*.json
+service-account*.json
+
+# Bases y respaldos locales que no forman parte del sitio estático
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+
+# Logs de npm
+*.log
+npm-debug.log*
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Configuración local de editores e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales y copias locales
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+# Metadatos locales existentes de NetBeans
 /nbproject/

@@ -1,0 +1,173 @@
+[
+  {
+    "slug": "gemelo-digital",
+    "title": "Gemelo Digital",
+    "cardTitle": "Gemelo Digital",
+    "image": "/images/img7.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Gemelo digital con ESP32 y visualización 3D",
+    "videoId": "3qvjLGoXVLs",
+    "videoUrl": "https://www.youtube.com/watch?v=3qvjLGoXVLs",
+    "tags": ["ESP32", "IoT", "Visualización web"],
+    "description": "Integración de ESP32 y visualización web para monitoreo y representación digital de procesos en tiempo real.",
+    "resolves": "Permite monitorear y representar digitalmente procesos en tiempo real mediante ESP32 y tecnologías web.",
+    "features": [
+      "Integración con ESP32",
+      "Visualización mediante tecnologías web",
+      "Monitoreo en tiempo real"
+    ]
+  },
+  {
+    "slug": "chat-lora",
+    "title": "Chat con LoRa",
+    "cardTitle": "Chat con LoRa",
+    "image": "/images/chat-lora.webp",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "alt": "Presentación del sistema de chat con comunicación LoRa",
+    "videoId": "X5_BtMeTsko",
+    "videoUrl": "https://www.youtube.com/watch?v=X5_BtMeTsko",
+    "tags": ["LoRa", "Comunicaciones", "Mensajería"],
+    "description": "Sistema de mensajería en tiempo real usando comunicación LoRa para intercambio de mensajes entre dispositivos.",
+    "resolves": "Permite intercambiar mensajes en tiempo real entre dispositivos mediante comunicación LoRa.",
+    "features": [
+      "Mensajería en tiempo real",
+      "Comunicación LoRa",
+      "Intercambio entre dispositivos"
+    ]
+  },
+  {
+    "slug": "ufactory-lite-6",
+    "title": "Brazo robótico UFACTORY LITE 6",
+    "cardTitle": "UFACTORY LITE 6",
+    "image": "/images/img0.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Brazo robótico UFACTORY LITE 6 en laboratorio",
+    "videoId": "hlzT7cw9UgI",
+    "videoUrl": "https://www.youtube.com/watch?v=hlzT7cw9UgI",
+    "tags": ["Robótica", "Visión artificial"],
+    "description": "Clasificación automatizada de objetos mediante visión artificial y robótica aplicada.",
+    "resolves": "Automatiza la clasificación de objetos mediante la integración de visión artificial y robótica.",
+    "features": [
+      "Clasificación automatizada de objetos",
+      "Uso de visión artificial",
+      "Robótica aplicada"
+    ]
+  },
+  {
+    "slug": "huskylens-esp32",
+    "title": "Huskylens + ESP32",
+    "cardTitle": "Huskylens + ESP32",
+    "image": "/images/img1.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Proyecto Huskylens con ESP32 para reconocimiento de colores",
+    "videoId": "be3q9TfS0z8",
+    "videoUrl": "https://www.youtube.com/watch?v=be3q9TfS0z8",
+    "tags": ["Huskylens", "ESP32", "Automatización"],
+    "description": "Reconocimiento de colores con Huskylens y ESP32 para automatización y prototipado inteligente.",
+    "resolves": "Reconoce colores con Huskylens y ESP32 para su aplicación en automatización y prototipado.",
+    "features": [
+      "Reconocimiento de colores",
+      "Integración de Huskylens y ESP32",
+      "Automatización y prototipado"
+    ]
+  },
+  {
+    "slug": "sensor-higrow-esp32-app",
+    "title": "Sensor Higrow (ESP32) + App",
+    "cardTitle": "Sensor Higrow + App",
+    "image": "/images/img2.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Sensor Higrow con ESP32 y aplicación de monitoreo",
+    "videoId": "TMQDseOsFwY",
+    "videoUrl": "https://www.youtube.com/watch?v=TMQDseOsFwY",
+    "tags": ["ESP32", "Sensor Higrow", "App móvil"],
+    "description": "Monitoreo de variables ambientales con ESP32, sensor Higrow y aplicación móvil.",
+    "resolves": "Permite monitorear variables ambientales mediante un sensor Higrow conectado a ESP32 y una aplicación móvil.",
+    "features": [
+      "Lectura de variables ambientales",
+      "Sensor Higrow con ESP32",
+      "Visualización en aplicación móvil"
+    ]
+  },
+  {
+    "slug": "ethernet-sensor-biometrico",
+    "title": "Shield Ethernet + Sensor biométrico",
+    "cardTitle": "Ethernet + Sensor biométrico",
+    "image": "/images/img3.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Registro de huella dactilar con Ethernet y sensor biométrico",
+    "videoId": "VRg4iup6pJo",
+    "videoUrl": "https://www.youtube.com/watch?v=VRg4iup6pJo",
+    "tags": ["Ethernet", "Biometría", "IoT"],
+    "description": "Control de acceso y registro biométrico con conectividad Ethernet e integración IoT.",
+    "resolves": "Integra control de acceso y registro biométrico mediante conectividad Ethernet.",
+    "features": [
+      "Control de acceso",
+      "Registro biométrico",
+      "Conectividad Ethernet e integración IoT"
+    ]
+  },
+  {
+    "slug": "robot-otto-arduino-3d",
+    "title": "Robot Otto RC - Arduino + Impresión 3D",
+    "cardTitle": "Robot Otto RC",
+    "image": "/images/img4.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Robot Otto RC construido con Arduino e impresión 3D",
+    "videoId": "YGljAV9_wCI",
+    "videoUrl": "https://www.youtube.com/watch?v=YGljAV9_wCI",
+    "tags": ["Arduino", "Impresión 3D", "Robótica"],
+    "description": "Robot bípedo impreso en 3D para aprendizaje de robótica, electrónica y control remoto.",
+    "resolves": "Apoya el aprendizaje de robótica, electrónica y control remoto mediante un robot bípedo fabricado con impresión 3D.",
+    "features": [
+      "Robot bípedo",
+      "Fabricación mediante impresión 3D",
+      "Robótica, electrónica y control remoto"
+    ]
+  },
+  {
+    "slug": "arduino-bluetooth-rele",
+    "title": "Arduino UNO + Módulo Bluetooth + Relé",
+    "cardTitle": "Arduino + Bluetooth + Relé",
+    "image": "/images/img5.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Proyecto de domótica con Arduino, Bluetooth y relé",
+    "videoId": "chEfriniOsw",
+    "videoUrl": "https://www.youtube.com/watch?v=chEfriniOsw",
+    "tags": ["Arduino UNO", "Bluetooth", "Domótica"],
+    "description": "Prototipo de domótica con app móvil, Bluetooth y control de actuadores.",
+    "resolves": "Permite controlar actuadores desde una aplicación móvil mediante Arduino UNO y Bluetooth.",
+    "features": [
+      "Aplicación móvil",
+      "Comunicación Bluetooth",
+      "Control de actuadores"
+    ]
+  },
+  {
+    "slug": "vehiculo-arduino-camara-wifi",
+    "title": "Vehículo con Arduino + RC + Cámara Wi-Fi",
+    "cardTitle": "Vehículo Arduino + Cámara Wi-Fi",
+    "image": "/images/img6.webp",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "alt": "Vehículo con Arduino, control remoto y cámara Wi-Fi",
+    "videoId": "NBvcwBon6Zs",
+    "videoUrl": "https://www.youtube.com/watch?v=NBvcwBon6Zs",
+    "tags": ["Arduino MEGA", "Control remoto", "Wi-Fi"],
+    "description": "Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.",
+    "resolves": "Permite realizar exploración remota mediante un vehículo con Arduino MEGA, control remoto y cámara Wi-Fi.",
+    "features": [
+      "Arduino MEGA",
+      "Control remoto",
+      "Cámara Wi-Fi para exploración remota"
+    ]
+  }
+]

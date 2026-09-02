@@ -1,706 +1,540 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="es-CL">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Felipe Flores | IoT, Industria 4.0 y Educación</title>
+    <meta name="description" content="Portfolio de Felipe Flores: proyectos de IoT con ESP32, Industria 4.0, fabricación digital, software y educación tecnológica aplicada.">
+    <meta name="author" content="Felipe Igor Flores Valdebenito">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a1733">
+    <link rel="canonical" href="https://felipeflores.tech/">
+    <link rel="preload" as="image" href="./images/felipe-flores-ingeniero-1200.webp" type="image/webp" fetchpriority="high">
 
-<html lang="es">
-    <head>
-        <!-- Google tag (gtag.js) -->
-        <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KKG07H2ZNS"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-            gtag('config', 'G-KKG07H2ZNS');
-        </script>
-        <!-- End Google tag -->
-        <!-- Required meta tags -->
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Felipe Flores Valdebenito | IoT, Industria 4.0 y Docencia en Chile</title>
-        <meta name="description" content="Portafolio de Felipe Flores Valdebenito, Ingeniero Civil Informático y docente universitario en Chile. Experiencia en IoT con ESP32, Industria 4.0, innovación educativa y fabricación digital." />
-        <meta name="author" content="Felipe Flores Valdebenito" />
-        <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#10202d" />
-        <link rel="canonical" href="https://felipeflores.tech/" />
-        <link rel="preload" as="image" href="images/felipe-flores-ingeniero-1200.webp" type="image/webp" fetchpriority="high" />
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Felipe Flores">
+    <meta property="og:title" content="Felipe Flores | IoT, Industria 4.0 y Educación">
+    <meta property="og:description" content="Proyectos tecnológicos, trayectoria profesional, publicaciones y experiencia aplicada en IoT, automatización y educación.">
+    <meta property="og:image" content="https://felipeflores.tech/images/felipe-flores-social.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1200">
+    <meta property="og:image:alt" content="Retrato de Felipe Flores Valdebenito">
+    <meta property="og:url" content="https://felipeflores.tech/">
+    <meta property="og:type" content="website">
 
-        <!-- Open Graph -->
-        <meta property="og:locale" content="es_CL" />
-        <meta property="og:site_name" content="Felipe Flores Valdebenito" />
-        <meta property="og:title" content="Felipe Flores Valdebenito | IoT, Industria 4.0 y Docencia en Chile" />
-        <meta property="og:description" content="Portafolio profesional con experiencia en IoT con ESP32, Industria 4.0, docencia universitaria, laboratorios tecnológicos e innovación aplicada en Chile." />
-        <meta property="og:image" content="https://felipeflores.tech/images/felipe-flores-social.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="1200" />
-        <meta property="og:url" content="https://felipeflores.tech/" />
-        <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Felipe Flores | IoT, Industria 4.0 y Educación">
+    <meta name="twitter:description" content="Portfolio profesional de IoT, Industria 4.0, software y educación tecnológica aplicada.">
+    <meta name="twitter:image" content="https://felipeflores.tech/images/felipe-flores-social.jpg">
+    <meta name="twitter:image:alt" content="Retrato de Felipe Flores Valdebenito">
 
-        <!-- Twitter Card -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Felipe Flores Valdebenito | IoT, Industria 4.0 y Docencia en Chile" />
-        <meta name="twitter:description" content="Explora el portafolio de Felipe Flores Valdebenito, Ingeniero Civil Informático, Magíster y docente universitario especializado en IoT, Industria 4.0 e innovación educativa." />
-        <meta name="twitter:image" content="https://felipeflores.tech/images/felipe-flores-social.jpg" />
-        <script type="application/ld+json">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
             {
-                "@context": "https://schema.org",
-                "@graph": [
-                    {
-                        "@type": "Person",
-                        "@id": "https://felipeflores.tech/#person",
-                        "name": "Felipe Igor Flores Valdebenito",
-                        "alternateName": "Felipe Flores Valdebenito",
-                        "url": "https://felipeflores.tech/",
-                        "image": "https://felipeflores.tech/images/felipe-flores-social.jpg",
-                        "jobTitle": "Ingeniero Civil Informático | IoT, Industria 4.0 y Docencia Universitaria",
-                        "description": "Ingeniero Civil Informático y Magíster en Alta Dirección y Gestión de Instituciones Educacionales, con experiencia en IoT con ESP32, Industria 4.0, innovación educativa, laboratorios tecnológicos y fabricación digital en Chile.",
-                        "email": "mailto:ffelipev2@gmail.com",
-                        "telephone": "+56961284180",
-                        "address": {
-                            "@type": "PostalAddress",
-                            "addressLocality": "Santiago",
-                            "addressCountry": "CL"
-                        },
-                        "worksFor": {
-                            "@type": "Organization",
-                            "name": "Universidad San Sebastián"
-                        },
-                        "alumniOf": {
-                            "@type": "CollegeOrUniversity",
-                            "name": "Universidad San Sebastián"
-                        },
-                        "sameAs": [
-                            "https://www.linkedin.com/in/felipe-flores-2972b14a/",
-                            "https://github.com/ffelipev2",
-                            "https://www.facebook.com/arduinoproyectos/"
-                        ],
-                        "knowsAbout": [
-                            "Industria 4.0",
-                            "IoT",
-                            "ESP32",
-                            "Innovación educativa",
-                            "Fabricación digital",
-                            "Docencia universitaria",
-                            "Automatización",
-                            "Impresión 3D"
-                        ]
-                    },
-                    {
-                        "@type": "WebSite",
-                        "@id": "https://felipeflores.tech/#website",
-                        "url": "https://felipeflores.tech/",
-                        "name": "Felipe Flores Valdebenito",
-                        "description": "Portafolio profesional de Felipe Flores Valdebenito",
-                        "inLanguage": "es-CL",
-                        "publisher": {
-                            "@id": "https://felipeflores.tech/#person"
-                        }
-                    }
+                "@type": "Person",
+                "@id": "https://felipeflores.tech/#person",
+                "name": "Felipe Igor Flores Valdebenito",
+                "alternateName": "Felipe Flores Valdebenito",
+                "url": "https://felipeflores.tech/",
+                "image": "https://felipeflores.tech/images/felipe-flores-social.jpg",
+                "jobTitle": "Ingeniero Civil Informático | IoT, Industria 4.0 y Docencia Universitaria",
+                "description": "Ingeniero Civil Informático y Magíster en Alta Dirección y Gestión de Instituciones Educacionales, con experiencia en IoT, Industria 4.0, innovación educativa, laboratorios tecnológicos y fabricación digital.",
+                "email": "mailto:ffelipev2@gmail.com",
+                "telephone": "+56961284180",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Santiago",
+                    "addressCountry": "CL"
+                },
+                "worksFor": {
+                    "@type": "Organization",
+                    "name": "Universidad San Sebastián"
+                },
+                "alumniOf": {
+                    "@type": "CollegeOrUniversity",
+                    "name": "Universidad San Sebastián"
+                },
+                "sameAs": [
+                    "https://www.linkedin.com/in/felipe-flores-2972b14a/",
+                    "https://github.com/ffelipev2",
+                    "https://www.facebook.com/arduinoproyectos/"
+                ],
+                "knowsAbout": [
+                    "Industria 4.0",
+                    "IoT",
+                    "ESP32",
+                    "Innovación educativa",
+                    "Fabricación digital",
+                    "Docencia universitaria",
+                    "Automatización",
+                    "Impresión 3D"
                 ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://felipeflores.tech/#website",
+                "url": "https://felipeflores.tech/",
+                "name": "Felipe Flores",
+                "description": "Portfolio tecnológico profesional de Felipe Flores Valdebenito",
+                "inLanguage": "es-CL",
+                "publisher": { "@id": "https://felipeflores.tech/#person" }
             }
-        </script>
-        <!-- Plugins CSS -->
-        <link href="css/plugins/plugins.css" rel="stylesheet"/>
-        <link href="css/style-resumeCv.css" rel="stylesheet"/>
-        <link href="images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml"/>
-        <link href="images/favicon.ico" rel="icon" type="image/x-icon"/>
-    </head>
-    <body class="portfolio-page">
-        <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-        <div class="scroll-progress" aria-hidden="true"></div>
-        <section class="site-wrapper">
-            <header class="container no-padding resume-header bg-dark hero-panel">
-                <div class="row no-margin align-items-center">
-                    <div class="col-lg-6 no-padding">
-                        <div class="resume-header-text">
-                            <p class="hero-kicker">IoT Aplicado | Industria 4.0 | Docencia Tecnológica</p>
-                            <h1 class="h1 mb0">
-                                Felipe Flores Valdebenito
-                            </h1>
-                            <p class="lead">Ingeniero Civil Informático, Magíster en Gestión Educacional y docente universitario en Chile.</p>
-                            <p class="hero-summary">Diseño laboratorios, cursos y proyectos aplicados que integran IoT con ESP32, automatización, fabricación digital e innovación educativa para conectar la formación con desafíos reales.</p>
-                            <ul class="hero-highlights list-unstyled">
-                                <li>Liderazgo de laboratorios y proyectos de Industria 4.0 en Universidad San Sebastián.</li>
-                                <li>Docencia, diseño instruccional y acompañamiento académico en programación y tecnología.</li>
-                                <li>Experiencia práctica con ESP32, automatización, drones RPA, impresión 3D y educación superior.</li>
-                            </ul>
-                            <p class="hero-contact">Correo: <a href="mailto:ffelipev2@gmail.com">ffelipev2@gmail.com</a><br/>
-                                Teléfono: <a href="tel:+56961284180">(+56) 9 6128 4180</a><br/>
-                                Proyectos y contenido: <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
-                            </p>
-                            <div class="clearfix mb30 social-buttons">
-                                <a class="social-icon si-border si-facebook si-border-round text-white" href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Proyectos Arduino">
-                                    <i class="fa fa-facebook"></i>
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-                                <a class="social-icon si-border si-linkedin si-border-round text-white" href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Felipe Flores Valdebenito">
-                                    <i class="fa fa-linkedin"></i>
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                                <a class="social-icon si-border si-github si-border-round text-white" href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Felipe Flores Valdebenito">
-                                    <i class="fa fa-github"></i>
-                                    <i class="fa fa-github"></i>
-                                </a>
-                                <a class="social-icon si-border si-whatsapp si-border-round text-white" href="https://wa.me/56961284180" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp de Felipe Flores Valdebenito">
-                                    <i class="fa fa-whatsapp"></i>
-                                    <i class="fa fa-whatsapp"></i>
-                                </a>
-                            </div>
-                            <div class="buttons d-flex flex-wrap">
-                                <a href="docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-rounded">Mi CV</a>
-                                <a href="#experiencia" data-scroll class="btn btn-light btn-rounded">Experiencia</a>
-                                <a href="#publicaciones" data-scroll class="btn btn-light btn-rounded">Publicaciones</a>
-                                <a href="#contact" data-scroll class="btn btn-light btn-rounded">Contacto</a>
-                            </div>
+        ]
+    }
+    </script>
 
-                        </div>
-                    </div>
-                    <div class="col-lg-6 no-padding">
-                        <img alt="Retrato de Felipe Flores Valdebenito" class="img-fluid hero-photo" src="images/felipe-flores-ingeniero-1200.webp" width="1200" height="1200" decoding="async" fetchpriority="high"/>
-                    </div>
+    <link rel="stylesheet" href="./css/portfolio.css">
+    <link rel="icon" href="./images/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+</head>
+<body class="portfolio-page">
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+    <header class="site-header-v2" data-site-header>
+        <div class="shell header-inner-v2">
+            <a class="brand-v2" href="#inicio" aria-label="Felipe Flores, inicio">Felipe <span>Flores</span></a>
+            <nav class="desktop-nav-v2" aria-label="Navegación principal">
+                <a href="#proyectos">Proyectos</a>
+                <a href="#experiencia">Experiencia</a>
+                <a href="#perfil">Perfil</a>
+                <a href="#publicaciones">Publicaciones</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <a class="button-v2 button-primary-v2 cv-button-v2" href="./docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer">
+                Descargar CV <span aria-hidden="true">↓</span>
+            </a>
+            <button class="menu-toggle-v2" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="menu-overlay" data-menu-close hidden></div>
+    <aside class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú móvil" aria-hidden="true" tabindex="-1" inert>
+        <div class="mobile-menu-head">
+            <a class="brand-v2" href="#inicio" data-menu-link>Felipe <span>Flores</span></a>
+            <button class="menu-close" type="button" aria-label="Cerrar menú" data-menu-close>×</button>
+        </div>
+        <nav class="mobile-nav" aria-label="Navegación móvil">
+            <a href="#inicio" data-menu-link><span aria-hidden="true">⌂</span> Inicio</a>
+            <details>
+                <summary><span><span aria-hidden="true">□</span> Proyectos</span><span aria-hidden="true">⌄</span></summary>
+                <div class="mobile-submenu">
+                    <a href="./proyectos/gemelo-digital/index.html" data-menu-link>Gemelo Digital</a>
+                    <a href="./proyectos/chat-lora/index.html" data-menu-link>Chat con LoRa</a>
+                    <a href="./proyectos/ufactory-lite-6/index.html" data-menu-link>UFACTORY LITE 6</a>
+                    <a href="./proyectos/index.html" data-menu-link>Todos los proyectos</a>
                 </div>
-            </header><!--container hEADER-->
-            <main id="main-content">
-            <section class="container pt60 pb60 text-center section-intro" id="sobre-mi" aria-labelledby="sobre-mi-title">
-                <div class="row">
-                    <div class="col-lg-8 mr-auto ml-auto">
-                        <h2 class="text-primary center-title mb20 h1" id="sobre-mi-title">Acerca de Mí</h2>
-                        <p class="lead">Tecnología aplicada para <span class="text-primary font700">enseñar, innovar y transferir conocimiento</span></p>
-                        <p class="lead">
-                            Soy Felipe Igor Flores Valdebenito, <span class="font700">Ingeniero Civil Informático</span> y Magíster en Alta Dirección y Gestión de Instituciones Educacionales. Cuento con experiencia en docencia, gestión tecnológica e implementación de laboratorios orientados a Industria 4.0 en Chile. Mi trabajo integra software, IoT con ESP32, operación de drones RPA con credencial vigente, fabricación digital e impresión 3D para resolver desafíos en contextos educativos y formativos.
-                        </p>
-                        <p>
-                            He participado en docencia, coordinación académica, desarrollo de cursos tecnológicos y asesoría en proyectos de innovación, combinando visión técnica con sólidas competencias pedagógicas. Me interesa crear experiencias prácticas, actualizadas y orientadas al mundo real, donde la tecnología se convierta en una herramienta concreta para aprender, innovar y generar impacto.
-                        </p>
-                        <img alt="Felipe Flores Valdebenito en contexto profesional" class="img-fluid about-card-image" src="images/felipe-flores-about-480.webp" width="480" height="480" loading="lazy" decoding="async"/>
+            </details>
+            <a href="#experiencia" data-menu-link><span aria-hidden="true">◇</span> Experiencia</a>
+            <a href="#perfil" data-menu-link><span aria-hidden="true">○</span> Perfil</a>
+            <a href="#publicaciones" data-menu-link><span aria-hidden="true">▱</span> Publicaciones</a>
+            <a href="#contacto" data-menu-link><span aria-hidden="true">✉</span> Contacto</a>
+        </nav>
+        <div class="mobile-menu-footer">
+            <a class="button-v2 button-outline-v2" href="./docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer">Descargar CV <span aria-hidden="true">↓</span></a>
+            <div class="mobile-socials">
+                <a href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
+            </div>
+        </div>
+    </aside>
+
+    <main id="main-content">
+        <section class="hero-v2" id="inicio" aria-labelledby="hero-title">
+            <div class="shell hero-grid-v2">
+                <div class="hero-copy-v2">
+                    <p class="eyebrow-v2">IoT <span>·</span> Industria 4.0 <span>·</span> Educación tecnológica</p>
+                    <h1 id="hero-title">Felipe Flores</h1>
+                    <div class="title-rule-v2" aria-hidden="true"></div>
+                    <p class="hero-lead-v2">Diseño laboratorios, cursos y proyectos aplicados que integran IoT, automatización, fabricación digital e innovación educativa con desafíos reales.</p>
+                    <div class="hero-actions-v2">
+                        <a class="button-v2 button-primary-v2" href="#proyectos">Ver proyectos <span aria-hidden="true">→</span></a>
+                        <a class="button-v2 button-outline-v2" href="mailto:ffelipev2@gmail.com">Contactarme <span aria-hidden="true">↗</span></a>
                     </div>
-                </div>
-            </section><!--container aBOUT-->
-            <section class="container pt60 pb60 section-highlights" id="enfoque" aria-labelledby="enfoque-title">
-                <h2 class="text-primary center-title text-center mb20 h1" id="enfoque-title">Enfoque Actual</h2>
-                <p class="lead text-center mb40">Trabajo entre educación superior, laboratorios tecnológicos y proyectos aplicados con foco en resultados concretos.</p>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 mb30">
-                        <article class="highlight-card h-100">
-                            <div class="highlight-meta">
-                                <p class="highlight-eyebrow">Laboratorio</p>
-                            </div>
-                            <span class="highlight-icon" aria-hidden="true"><i class="fa fa-cogs"></i></span>
-                            <h3>Industria 4.0 para formación práctica</h3>
-                            <p>Implementación, actualización y operación de espacios de aprendizaje donde convergen automatización, IoT, software y fabricación digital.</p>
-                            <a href="#experiencia" data-scroll class="btn btn-sm btn-outline-primary btn-rounded">Ver experiencia</a>
+                    <div class="pillars-v2" aria-label="Áreas de trabajo">
+                        <article>
+                            <span class="pillar-mark-v2" aria-hidden="true">01</span>
+                            <div><h2>Industria 4.0</h2><p>Laboratorios y automatización</p></div>
                         </article>
-                    </div>
-                    <div class="col-lg-4 col-md-6 mb30">
-                        <article class="highlight-card h-100">
-                            <div class="highlight-meta">
-                                <p class="highlight-eyebrow">Docencia</p>
-                            </div>
-                            <span class="highlight-icon" aria-hidden="true"><i class="fa fa-graduation-cap"></i></span>
-                            <h3>Diseño instruccional y enseñanza aplicada</h3>
-                            <p>Experiencia en docencia universitaria, coordinación académica y creación de cursos orientados a programación, tecnología e innovación educativa.</p>
-                            <a href="#especializacion" data-scroll class="btn btn-sm btn-outline-primary btn-rounded">Ver especialidades</a>
+                        <article>
+                            <span class="pillar-mark-v2" aria-hidden="true">02</span>
+                            <div><h2>Educación tecnológica</h2><p>Docencia y diseño instruccional</p></div>
                         </article>
-                    </div>
-                    <div class="col-lg-4 col-md-6 mb30">
-                        <article class="highlight-card h-100">
-                            <div class="highlight-meta">
-                                <p class="highlight-eyebrow">Investigación</p>
-                            </div>
-                            <span class="highlight-icon" aria-hidden="true"><i class="fa fa-file-text-o"></i></span>
-                            <h3>Publicaciones y colaboración científica</h3>
-                            <p>Participación como autor y colaborador en publicaciones recientes vinculadas con tecnologías 4.0, educación en ingeniería e innovación aplicada.</p>
-                            <a href="#publicaciones" data-scroll class="btn btn-sm btn-outline-primary btn-rounded">Ver publicaciones</a>
+                        <article>
+                            <span class="pillar-mark-v2" aria-hidden="true">03</span>
+                            <div><h2>Innovación aplicada</h2><p>Prototipado y soluciones reales</p></div>
                         </article>
                     </div>
                 </div>
-            </section>
-            <section class="container pt60 pb20 bg-faded section-portfolio" id="folio" aria-labelledby="proyectos-title">
-                <h2 class="text-primary center-title text-center mb20 h1" id="proyectos-title">Mis proyectos</h2>
-                <p class="lead text-center mb40">Selección de proyectos con ESP32, Arduino, LoRa, visión artificial, domótica y fabricación digital.</p>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=3qvjLGoXVLs" target="_blank" rel="noopener noreferrer">
-                            <img alt="Proyecto de gemelo digital con ESP32 y tecnologías web" class="img-fluid" src="images/img7.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Gemelo Digital</h4>
-                            <span>Integración de ESP32 y visualización web para monitoreo y representación digital de procesos en tiempo real.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=X5_BtMeTsko" target="_blank" rel="noopener noreferrer">
-                            <img alt="Chat de comunicación en tiempo real con tecnología LoRa" class="img-fluid" src="images/chat-lora.webp" width="800" height="533" loading="lazy" decoding="async"/>
-                            <h4>Chat con LoRa</h4>
-                            <span>Sistema de mensajería en tiempo real usando comunicación LoRa para intercambio de mensajes entre dispositivos.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=hlzT7cw9UgI" target="_blank" rel="noopener noreferrer">
-                            <img alt="Brazo robótico UFACTORY LITE 6 clasificando objetos con visión artificial" class="img-fluid" src="images/img0.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Brazo robótico UFACTORY LITE 6</h4>
-                            <span>Clasificación automatizada de objetos mediante visión artificial y robótica aplicada.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=be3q9TfS0z8" target="_blank" rel="noopener noreferrer">
-                            <img alt="Proyecto Huskylens con ESP32 para reconocimiento de colores" class="img-fluid" src="images/img1.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Huskylens + ESP32</h4>
-                            <span>Reconocimiento de colores con Huskylens y ESP32 para automatización y prototipado inteligente.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=TMQDseOsFwY" target="_blank" rel="noopener noreferrer">
-                            <img alt="Sensor Higrow con ESP32 y aplicación de monitoreo" class="img-fluid" src="images/img2.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Sensor Higrow (ESP32) + App</h4>
-                            <span>Monitoreo de variables ambientales con ESP32, sensor Higrow y aplicación móvil.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=VRg4iup6pJo" target="_blank" rel="noopener noreferrer">
-                            <img alt="Registro de huella dactilar con Ethernet y sensor biométrico" class="img-fluid" src="images/img3.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Shield Ethernet + Sensor biométrico</h4>
-                            <span>Control de acceso y registro biométrico con conectividad Ethernet e integración IoT.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=YGljAV9_wCI" target="_blank" rel="noopener noreferrer">
-                            <img alt="Robot Otto RC construido con Arduino e impresión 3D" class="img-fluid" src="images/img4.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Robot Otto RC - Arduino + Impresión 3D</h4>
-                            <span>Robot bípedo impreso en 3D para aprendizaje de robótica, electrónica y control remoto.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=chEfriniOsw" target="_blank" rel="noopener noreferrer">
-                            <img alt="Proyecto de domótica con Arduino, Bluetooth y relé" class="img-fluid" src="images/img5.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Arduino UNO + Módulo Bluetooth + Relé</h4>
-                            <span>Prototipo de domótica con app móvil, Bluetooth y control de actuadores.</span>
-                        </a>
-                    </div><!--col-->
-                    <div class="col-lg-4 col-md-6 mb40">
-                        <a class="folio-card" href="https://www.youtube.com/watch?v=NBvcwBon6Zs" target="_blank" rel="noopener noreferrer">
-                            <img alt="Vehículo con Arduino, control remoto y cámara Wi-Fi" class="img-fluid" src="images/img6.webp" width="500" height="333" loading="lazy" decoding="async"/>
-                            <h4>Vehículo con Arduino + RC + Cámara Wi-Fi</h4>
-                            <span>Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.</span>
-                        </a>
-                    </div><!--col-->
-                </div>
-            </section>
-            <!--container pORTFOLIO-->
-            <section class="container pt60 pb60 section-skills" id="especializacion" aria-labelledby="especializacion-title">
-                <h2 class="text-primary center-title mb20 h1 text-center" id="especializacion-title">Áreas de Especialización</h2>
-                <p class="lead text-center mb40">Competencias técnicas y pedagógicas orientadas a proyectos, docencia e innovación aplicada.</p>
-                <div class="row">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                IoT, ESP32 y prototipado electrónico
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="95" class="progress-bar" role="progressbar" style="width: 95%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Python y desarrollo de aplicaciones con Flask
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="92" class="progress-bar" role="progressbar" style="width: 92%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Desarrollo web front end
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" class="progress-bar" role="progressbar" style="width: 90%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Fabricación digital e impresión 3D
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" class="progress-bar" role="progressbar" style="width: 90%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Operación de drones RPA con credencial vigente
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" class="progress-bar" role="progressbar" style="width: 90%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Desarrollo de apps con App Inventor y Kodular
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="85" class="progress-bar" role="progressbar" style="width: 90%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Diseño instruccional y recursos de aprendizaje
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" class="progress-bar" role="progressbar" style="width: 90%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Herramientas de productividad y ofimática
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="85" class="progress-bar" role="progressbar" style="width: 85%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Modelado 3D con Autodesk Inventor
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" class="progress-bar" role="progressbar" style="width: 70%"></div>
-                        </div>
-                        <div class="progress-label clearfix">
-                            <span class="progress-title">
-                                Soporte técnico y acompañamiento TI
-                            </span>
-                            <span class="progress-value float-right">
-                            </span>
-                        </div><!--label-->
-                        <div class="progress progress-default">
-                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" class="progress-bar" role="progressbar" style="width: 60%"></div>
-                        </div>
+                <figure class="hero-portrait-v2">
+                    <div class="portrait-frame-v2">
+                        <img alt="Retrato de Felipe Flores Valdebenito" src="./images/felipe-flores-ingeniero-1200.webp" width="1200" height="1200" decoding="async" fetchpriority="high">
                     </div>
-                </div>
-            </section><!--container sKILLS-->
-            <section class="container pt60 pb20 bg-dark section-experience" id="experiencia" aria-labelledby="experiencia-title">
-                <h2 class="text-white center-title mb0 h1 text-center" id="experiencia-title">Experiencia Profesional</h2>
-                <p class="lead text-white-gray text-center mb20">Experiencia en educación superior, laboratorios tecnológicos y desarrollo de soluciones aplicadas a Industria 4.0.</p>
-                <img alt="Ilustración de trayectoria profesional" class="img-fluid mx-auto d-block mb40" src="images/laboral70.png" width="120" height="120" loading="lazy" decoding="async"/>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Abril 2022 - presente</div>
-                        <h3 class="font300 text-white">Ingeniero en Tecnologías de la Industria 4.0 - Universidad San Sebastián</h3>
-                        <p class="text-white-gray">• Lideré la implementación y puesta en marcha del laboratorio físico y virtual de Industria 4.0 en la sede de Santiago, estableciendo un espacio de vanguardia para la formación práctica en tecnologías emergentes.</p>
-                        <p class="text-white-gray">• Gestiono la actualización continua del laboratorio, investigando e incorporando nuevas tecnologías para mantener su vigencia y valor formativo.</p>
-                    </div>
-                </div><!--/row-->
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">2022 - presente</div>
-                        <h3 class="font300 text-white">Docente Universidad San Sebastián Advance</h3>
-                        <p class="text-white-gray">• He impartido las asignaturas "Introducción a la Programación" y "Reportes de Gestión" en formato online para profesionales que buscan complementar su formación.</p>
-                        <p class="text-white-gray">• Mi desempeño docente ha sido consistentemente bien evaluado, destacando la claridad en la enseñanza y la orientación práctica de los contenidos.</p>
-                    </div>
-                </div><!--/row-->
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Noviembre 2017 - Mayo 2022</div>
-                        <h3 class="font300 text-white">Coordinador del Laboratorio de Línea Tecnológica USS y Docente</h3>
-                        <p class="text-white-gray">• Liderazgo de iniciativas de desarrollo de software y tecnologías aplicadas para apoyo académico y fortalecimiento de la línea tecnológica.</p>
-                        <p class="text-white-gray">• Implementación de soluciones para laboratorios, acompañamiento docente y desarrollo de proyectos con foco en innovación.</p>
-                    </div>
-                </div>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Abril 2022 - Octubre 2022</div>
-                        <h3 class="font300 text-white">Diseñador de Cursos de Tecnología - UGM</h3>
-                        <p class="text-white-gray">• Diseño de dos versiones del curso "Introducción a la Programación" para modalidad online.</p>
-                        <p class="text-white-gray">• Elaboración de matriz de planificación, materiales, documentación académica y bibliografía de apoyo.</p>
-                    </div>
-                </div>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Mayo 2019 - presente</div>
-                        <h3 class="font300 text-white">Docente y Colaborador en Asignaturas de Especialidad Informática - IPLACEX</h3>
-                        <p class="text-white-gray">• Cursos a cargo: Programación Web, Diseño Web y Programación Front End.</p>
-                        <p class="text-white-gray">• Realicé la estructuración de asignaturas, actualización de material de estudio y creación de contenido educativo alineado con las últimas tendencias tecnológicas.</p>
-                    </div>
-                </div>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">2020 - 2021</div>
-                        <h3 class="font300 text-white">Evaluador de Proyectos CREA y VALIDA - EQA Chile</h3>
-                        <p class="text-white-gray">• Gestión y evaluación de proyectos INNOVA CHILE (CORFO), aportando criterio técnico en procesos de revisión y análisis.</p>
-                    </div>
-                </div>
-                <!--/row-->
-            </section><!--container jOB eXPERIENCE-->
-            <section class="container pt60 pb20 section-education" id="educacion" aria-labelledby="educacion-title">
-                <h2 class="text-primary center-title mb50 h1 text-center" id="educacion-title">Educación</h2>
-                <img alt="Icono de educación" class="img-fluid mx-auto d-block" src="images/gorra120.png" width="120" height="78" loading="lazy" decoding="async"/>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Marzo 2018 - Diciembre 2020</div>
-                        <h3 class="font300 text-primary">Magíster en Alta Dirección y Gestión de Instituciones Educacionales - USS</h3>
-                        <p>• Diplomado en Gestión y Liderazgo Pedagógico</p>
-                        <p>• Diplomado en Dirección y Gestión de Establecimientos Educacionales</p>
-                    </div>
-                </div><!--/row-->
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Marzo 2012 - Diciembre 2015</div>
-                        <h3 class="font300 text-primary">Ingeniero Civil Informático - USS</h3>
-                        <p>• Bachiller en Ciencias y Emprendimiento.</p>
-                        <p>• Licenciado en Ciencias de la Ingeniería.</p>
-                    </div>
-                </div><!--/row-->
-            </section>
-            <section class="container pt60 pb20 section-education section-courses" id="formacion-complementaria" aria-labelledby="formacion-title">
-                <h2 class="text-primary center-title mb20 h1 text-center" id="formacion-title">Cursos y Formación Complementaria</h2>
-                <p class="lead text-center mb40">Actualización continua en docencia, diseño instruccional, ciberseguridad, inteligencia artificial y metodologías ágiles.</p>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Noviembre 2025 - Enero 2026</div>
-                        <h3 class="font300 text-primary">Curso en Ciberseguridad para Entornos Universitarios - UNIR</h3>
-                        <p>• Título propio de la Universidad Internacional de La Rioja, con duración de 150 horas y 6 ECTS.</p>
-                        <p>• Calificación sobresaliente (9,20), con foco en amenazas digitales, identidad, protección de datos, herramientas colaborativas, LMS, gobernanza e incidentes.</p>
-                    </div>
-                </div>
-                <div class="row mb40">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="h5 text-muted">Noviembre 2024 - Diciembre 2025</div>
-                        <h3 class="font300 text-primary">Curso Internacional de Competencias Docentes y Diseño de Materiales Didácticos para la Educación en Línea - UNIR</h3>
-                        <p>• Formación orientada al fortalecimiento de competencias docentes y diseño instruccional para entornos virtuales en Educación Superior.</p>
-                    </div>
-                </div>
-            </section>
-            <section class="container pt60 pb20 section-certifications" id="certificaciones" aria-labelledby="certificaciones-title">
-                <h2 class="text-primary center-title mb20 h1 text-center" id="certificaciones-title">Certificaciones</h2>
-                <p class="lead text-center mb30">Credenciales y habilitaciones que respaldan mi actualización profesional en inteligencia artificial, ciberseguridad, metodologías ágiles y tecnologías aplicadas.</p>
-                <img alt="Icono de certificaciones" class="img-fluid mx-auto d-block" src="images/medalla.png" width="120" height="120" loading="lazy" decoding="async"/>
-                <div class="row text-center">
-                    <div class="col-md-3 mb40">
-                        <img alt="Icono de dron para credencial de Operador RPA" class="img-fluid mb10 cert-drone" src="images/drone-320.webp" width="320" height="213" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Operador RPA<br/>Credencial vigente</h5>
-                        <p>Operación de drones en series Phantom y Mavic · Vigente hasta septiembre de 2027</p>
-                    </div>
-                    <div class="col-md-3 mb40">
-                        <img alt="Generative AI Professional Certification" class="img-fluid mb10" src="images/badges/1.png" width="200" height="200" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Generative AI Professional Certification - GAIPC™</h5>
-                        <p>Certiprof · Noviembre 2024</p>
-                    </div>
-                    <div class="col-md-3 mb40">
-                        <img alt="Generative IA Synchronous Course" class="img-fluid mb10" src="images/badges/2.png" width="200" height="200" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Generative AI Synchronous Course</h5>
-                        <p>ITCERT E.I.R.L · Curso sincrónico</p>
-                    </div>
-                    <div class="col-md-3 mb40">
-                        <img alt="Cyber Security Foundation Professional Certificate" class="img-fluid mb10" src="images/badges/3.png" width="200" height="200" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Cyber Security Foundation Professional Certificate - CSFPC™</h5>
-                        <p>Certiprof · Enero 2023</p>
-                    </div>
-                    <div class="col-md-3 mb40">
-                        <img alt="Certificación Lifelong Learning" class="img-fluid mb10" src="images/badges/4.png" width="200" height="200" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Lifelong Learning</h5>
-                        <p>Certiprof · Aprendizaje permanente</p>
-                    </div>
-                    <div class="col-md-3 mb40">
-                        <img alt="Scrum Foundation Professional Certification" class="img-fluid mb10" src="images/badges/5.png" width="200" height="200" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Scrum Foundation Professional Certification - SFPC™</h5>
-                        <p>Certiprof · Septiembre 2021</p>
-                    </div>
-                    <div class="col-md-3 mb40">
-                        <img alt="Scrum Foundation Synchronous Course" class="img-fluid mb10" src="images/badges/6.png" width="200" height="200" loading="lazy" decoding="async"/>
-                        <h5 class="text-muted">Scrum Foundation Synchronous Course</h5>
-                        <p>ITCERT E.I.R.L · Curso sincrónico</p>
-                    </div>
-                </div>
-            </section>
-            <!-- ====== Publicaciones ====== -->
-            <section class="container pt60 pb60 section-publications" id="publicaciones" aria-labelledby="publicaciones-title">
-                <h2 class="text-primary center-title mb20 h1 text-center" id="publicaciones-title">Publicaciones</h2>
-                <p class="lead text-center mb40">Participación como autor y colaborador en investigación aplicada vinculada a educación, tecnología e innovación.</p>
+                    <figcaption>Ingeniero Civil Informático · Magíster en Gestión Educacional</figcaption>
+                </figure>
+            </div>
+        </section>
 
-                <!-- Fractal and Fractional (agradecimiento) -->
-                <article class="mb40" itemscope itemtype="https://schema.org/ScholarlyArticle">
-                    <h3 class="mb10" itemprop="name">
-                        <span class="font700">Influence of Volumetric Geometry on Meteorological Time Series Measurements: Fractality and Thermal Flows</span>
-                        <span class="badge badge-primary ml10">Colaboración</span>
-                    </h3>
-                    <p class="mb5">
-                        Hernández, P.P.; Ahumada, G.N.; Mera Garrido, E.; Zemelman de la Cerda, D. · 
-                        <em>Fractal and Fractional</em> · 
-                        <span itemprop="datePublished" content="2025-09-30">2025, 9(10), 639</span>
-                    </p>
-                    <div class="mb10">
-                        <a class="btn btn-sm btn-primary btn-rounded mr5" href="https://doi.org/10.3390/fractalfract9100639" target="_blank" rel="noopener noreferrer">Página del artículo</a>
-                        <a class="btn btn-sm btn-light btn-rounded mr5" href="https://doi.org/10.3390/fractalfract9100639" target="_blank" rel="noopener noreferrer">DOI</a>
-                        <a class="btn btn-sm btn-light btn-rounded mr5" href="https://scholar.google.com/scholar?q=Influence+of+Volumetric+Geometry+on+Meteorological+Time+Series+Measurements:+Fractality+and+Thermal+Flows" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-                        <a class="btn btn-sm btn-light btn-rounded" href="#bib-fractal" data-toggle="collapse">BibTeX</a>
+        <section class="section-v2 projects-section" id="proyectos" aria-labelledby="projects-title">
+            <div class="shell">
+                <div class="section-heading-v2">
+                    <div>
+                        <p class="eyebrow-v2">Proyectos destacados</p>
+                        <h2 id="projects-title">Soluciones tecnológicas que enseñan, conectan e innovan.</h2>
                     </div>
-                    <div id="bib-fractal" class="collapse">
-                        <pre class="bg-faded p10">
-@article{FractalFract2025,
-  title   = {Influence of Volumetric Geometry on Meteorological Time Series Measurements: Fractality and Thermal Flows},
-  author  = {Hernández, P. P. and Ahumada, G. N. and Mera Garrido, E. and Zemelman de la Cerda, D.},
-  journal = {Fractal and Fractional},
-  year    = {2025},
-  volume  = {9},
-  number  = {10},
-  pages   = {639},
-  doi     = {10.3390/fractalfract9100639}
-}
-                        </pre>
-                    </div>
-                    <details class="ack">
-                        <summary>Agradecimientos</summary>
-                        <p>Se agradece a Felipe Igor Flores Valdebenito (Laboratorio de Industria 4.0, Universidad San Sebastián) y a Pablo López (Mountain Center, Universidad San Sebastián) por su apoyo.</p>
-                    </details>
-                </article>
-
-                <!-- Atmosphere (agradecimiento) -->
-                <article class="mb40" itemscope itemtype="https://schema.org/ScholarlyArticle">
-                    <h3 class="mb10" itemprop="name">
-                        <span class="font700">Submicron Particles and Micrometeorology in Highly Densified Urban Environments: Heavy-Tailed Probability Study</span>
-                        <span class="badge badge-primary ml10">Colaboración</span>
-                    </h3>
-                    <p class="mb5">
-                        Pacheco Hernández, P.; Mera Garrido, E.; Navarro Ahumada, G.; Wachter Chamblas, J.; Polo Pizan, S. · 
-                        <em>Atmosphere</em> · 
-                        <span itemprop="datePublished" content="2025-09-01">2025, 16, 1044</span>
-                    </p>
-                    <div class="mb10">
-                        <a class="btn btn-sm btn-primary btn-rounded mr5" href="https://doi.org/10.3390/atmos16091044" target="_blank" rel="noopener noreferrer">Página del artículo</a>
-                        <a class="btn btn-sm btn-light btn-rounded mr5" href="https://doi.org/10.3390/atmos16091044" target="_blank" rel="noopener noreferrer">DOI</a>
-                        <a class="btn btn-sm btn-light btn-rounded mr5" href="https://scholar.google.com/scholar?q=Submicron+Particles+and+Micrometeorology+in+Highly+Densified+Urban+Environments:+Heavy-Tailed+Probability+Study" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-                        <a class="btn btn-sm btn-light btn-rounded" href="#bib-atmos" data-toggle="collapse">BibTeX</a>
-                    </div>
-                    <div id="bib-atmos" class="collapse">
-                        <pre class="bg-faded p10">
-@article{Atmosphere2025,
-  title   = {Submicron Particles and Micrometeorology in Highly Densified Urban Environments: Heavy-Tailed Probability Study},
-  author  = {Pacheco Hernández, P. and Mera Garrido, E. and Navarro Ahumada, G. and Wachter Chamblas, J. and Polo Pizan, S.},
-  journal = {Atmosphere},
-  year    = {2025},
-  volume  = {16},
-  pages   = {1044},
-  doi     = {10.3390/atmos16091044}
-}
-                        </pre>
-                    </div>
-                    <details class="ack">
-                        <summary>Agradecimientos</summary>
-                        <p>
-                            Se agradece a Felipe Igor Flores Valdebenito (Laboratorio de Industria 4.0, Universidad San Sebastián); 
-                            Diana Donoso Pineda y Rodrigo Vásquez (Municipalidad de Lo Prado). 
-                            Se reconoce el apoyo de la Dirección de Investigación de la Universidad Tecnológica Metropolitana a través del proyecto LPR23-15 
-                            y al Departamento de Física de la misma institución.
-                        </p>
-                    </details>
-                </article>
-
-                <!-- Applied Sciences (autor, sin agradecimiento) -->
-                <article class="mb40" itemscope itemtype="https://schema.org/ScholarlyArticle">
-                    <h3 class="mb10" itemprop="name">
-                        <span class="font700">Challenge-Based Learning and Scrum as Enablers of 4.0 Technologies in Engineering Education</span>
-                        <span class="badge badge-success ml10">Autor</span>
-                    </h3>
-                    <p class="mb5">
-                        Coelho, P.A.; Casanello, F.; Leal, N.; Brintrup, K.; Angulo, L.; Sanhueza, I.; <strong>Felipe Flores</strong>; Reyes, J.; Forcael, E. · 
-                        <em>Applied Sciences</em> · 
-                        <span itemprop="datePublished" content="2024-11-01">2024, 14(21), 9746</span>
-                    </p>
-                    <p class="mb10">Implementación de un modelo educativo enfocado en Industria 4.0, combinando aprendizaje práctico y tecnologías avanzadas para mejorar la preparación de estudiantes en ingeniería.</p>
-                    <div class="mb10">
-                        <a class="btn btn-sm btn-primary btn-rounded mr5" href="https://www.mdpi.com/2076-3417/14/21/9746" target="_blank" rel="noopener noreferrer">Página del artículo</a>
-                        <a class="btn btn-sm btn-light btn-rounded mr5" href="https://doi.org/10.3390/app14219746" target="_blank" rel="noopener noreferrer">DOI</a>
-                        <a class="btn btn-sm btn-light btn-rounded mr5" href="https://scholar.google.com/scholar?q=Challenge-Based+Learning+and+Scrum+as+Enablers+of+4.0+Technologies+in+Engineering+Education" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-                        <a class="btn btn-sm btn-light btn-rounded" href="#bib-applsci" data-toggle="collapse">BibTeX</a>
-                    </div>
-                    <div id="bib-applsci" class="collapse">
-                        <pre class="bg-faded p10">
-@article{AppliedSci2024,
-  title   = {Challenge-Based Learning and Scrum as Enablers of 4.0 Technologies in Engineering Education},
-  author  = {Coelho, P. A. and Casanello, F. and Leal, N. and Brintrup, K. and Angulo, L. and Sanhueza, I. and Flores, Felipe and Reyes, J. and Forcael, E.},
-  journal = {Applied Sciences},
-  year    = {2024},
-  volume  = {14},
-  number  = {21},
-  pages   = {9746},
-  doi     = {10.3390/app14219746}
-}
-                        </pre>
-                    </div>
-                </article>
-            </section>
-
-            </main>
-            <footer class="container footer pt60 pb30" id="contact" aria-labelledby="contact-title">
-                <div class="row">
-                    <div class="col-lg-12 ml-auto mr-auto text-center mb30">
-                        <h2 class="sr-only" id="contact-title">Contacto</h2>
-                        <p>Correo: <a href="mailto:ffelipev2@gmail.com">ffelipev2@gmail.com</a><br/>
-                            Teléfono: <a href="tel:+56961284180">(+56) 9 6128 4180</a><br/>
-                            Proyectos y contenido: <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
-                        </p>
-                        <div class="clearfix social-buttons">
-                            <a class="social-icon-sm si-gray si-facebook" href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Proyectos Arduino">
-                                <i class="fa fa-facebook"></i>
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                            <a class="social-icon-sm si-gray si-linkedin" href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Felipe Flores Valdebenito">
-                                <i class="fa fa-linkedin"></i>
-                                <i class="fa fa-linkedin"></i>
-                            </a>
-                            <a class="social-icon-sm si-gray si-github" href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Felipe Flores Valdebenito">
-                                <i class="fa fa-github"></i>
-                                <i class="fa fa-github"></i>
-                            </a>
-                            <a class="social-icon-sm si-gray si-whatsapp" href="https://wa.me/56961284180" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp de Felipe Flores Valdebenito">
-                                <i class="fa fa-whatsapp"></i>
-                                <i class="fa fa-whatsapp"></i>
-                            </a>
-                        </div>
-                        <div class="text-center">
-                            © 2026 Felipe Flores Valdebenito. Portafolio profesional y proyectos tecnológicos.
-                        </div>
-                    </div>
+                    <a href="./proyectos/index.html">Ver todos los proyectos <span aria-hidden="true">→</span></a>
                 </div>
-            </footer><!--fOOTER-->
-        </section><!--main wrapper for boxed layout-->
-        <div aria-hidden="true" aria-labelledby="videoModalLabel" class="modal fade" id="videoModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="videoModalLabel">Reproducción del Video</h5>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">×</span>
-                        </button>
+                <div class="project-carousel" data-carousel>
+                    <div class="featured-grid-v2" data-carousel-track>
+                        <article class="project-card-v2" data-carousel-slide>
+                            <div class="project-media-v2">
+                                <a class="project-image-v2" href="./proyectos/gemelo-digital/index.html" aria-label="Conocer el proyecto Gemelo Digital">
+                                    <img src="./images/img7.webp" width="500" height="333" loading="lazy" decoding="async" alt="Gemelo digital con ESP32 y visualización 3D">
+                                </a>
+                                <button class="play-chip" type="button" data-video-id="3qvjLGoXVLs" data-video-title="Gemelo Digital" aria-label="Ver demostración de Gemelo Digital">
+                                    <span aria-hidden="true">▶</span> Demo
+                                </button>
+                            </div>
+                            <div class="project-body-v2">
+                                <p class="project-tags-v2">ESP32 · Visualización web</p>
+                                <h3><a href="./proyectos/gemelo-digital/index.html">Gemelo Digital</a></h3>
+                                <p>Monitoreo y representación digital de procesos en tiempo real.</p>
+                                <a href="./proyectos/gemelo-digital/index.html">Ver proyecto <span aria-hidden="true">→</span></a>
+                            </div>
+                        </article>
+                        <article class="project-card-v2" data-carousel-slide>
+                            <div class="project-media-v2">
+                                <a class="project-image-v2" href="./proyectos/chat-lora/index.html" aria-label="Conocer el proyecto Chat con LoRa">
+                                    <img src="./images/chat-lora.webp" width="800" height="533" loading="lazy" decoding="async" alt="Presentación del sistema de chat con comunicación LoRa">
+                                </a>
+                                <button class="play-chip" type="button" data-video-id="X5_BtMeTsko" data-video-title="Chat con LoRa" aria-label="Ver demostración de Chat con LoRa">
+                                    <span aria-hidden="true">▶</span> Demo
+                                </button>
+                            </div>
+                            <div class="project-body-v2">
+                                <p class="project-tags-v2">LoRa · Comunicaciones</p>
+                                <h3><a href="./proyectos/chat-lora/index.html">Chat con LoRa</a></h3>
+                                <p>Mensajería en tiempo real para intercambio entre dispositivos.</p>
+                                <a href="./proyectos/chat-lora/index.html">Ver proyecto <span aria-hidden="true">→</span></a>
+                            </div>
+                        </article>
+                        <article class="project-card-v2" data-carousel-slide>
+                            <div class="project-media-v2">
+                                <a class="project-image-v2" href="./proyectos/ufactory-lite-6/index.html" aria-label="Conocer el proyecto UFACTORY LITE 6">
+                                    <img src="./images/img0.webp" width="500" height="333" loading="lazy" decoding="async" alt="Brazo robótico UFACTORY LITE 6 en laboratorio">
+                                </a>
+                                <button class="play-chip" type="button" data-video-id="hlzT7cw9UgI" data-video-title="Brazo robótico UFACTORY LITE 6" aria-label="Ver demostración de UFACTORY LITE 6">
+                                    <span aria-hidden="true">▶</span> Demo
+                                </button>
+                            </div>
+                            <div class="project-body-v2">
+                                <p class="project-tags-v2">Robótica · Visión artificial</p>
+                                <h3><a href="./proyectos/ufactory-lite-6/index.html">UFACTORY LITE 6</a></h3>
+                                <p>Clasificación automatizada de objetos mediante visión artificial.</p>
+                                <a href="./proyectos/ufactory-lite-6/index.html">Ver proyecto <span aria-hidden="true">→</span></a>
+                            </div>
+                        </article>
                     </div>
-                        <div class="modal-body">
-                            <!-- Contenedor del video -->
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe allowfullscreen="" class="embed-responsive-item" id="videoFrame" src="" title="Video del proyecto"></iframe>
+                    <div class="carousel-controls" aria-label="Controles de proyectos destacados">
+                        <button type="button" data-carousel-prev aria-label="Proyecto anterior">←</button>
+                        <div class="carousel-dots" aria-hidden="true">
+                            <span class="is-active"></span><span></span><span></span>
                         </div>
+                        <button type="button" data-carousel-next aria-label="Proyecto siguiente">→</button>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section class="section-v2 profile-section" id="perfil" aria-labelledby="profile-title">
+            <div class="shell profile-grid">
+                <div class="profile-copy">
+                    <p class="eyebrow-v2">Sobre mí</p>
+                    <h2 id="profile-title">Tecnología aplicada para enseñar, innovar y construir.</h2>
+                    <div class="title-rule-v2" aria-hidden="true"></div>
+                    <p class="profile-lead">Soy Ingeniero Civil Informático y Magíster en Alta Dirección y Gestión de Instituciones Educacionales.</p>
+                    <p>Integro software, IoT con ESP32, automatización, fabricación digital, operación de drones RPA y educación superior para desarrollar experiencias y soluciones orientadas a desafíos reales.</p>
+                    <a class="text-link" href="#experiencia">Conocer mi trayectoria <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="profile-pillars">
+                    <article>
+                        <span class="large-index" aria-hidden="true">01</span>
+                        <div><h3>Industria 4.0</h3><p>Implementación y actualización de laboratorios donde convergen IoT, automatización, software y fabricación digital.</p></div>
+                    </article>
+                    <article>
+                        <span class="large-index" aria-hidden="true">02</span>
+                        <div><h3>Educación tecnológica</h3><p>Docencia universitaria, coordinación académica y diseño de experiencias de aprendizaje aplicadas.</p></div>
+                    </article>
+                    <article>
+                        <span class="large-index" aria-hidden="true">03</span>
+                        <div><h3>Innovación aplicada</h3><p>Prototipado, investigación y proyectos tecnológicos con foco en soluciones concretas.</p></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-v2 experience-section" id="experiencia" aria-labelledby="experience-title">
+            <div class="shell">
+                <div class="section-heading-v2 compact-heading">
+                    <div>
+                        <p class="eyebrow-v2">Experiencia destacada</p>
+                        <h2 id="experience-title">Trayectoria profesional</h2>
+                    </div>
+                </div>
+                <ol class="timeline-preview">
+                    <li>
+                        <p class="timeline-date">Abril 2022 — presente</p>
+                        <h3>Universidad San Sebastián</h3>
+                        <p class="timeline-role">Ingeniero en Tecnologías de la Industria 4.0</p>
+                        <p>Liderazgo en la implementación, puesta en marcha y actualización del laboratorio físico y virtual de Industria 4.0 en Santiago.</p>
+                    </li>
+                    <li>
+                        <p class="timeline-date">2022 — presente</p>
+                        <h3>Universidad San Sebastián Advance</h3>
+                        <p class="timeline-role">Docente</p>
+                        <p>Docencia online en Introducción a la Programación y Reportes de Gestión, con una orientación práctica.</p>
+                    </li>
+                    <li>
+                        <p class="timeline-date">Noviembre 2017 — mayo 2022</p>
+                        <h3>Laboratorio de Línea Tecnológica USS</h3>
+                        <p class="timeline-role">Coordinador y docente</p>
+                        <p>Desarrollo de software, soluciones para laboratorios y apoyo a proyectos de innovación académica.</p>
+                    </li>
+                </ol>
+                <details class="trajectory-details">
+                    <summary>Ver trayectoria completa <span aria-hidden="true">↓</span></summary>
+                    <div class="trajectory-content">
+                        <article>
+                            <p class="timeline-date">Abril 2022 — octubre 2022</p>
+                            <h3>Universidad Gabriela Mistral</h3>
+                            <p class="timeline-role">Diseñador de Cursos de Tecnología</p>
+                            <p>Diseño de dos versiones de Introducción a la Programación para modalidad online, con planificación, materiales y documentación académica.</p>
+                        </article>
+                        <article>
+                            <p class="timeline-date">Mayo 2019 — presente</p>
+                            <h3>Instituto Profesional IPLACEX</h3>
+                            <p class="timeline-role">Docente y colaborador en especialidad informática</p>
+                            <p>Docencia en Programación Web, Diseño Web y Programación Front End; estructuración y actualización de contenidos.</p>
+                        </article>
+                        <article>
+                            <p class="timeline-date">2020 — 2021</p>
+                            <h3>EQA Chile</h3>
+                            <p class="timeline-role">Evaluador de Proyectos CREA y VALIDA</p>
+                            <p>Gestión y evaluación técnica de proyectos INNOVA CHILE (CORFO).</p>
+                        </article>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="section-v2 technology-section" id="tecnologias" aria-labelledby="technology-title">
+            <div class="shell">
+                <div class="section-heading-v2 compact-heading">
+                    <div>
+                        <p class="eyebrow-v2">Tecnologías y competencias</p>
+                        <h2 id="technology-title">Herramientas para crear, enseñar y experimentar.</h2>
+                    </div>
+                </div>
+                <div class="technology-grid">
+                    <article>
+                        <span class="tech-symbol" aria-hidden="true">I/O</span>
+                        <h3>IoT y automatización</h3>
+                        <p>ESP32, Arduino, sensores, LoRa, Ethernet, Bluetooth y automatización.</p>
+                    </article>
+                    <article>
+                        <span class="tech-symbol" aria-hidden="true">&lt;/&gt;</span>
+                        <h3>Software</h3>
+                        <p>Python, Flask, JavaScript, PHP, C, HTML, CSS, App Inventor y Kodular.</p>
+                    </article>
+                    <article>
+                        <span class="tech-symbol" aria-hidden="true">3D</span>
+                        <h3>Fabricación digital</h3>
+                        <p>Impresión 3D, Autodesk Inventor y prototipado electrónico.</p>
+                    </article>
+                    <article>
+                        <span class="tech-symbol" aria-hidden="true">EDU</span>
+                        <h3>Educación</h3>
+                        <p>Diseño instruccional, recursos de aprendizaje y docencia universitaria.</p>
+                    </article>
+                    <article>
+                        <span class="tech-symbol" aria-hidden="true">AI</span>
+                        <h3>Tecnologías emergentes</h3>
+                        <p>IA generativa, visión artificial y operación de drones RPA.</p>
+                    </article>
+                </div>
+                <p class="supporting-skills">Competencias complementarias: Excel, herramientas de productividad y ofimática, soporte técnico y acompañamiento TI.</p>
+            </div>
+        </section>
+
+        <section class="section-v2 evidence-section" id="publicaciones" aria-labelledby="evidence-title">
+            <div class="shell">
+                <div class="section-heading-v2 compact-heading">
+                    <div>
+                        <p class="eyebrow-v2">Evidencia profesional y académica</p>
+                        <h2 id="evidence-title">Formación, certificaciones y publicaciones.</h2>
+                    </div>
+                </div>
+                <div class="evidence-grid">
+                    <div class="credentials-column">
+                        <section aria-labelledby="education-title">
+                            <p class="column-kicker">Formación</p>
+                            <h3 id="education-title">Formación académica</h3>
+                            <div class="education-list">
+                                <article>
+                                    <p>Marzo 2018 — diciembre 2020</p>
+                                    <h4>Magíster en Alta Dirección y Gestión de Instituciones Educacionales</h4>
+                                    <span>Universidad San Sebastián · Diplomados en Gestión y Liderazgo Pedagógico, y en Dirección y Gestión de Establecimientos Educacionales.</span>
+                                </article>
+                                <article>
+                                    <p>Marzo 2012 — diciembre 2015</p>
+                                    <h4>Ingeniero Civil Informático</h4>
+                                    <span>Universidad San Sebastián · Bachiller en Ciencias y Emprendimiento · Licenciado en Ciencias de la Ingeniería.</span>
+                                </article>
+                            </div>
+                            <details class="content-disclosure">
+                                <summary>Ver formación complementaria <span aria-hidden="true">↓</span></summary>
+                                <div>
+                                    <article>
+                                        <p>Noviembre 2025 — enero 2026</p>
+                                        <h4>Ciberseguridad para Entornos Universitarios</h4>
+                                        <span>UNIR · 150 horas · 6 ECTS · calificación 9,20</span>
+                                    </article>
+                                    <article>
+                                        <p>Noviembre 2024 — diciembre 2025</p>
+                                        <h4>Competencias Docentes y Diseño de Materiales Didácticos para la Educación en Línea</h4>
+                                        <span>UNIR</span>
+                                    </article>
+                                </div>
+                            </details>
+                        </section>
+                        <section class="certifications-block" id="certificaciones" aria-labelledby="certifications-title">
+                            <p class="column-kicker">Certificaciones</p>
+                            <h3 id="certifications-title">Credenciales destacadas</h3>
+                            <div class="certification-grid">
+                                <article>
+                                    <img src="./images/drone-320.webp" width="320" height="213" loading="lazy" decoding="async" alt="Dron asociado a la credencial de Operador RPA">
+                                    <h4>Operador RPA</h4>
+                                    <p>Phantom y Mavic · vigente hasta septiembre de 2027</p>
+                                </article>
+                                <article>
+                                    <img src="./images/badges/1.png" width="200" height="200" loading="lazy" decoding="async" alt="Insignia Generative AI Professional Certification">
+                                    <h4>GAIPC™</h4>
+                                    <p>CertiProf · noviembre 2024</p>
+                                </article>
+                                <article>
+                                    <img src="./images/badges/3.png" width="200" height="200" loading="lazy" decoding="async" alt="Insignia Cyber Security Foundation Professional Certificate">
+                                    <h4>CSFPC™</h4>
+                                    <p>CertiProf · enero 2023</p>
+                                </article>
+                                <article>
+                                    <img src="./images/badges/5.png" width="200" height="200" loading="lazy" decoding="async" alt="Insignia Scrum Foundation Professional Certification">
+                                    <h4>SFPC™</h4>
+                                    <p>CertiProf · septiembre 2021</p>
+                                </article>
+                            </div>
+                            <details class="content-disclosure">
+                                <summary>Ver todas las certificaciones <span aria-hidden="true">↓</span></summary>
+                                <div class="remaining-certifications">
+                                    <article><img src="./images/badges/2.png" width="200" height="200" loading="lazy" decoding="async" alt="Insignia Generative AI Synchronous Course"><div><h4>Generative AI Synchronous Course</h4><p>ITCERT E.I.R.L</p></div></article>
+                                    <article><img src="./images/badges/4.png" width="200" height="200" loading="lazy" decoding="async" alt="Insignia Lifelong Learning"><div><h4>Lifelong Learning</h4><p>CertiProf</p></div></article>
+                                    <article><img src="./images/badges/6.png" width="200" height="200" loading="lazy" decoding="async" alt="Insignia Scrum Foundation Synchronous Course"><div><h4>Scrum Foundation Synchronous Course</h4><p>ITCERT E.I.R.L</p></div></article>
+                                </div>
+                            </details>
+                        </section>
+                    </div>
+
+                    <section class="publications-column" aria-labelledby="publications-title">
+                        <p class="column-kicker">Publicaciones</p>
+                        <h3 id="publications-title">Investigación y colaboración científica</h3>
+                        <article class="publication-card" itemscope itemtype="https://schema.org/ScholarlyArticle">
+                            <div class="publication-topline"><span class="status-badge author-badge">Autor</span><span>2024</span></div>
+                            <h4 itemprop="name">Challenge-Based Learning and Scrum as Enablers of 4.0 Technologies in Engineering Education</h4>
+                            <p>Coelho, P.A.; Casanello, F.; Leal, N.; Brintrup, K.; Angulo, L.; Sanhueza, I.; <strong>Flores, Felipe</strong>; Reyes, J.; Forcael, E.</p>
+                            <p class="publication-source"><em>Applied Sciences</em> · 14(21), 9746</p>
+                            <div class="publication-actions">
+                                <a href="https://doi.org/10.3390/app14219746" target="_blank" rel="noopener noreferrer">DOI <span aria-hidden="true">↗</span></a>
+                                <a href="https://scholar.google.com/scholar?q=Challenge-Based+Learning+and+Scrum+as+Enablers+of+4.0+Technologies+in+Engineering+Education" target="_blank" rel="noopener noreferrer">Google Scholar <span aria-hidden="true">↗</span></a>
+                                <button type="button" data-copy-citation="Coelho, P. A., Casanello, F., Leal, N., Brintrup, K., Angulo, L., Sanhueza, I., Flores, F., Reyes, J., &amp; Forcael, E. (2024). Challenge-Based Learning and Scrum as Enablers of 4.0 Technologies in Engineering Education. Applied Sciences, 14(21), 9746. https://doi.org/10.3390/app14219746">Citar</button>
+                            </div>
+                        </article>
+                        <article class="publication-card" itemscope itemtype="https://schema.org/ScholarlyArticle">
+                            <div class="publication-topline"><span class="status-badge collaboration-badge">Colaboración</span><span>2025</span></div>
+                            <h4 itemprop="name">Influence of Volumetric Geometry on Meteorological Time Series Measurements: Fractality and Thermal Flows</h4>
+                            <p>Hernández, P.P.; Ahumada, G.N.; Mera Garrido, E.; Zemelman de la Cerda, D.</p>
+                            <p class="publication-source"><em>Fractal and Fractional</em> · 9(10), 639</p>
+                            <details class="acknowledgement"><summary>Ver alcance de la colaboración</summary><p>El artículo agradece a Felipe Igor Flores Valdebenito por su apoyo desde el Laboratorio de Industria 4.0 de la Universidad San Sebastián.</p></details>
+                            <div class="publication-actions">
+                                <a href="https://doi.org/10.3390/fractalfract9100639" target="_blank" rel="noopener noreferrer">DOI <span aria-hidden="true">↗</span></a>
+                                <a href="https://scholar.google.com/scholar?q=Influence+of+Volumetric+Geometry+on+Meteorological+Time+Series+Measurements:+Fractality+and+Thermal+Flows" target="_blank" rel="noopener noreferrer">Google Scholar <span aria-hidden="true">↗</span></a>
+                                <button type="button" data-copy-citation="Hernández, P. P., Ahumada, G. N., Mera Garrido, E., &amp; Zemelman de la Cerda, D. (2025). Influence of Volumetric Geometry on Meteorological Time Series Measurements: Fractality and Thermal Flows. Fractal and Fractional, 9(10), 639. https://doi.org/10.3390/fractalfract9100639">Citar</button>
+                            </div>
+                        </article>
+                        <article class="publication-card" itemscope itemtype="https://schema.org/ScholarlyArticle">
+                            <div class="publication-topline"><span class="status-badge collaboration-badge">Colaboración</span><span>2025</span></div>
+                            <h4 itemprop="name">Submicron Particles and Micrometeorology in Highly Densified Urban Environments: Heavy-Tailed Probability Study</h4>
+                            <p>Pacheco Hernández, P.; Mera Garrido, E.; Navarro Ahumada, G.; Wachter Chamblas, J.; Polo Pizan, S.</p>
+                            <p class="publication-source"><em>Atmosphere</em> · 16, 1044</p>
+                            <details class="acknowledgement"><summary>Ver alcance de la colaboración</summary><p>El artículo reconoce el apoyo de Felipe Igor Flores Valdebenito desde el Laboratorio de Industria 4.0 de la Universidad San Sebastián.</p></details>
+                            <div class="publication-actions">
+                                <a href="https://doi.org/10.3390/atmos16091044" target="_blank" rel="noopener noreferrer">DOI <span aria-hidden="true">↗</span></a>
+                                <a href="https://scholar.google.com/scholar?q=Submicron+Particles+and+Micrometeorology+in+Highly+Densified+Urban+Environments:+Heavy-Tailed+Probability+Study" target="_blank" rel="noopener noreferrer">Google Scholar <span aria-hidden="true">↗</span></a>
+                                <button type="button" data-copy-citation="Pacheco Hernández, P., Mera Garrido, E., Navarro Ahumada, G., Wachter Chamblas, J., &amp; Polo Pizan, S. (2025). Submicron Particles and Micrometeorology in Highly Densified Urban Environments: Heavy-Tailed Probability Study. Atmosphere, 16, 1044. https://doi.org/10.3390/atmos16091044">Citar</button>
+                            </div>
+                        </article>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contacto" aria-labelledby="contact-title">
+            <div class="shell contact-grid">
+                <div>
+                    <p class="eyebrow-v2">Contacto</p>
+                    <h2 id="contact-title">¿Hablamos de tecnología, educación o innovación?</h2>
+                    <p>Estoy disponible para colaborar en proyectos, docencia, investigación y desarrollo tecnológico.</p>
+                    <div class="contact-actions">
+                        <a class="button-v2 button-light-v2" href="mailto:ffelipev2@gmail.com">Contactarme <span aria-hidden="true">↗</span></a>
+                        <a class="button-v2 button-dark-outline-v2" href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">Ver en LinkedIn <span aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+                <address class="contact-details">
+                    <a href="mailto:ffelipev2@gmail.com"><span aria-hidden="true">✉</span> ffelipev2@gmail.com</a>
+                    <a href="tel:+56961284180"><span aria-hidden="true">☎</span> +56 9 6128 4180</a>
+                    <p><span aria-hidden="true">⌖</span> Santiago, Chile</p>
+                </address>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="shell footer-grid">
+            <p>© 2026 Felipe Flores Valdebenito.</p>
+            <nav aria-label="Enlaces sociales">
+                <a href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
+            </nav>
+            <a class="back-to-top" href="#inicio" aria-label="Volver al inicio">↑</a>
         </div>
-        <!--back to top-->
-        <a class="back-to-top" href="#" id="back-to-top" aria-label="Volver arriba"><i class="ti-angle-up"></i></a>
-        <!-- jQuery first, then Tether, then Bootstrap JS. -->
-        <script src="js/plugins/plugins.js"></script>
-        <script src="js/resumeCv.custom.js"></script>
-        <script src="js/miScript.js"></script>
-    </body>
+    </footer>
+
+    <dialog class="video-dialog" id="video-dialog" aria-labelledby="video-dialog-title">
+        <div class="dialog-header">
+            <h2 id="video-dialog-title">Demostración del proyecto</h2>
+            <button type="button" data-dialog-close aria-label="Cerrar video">×</button>
+        </div>
+        <div class="dialog-video" data-dialog-video></div>
+        <div class="dialog-footer">
+            <p>El reproductor se carga solo después de tu interacción y no inicia automáticamente.</p>
+            <a data-dialog-youtube href="#" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>
+        </div>
+    </dialog>
+
+    <div class="copy-toast" role="status" aria-live="polite" aria-atomic="true" hidden>Referencia copiada.</div>
+    <script src="./js/portfolio.js" defer></script>
+</body>
 </html>

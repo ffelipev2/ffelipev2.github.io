@@ -1,0 +1,15 @@
+# Mantiene finales de línea consistentes entre Windows y otros sistemas.
+* text=auto eol=lf
+
+# Evita cualquier transformación de assets binarios publicados.
+*.ico binary -eol
+*.jpg binary -eol
+*.jpeg binary -eol
+*.png binary -eol
+*.webp binary -eol
+*.pdf binary -eol
+*.eot binary -eol
+*.otf binary -eol
+*.ttf binary -eol
+*.woff binary -eol
+*.woff2 binary -eol

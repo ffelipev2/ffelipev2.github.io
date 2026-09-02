@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vehículo con Arduino + RC + Cámara Wi-Fi | Proyectos de Felipe Flores</title>
+    <meta name="description" content="Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.">
+    <meta name="author" content="Felipe Igor Flores Valdebenito">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a1733">
+    <link rel="canonical" href="https://felipeflores.tech/proyectos/vehiculo-arduino-camara-wifi/">
+
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Felipe Flores">
+    <meta property="og:title" content="Vehículo con Arduino + RC + Cámara Wi-Fi | Proyectos de Felipe Flores">
+    <meta property="og:description" content="Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.">
+    <meta property="og:image" content="https://felipeflores.tech/images/img6.webp">
+    <meta property="og:image:width" content="500">
+    <meta property="og:image:height" content="333">
+    <meta property="og:image:alt" content="Vehículo con Arduino, control remoto y cámara Wi-Fi">
+    <meta property="og:url" content="https://felipeflores.tech/proyectos/vehiculo-arduino-camara-wifi/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vehículo con Arduino + RC + Cámara Wi-Fi | Proyectos de Felipe Flores">
+    <meta name="twitter:description" content="Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.">
+    <meta name="twitter:image" content="https://felipeflores.tech/images/img6.webp">
+    <meta name="twitter:image:alt" content="Vehículo con Arduino, control remoto y cámara Wi-Fi">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/vehiculo-arduino-camara-wifi/#project","name":"Vehículo con Arduino + RC + Cámara Wi-Fi","description":"Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.","url":"https://felipeflores.tech/proyectos/vehiculo-arduino-camara-wifi/","image":"https://felipeflores.tech/images/img6.webp","inLanguage":"es-CL","keywords":"Arduino MEGA, Control remoto, Wi-Fi","sameAs":"https://www.youtube.com/watch?v=NBvcwBon6Zs","creator":{"@id":"https://felipeflores.tech/#person"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"Vehículo con Arduino + RC + Cámara Wi-Fi","item":"https://felipeflores.tech/proyectos/vehiculo-arduino-camara-wifi/"}]}]}</script>
+    <link rel="stylesheet" href="../../css/portfolio.css">
+    <link rel="icon" href="../../images/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
+</head>
+<body class="portfolio-page">
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+    <header class="site-header-v2" data-site-header>
+        <div class="shell header-inner-v2">
+            <a class="brand-v2" href="../../index.html" aria-label="Felipe Flores, inicio">Felipe <span>Flores</span></a>
+            <nav class="desktop-nav-v2" aria-label="Navegación principal">
+                <a href="../../index.html#proyectos">Proyectos</a>
+                <a href="../../index.html#experiencia">Experiencia</a>
+                <a href="../../index.html#perfil">Perfil</a>
+                <a href="../../index.html#publicaciones">Publicaciones</a>
+                <a href="../../index.html#contacto">Contacto</a>
+            </nav>
+            <a class="button-v2 button-primary-v2 cv-button-v2" href="../../docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer">Descargar CV <span aria-hidden="true">↓</span></a>
+            <button class="menu-toggle-v2" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+    <div class="menu-overlay" data-menu-close hidden></div>
+    <aside class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú móvil" aria-hidden="true" tabindex="-1" inert>
+        <div class="mobile-menu-head">
+            <a class="brand-v2" href="../../index.html" data-menu-link>Felipe <span>Flores</span></a>
+            <button class="menu-close" type="button" aria-label="Cerrar menú" data-menu-close>×</button>
+        </div>
+        <nav class="mobile-nav" aria-label="Navegación móvil">
+            <a href="../../index.html" data-menu-link><span aria-hidden="true">⌂</span> Inicio</a>
+            <details open>
+                <summary><span><span aria-hidden="true">□</span> Proyectos</span><span aria-hidden="true">⌄</span></summary>
+                <div class="mobile-submenu">
+                    <a href="../../proyectos/gemelo-digital/index.html" data-menu-link>Gemelo Digital</a>
+                    <a href="../../proyectos/chat-lora/index.html" data-menu-link>Chat con LoRa</a>
+                    <a href="../../proyectos/ufactory-lite-6/index.html" data-menu-link>UFACTORY LITE 6</a>
+                    <a href="../../proyectos/index.html" data-menu-link>Todos los proyectos</a>
+                </div>
+            </details>
+            <a href="../../index.html#experiencia" data-menu-link><span aria-hidden="true">◇</span> Experiencia</a>
+            <a href="../../index.html#perfil" data-menu-link><span aria-hidden="true">○</span> Perfil</a>
+            <a href="../../index.html#publicaciones" data-menu-link><span aria-hidden="true">▱</span> Publicaciones</a>
+            <a href="../../index.html#contacto" data-menu-link><span aria-hidden="true">✉</span> Contacto</a>
+        </nav>
+        <div class="mobile-menu-footer">
+            <a class="button-v2 button-outline-v2" href="../../docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer">Descargar CV <span aria-hidden="true">↓</span></a>
+            <div class="mobile-socials">
+                <a href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
+            </div>
+        </div>
+    </aside>
+    <main id="main-content">
+        <section class="project-detail-hero" aria-labelledby="project-title">
+            <div class="shell">
+                <ol class="breadcrumb" aria-label="Migas de pan">
+                    <li><a href="../../index.html">Inicio</a></li><li aria-hidden="true">›</li>
+                    <li><a href="../../proyectos/index.html">Proyectos</a></li><li aria-hidden="true">›</li>
+                    <li aria-current="page">Vehículo Arduino + Cámara Wi-Fi</li>
+                </ol>
+                <div class="project-detail-grid">
+                    <div class="project-detail-copy">
+                        <div class="tag-row"><span>Arduino MEGA</span><span>Control remoto</span><span>Wi-Fi</span></div>
+                        <h1 id="project-title">Vehículo con Arduino + RC + Cámara Wi-Fi</h1>
+                        <p>Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.</p>
+                        <div class="project-detail-actions">
+                            <button class="button-v2 button-primary-v2" type="button" data-inline-video="NBvcwBon6Zs" data-video-title="Vehículo con Arduino + RC + Cámara Wi-Fi">Ver demostración <span aria-hidden="true">▶</span></button>
+                            <a class="button-v2 button-outline-v2" href="https://www.youtube.com/watch?v=NBvcwBon6Zs" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                    <div class="inline-video">
+                        <img src="../../images/img6.webp" width="500" height="333" decoding="async" fetchpriority="high" alt="Vehículo con Arduino, control remoto y cámara Wi-Fi">
+                        <button type="button" data-inline-video="NBvcwBon6Zs" data-video-title="Vehículo con Arduino + RC + Cámara Wi-Fi" aria-label="Reproducir demostración de Vehículo con Arduino + RC + Cámara Wi-Fi"><span aria-hidden="true">▶</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-v2 project-facts-section" aria-label="Información técnica">
+            <div class="shell project-facts">
+                <div><h2>Tecnologías y áreas</h2><div class="tag-row"><span>Arduino MEGA</span><span>Control remoto</span><span>Wi-Fi</span></div></div>
+                <a href="https://www.youtube.com/watch?v=NBvcwBon6Zs" target="_blank" rel="noopener noreferrer">Demostración en YouTube <span aria-hidden="true">↗</span></a>
+            </div>
+        </section>
+        <section class="section-v2">
+            <div class="shell detail-content-grid">
+                <article><h2>Descripción del proyecto</h2><p>Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.</p></article>
+                <article><h2>¿Qué resuelve?</h2><p>Permite realizar exploración remota mediante un vehículo con Arduino MEGA, control remoto y cámara Wi-Fi.</p></article>
+            </div>
+        </section>
+        <section class="section-v2 project-features">
+            <div class="shell">
+                <h2>Características principales</h2>
+                <div class="feature-grid">
+                    <article>
+                        <span aria-hidden="true">01</span>
+                        <h3>Arduino MEGA</h3>
+                    </article>
+                    <article>
+                        <span aria-hidden="true">02</span>
+                        <h3>Control remoto</h3>
+                    </article>
+                    <article>
+                        <span aria-hidden="true">03</span>
+                        <h3>Cámara Wi-Fi para exploración remota</h3>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section class="section-v2 project-technologies">
+            <div class="shell">
+                <h2>Tecnologías utilizadas</h2>
+                <div class="technology-badges"><span>Arduino MEGA</span><span>Control remoto</span><span>Wi-Fi</span></div>
+            </div>
+        </section>
+        <section class="section-v2 project-gallery">
+            <div class="shell">
+                <h2>Galería del proyecto</h2>
+                <figure>
+                    <img src="../../images/img6.webp" width="500" height="333" loading="lazy" decoding="async" alt="Vehículo con Arduino, control remoto y cámara Wi-Fi">
+                    <figcaption>Imagen real disponible en el proyecto.</figcaption>
+                </figure>
+            </div>
+        </section>
+        <section class="contact-section" id="contacto" aria-labelledby="contact-title">
+            <div class="shell contact-grid">
+                <div>
+                    <p class="eyebrow-v2">Contacto</p>
+                    <h2 id="contact-title">¿Tienes una idea o desafío tecnológico?</h2>
+                    <p>Estoy disponible para colaborar en proyectos, docencia, investigación y desarrollo tecnológico.</p>
+                    <div class="contact-actions">
+                        <a class="button-v2 button-light-v2" href="mailto:ffelipev2@gmail.com">Contactarme <span aria-hidden="true">↗</span></a>
+                        <a class="button-v2 button-dark-outline-v2" href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">Ver en LinkedIn <span aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+                <address class="contact-details">
+                    <a href="mailto:ffelipev2@gmail.com"><span aria-hidden="true">✉</span> ffelipev2@gmail.com</a>
+                    <a href="tel:+56961284180"><span aria-hidden="true">☎</span> +56 9 6128 4180</a>
+                    <p><span aria-hidden="true">⌖</span> Santiago, Chile</p>
+                </address>
+            </div>
+        </section>
+        <nav class="project-next" aria-label="Siguiente proyecto">
+            <a class="shell" href="../../proyectos/gemelo-digital/index.html"><span><small>Siguiente proyecto</small><strong>Gemelo Digital</strong></span><span aria-hidden="true">→</span></a>
+        </nav>
+    </main>
+    <footer class="site-footer">
+        <div class="shell footer-grid">
+            <p>© 2026 Felipe Flores Valdebenito.</p>
+            <nav aria-label="Enlaces sociales">
+                <a href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
+            </nav>
+            <a class="back-to-top" href="#main-content" aria-label="Volver al inicio">↑</a>
+        </div>
+    </footer>
+    <script src="../../js/portfolio.js" defer></script>
+</body>
+</html>
