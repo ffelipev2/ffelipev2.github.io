@@ -2743,6 +2743,8 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 
 @media (max-width: 900px) {
     .hero-grid-v2 {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: auto;
         gap: 36px;
         padding-block: 56px 64px;
     }
