@@ -39,17 +39,20 @@ test('hero, traveling, navigation and project detail remain functional', async (
 
 test('reduced motion and live preference change preserve ordinary scrolling', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    const sceneRequests = [];
-    page.on('request', (request) => { if (request.url().includes('scene.bundle')) sceneRequests.push(request.url()); });
     await page.goto('/');
     await page.locator('.hero-world').scrollIntoViewIfNeeded();
-    await expect(page.locator('.hero-static')).toBeVisible();
+    await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
+    await expect(page.locator('.hero-labels .is-active')).toHaveCount(5);
     await expect(page.locator('.hero-v2')).not.toHaveClass(/has-travel/);
-    expect(sceneRequests).toEqual([]);
+    const finalLabel = await page.locator('[data-station="4"]').getAttribute('style');
+    await page.evaluate(() => scrollBy(0, 80));
+    await page.waitForTimeout(200);
+    expect(await page.locator('[data-station="4"]').getAttribute('style')).toBe(finalLabel);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/, { timeout: 20000 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await expect(page.locator('.hero-canvas canvas')).toHaveCount(0);
+    await expect(page.locator('.hero-canvas canvas')).toHaveCount(1);
+    await expect(page.locator('.hero-labels .is-active')).toHaveCount(5);
     await expect(page.locator('.hero-v2')).not.toHaveClass(/has-travel/);
 });
 
