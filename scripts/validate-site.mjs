@@ -114,7 +114,11 @@ for (const htmlFile of htmlFiles) {
     const localReferences = captureAll(html, /\s(?:href|src)=["']([^"']+)["']/gi).filter((value) => {
         return !/^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(value);
     });
+    const nonCanonicalIndexLinks = localReferences.filter((value) => /(?:^|\/)index\.html(?:[?#]|$)/i.test(value));
     const rootRelativeReferences = localReferences.filter((value) => value.startsWith('/'));
+    if (nonCanonicalIndexLinks.length) {
+        errors.push(relativePath + ': internal links should use canonical directory URLs: ' + [...new Set(nonCanonicalIndexLinks)].join(', '));
+    }
     if (rootRelativeReferences.length) {
         errors.push(relativePath + ': root-relative paths break direct file opening: ' + [...new Set(rootRelativeReferences)].join(', '));
     }
@@ -141,6 +145,7 @@ const portfolioCss = await readFile(path.join(rootDirectory, 'css', 'portfolio.c
 const portfolioJs = await readFile(path.join(rootDirectory, 'js', 'portfolio.js'), 'utf8');
 const projectData = JSON.parse(await readFile(path.join(rootDirectory, 'data', 'projects.json'), 'utf8'));
 const sitemap = await readFile(path.join(rootDirectory, 'sitemap.xml'), 'utf8');
+const homepage = await readFile(path.join(rootDirectory, 'index.html'), 'utf8');
 
 if (!/:focus-visible/.test(portfolioCss)) errors.push('portfolio.css: missing focus-visible styles');
 if (!/@media\s*\(prefers-reduced-motion:\s*reduce\)/.test(portfolioCss)) errors.push('portfolio.css: missing reduced-motion styles');
@@ -153,6 +158,31 @@ if ((portfolioCss.match(/{/g) || []).length !== (portfolioCss.match(/}/g) || [])
     errors.push('portfolio.css: unbalanced braces');
 }
 if ((sitemap.match(/<url>/g) || []).length !== 12) errors.push('sitemap.xml: expected 12 URL entries');
+
+const homepageSchemaMatch = homepage.match(/<script\s+type=["']application\/ld\+json["']>\s*([\s\S]*?)\s*<\/script>/i);
+if (!homepageSchemaMatch) {
+    errors.push('index.html: missing JSON-LD identity markup');
+} else {
+    try {
+        const homepageSchema = JSON.parse(homepageSchemaMatch[1]);
+        const entities = Array.isArray(homepageSchema['@graph']) ? homepageSchema['@graph'] : [];
+        const person = entities.find((entity) => entity['@type'] === 'Person');
+        const profilePage = entities.find((entity) => Array.isArray(entity['@type']) && entity['@type'].includes('ProfilePage'));
+
+        if (person?.name !== 'Felipe Igor Flores Valdebenito') errors.push('index.html: Person schema must contain the full professional name');
+        if (!Array.isArray(person?.alternateName) || !person.alternateName.includes('Felipe Flores')) {
+            errors.push('index.html: Person schema must include Felipe Flores as an alternate name');
+        }
+        if (profilePage?.mainEntity?.['@id'] !== 'https://felipeflores.tech/#person') {
+            errors.push('index.html: ProfilePage schema must identify the Person as its main entity');
+        }
+    } catch {
+        errors.push('index.html: invalid JSON-LD identity markup');
+    }
+}
+if (!/<p\s+class=["']hero-identity-v2["']>\s*Felipe Igor Flores Valdebenito/i.test(homepage)) {
+    errors.push('index.html: missing visible full-name identity line');
+}
 
 const slugs = projectData.map((project) => project.slug);
 const videoIds = projectData.map((project) => project.videoId);

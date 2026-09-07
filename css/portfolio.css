@@ -2256,6 +2256,20 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     line-height: 0.94;
 }
 
+.hero-identity-v2 {
+    margin: 15px 0 0;
+    color: var(--color-muted);
+    font-size: clamp(0.76rem, 1vw, 0.88rem);
+    font-weight: 720;
+    letter-spacing: 0.035em;
+    line-height: 1.45;
+}
+
+.hero-identity-v2 span {
+    padding-inline: 0.32em;
+    color: var(--color-accent);
+}
+
 .title-rule-v2 {
     width: 48px;
     height: 3px;
@@ -2295,9 +2309,10 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 }
 
 .hero-portrait-v2 {
+    --hero-portrait-offset: -10px;
     width: min(100%, 546px);
     justify-self: end;
-    transform: translateY(-10px);
+    transform: translateY(var(--hero-portrait-offset));
 }
 
 .portrait-frame-v2 {
@@ -2772,6 +2787,11 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     color: var(--color-accent-dark) !important;
 }
 
+.mobile-nav details.is-current > summary {
+    background: var(--color-surface);
+    color: var(--color-accent-dark) !important;
+}
+
 html.motion-ready .motion-reveal:not(.motion-is-visible) {
     opacity: 0;
     transform: translate3d(0, 14px, 0);
@@ -2781,12 +2801,29 @@ html.motion-ready .motion-reveal--media:not(.motion-is-visible) {
     transform: translate3d(0, 18px, 0) scale(0.985);
 }
 
+html.motion-ready .hero-portrait-v2.motion-reveal--media:not(.motion-is-visible) {
+    transform: translate3d(0, calc(var(--hero-portrait-offset) + 18px), 0) scale(0.985);
+}
+
+html.motion-ready .motion-reveal:not(.motion-is-visible):focus-within {
+    opacity: 1;
+    transform: none;
+}
+
 html.motion-ready.motion-has-started .motion-reveal.motion-is-visible {
     animation: portfolio-motion-reveal var(--motion-duration) var(--motion-ease) var(--motion-delay, 0ms) backwards;
 }
 
+html.motion-ready.motion-has-started .motion-reveal.motion-reveal--immediate.motion-is-visible {
+    animation: none;
+}
+
 html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
     animation-name: portfolio-motion-reveal-media;
+}
+
+html.motion-ready.motion-has-started .hero-portrait-v2.motion-reveal--media.motion-is-visible {
+    animation-name: portfolio-motion-reveal-portrait;
 }
 
 @keyframes portfolio-motion-reveal {
@@ -2810,6 +2847,18 @@ html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
     to {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes portfolio-motion-reveal-portrait {
+    from {
+        opacity: 0;
+        transform: translate3d(0, calc(var(--hero-portrait-offset) + 18px), 0) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, var(--hero-portrait-offset), 0) scale(1);
     }
 }
 
@@ -2952,7 +3001,7 @@ details.is-disclosure-animating {
 
 @media (max-width: 900px) {
     .reading-progress {
-        top: 68px;
+        top: 72px;
     }
 }
 
@@ -2966,7 +3015,7 @@ details.is-disclosure-animating {
     }
 
     .inline-video.is-video-loading::after {
-        animation: none;
+        animation: none !important;
     }
 }
 
@@ -2979,9 +3028,10 @@ details.is-disclosure-animating {
     }
 
     .hero-portrait-v2 {
+        --hero-portrait-offset: 0px;
         width: min(100%, 600px);
         justify-self: start;
-        transform: none;
+        transform: translateY(var(--hero-portrait-offset));
     }
 
     .project-card-v2:last-child {
@@ -3003,6 +3053,12 @@ details.is-disclosure-animating {
         font-size: clamp(2.6rem, 13vw, 3.4rem);
         line-height: 0.96;
         white-space: normal;
+    }
+
+    .hero-identity-v2 {
+        margin-top: 12px;
+        font-size: 0.74rem;
+        letter-spacing: 0.025em;
     }
 
     .hero-lead-v2 {

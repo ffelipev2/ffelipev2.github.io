@@ -530,9 +530,9 @@
             element.style.setProperty('--motion-delay', delay + 'ms');
         };
 
-        const prepareGroup = (selector, stagger = 0, cycle = 0) => {
+        const prepareGroup = (selector, stagger = 0, maximumSteps = 0) => {
             document.querySelectorAll(selector).forEach((element, index) => {
-                const staggerIndex = cycle ? index % cycle : index;
+                const staggerIndex = maximumSteps ? Math.min(index, maximumSteps - 1) : index;
                 prepareTarget(element, staggerIndex * stagger);
             });
         };
@@ -540,6 +540,7 @@
         document.querySelectorAll([
             '.hero-copy-v2 > .eyebrow-v2',
             '.hero-copy-v2 > h1',
+            '.hero-copy-v2 > .hero-identity-v2',
             '.hero-copy-v2 > .title-rule-v2',
             '.hero-copy-v2 > .hero-lead-v2',
             '.hero-copy-v2 > .hero-actions-v2',
@@ -573,10 +574,13 @@
         if (!scrollTargets.size) return;
 
         const revealTarget = (element, immediately = false) => {
-            if (immediately) element.style.setProperty('--motion-delay', '0ms');
+            if (immediately) {
+                element.style.setProperty('--motion-delay', '0ms');
+                element.classList.add('motion-reveal--immediate');
+            }
             element.classList.add('motion-is-visible');
         };
-        const revealAllTargets = () => scrollTargets.forEach(revealTarget);
+        const revealAllTargets = () => scrollTargets.forEach((element) => revealTarget(element));
         let motionIsEnabled = false;
 
         const activateMotion = () => {
@@ -586,7 +590,7 @@
             window.requestAnimationFrame(() => {
                 if (!motionIsEnabled) return;
                 root.classList.add('motion-has-started');
-                pageEntryTargets.forEach(revealTarget);
+                pageEntryTargets.forEach((element) => revealTarget(element));
 
                 if (!('IntersectionObserver' in window)) {
                     revealAllTargets();
@@ -619,8 +623,8 @@
             motionIsEnabled = false;
             motionObserver?.disconnect();
             motionObserver = null;
-            revealAllTargets();
             root.classList.remove('motion-ready', 'motion-has-started');
+            revealAllTargets();
         };
 
         document.addEventListener('focusin', (event) => {

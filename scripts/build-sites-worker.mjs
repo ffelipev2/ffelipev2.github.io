@@ -125,7 +125,13 @@ export default {
       return new Response("Bad Request", { status: 400 });
     }
 
-    const direct = assets[pathname] || assets[aliases[pathname]];
+    const alias = aliases[pathname];
+    if (alias) {
+      url.pathname = alias;
+      return Response.redirect(url.toString(), 308);
+    }
+
+    const direct = assets[pathname];
     if (direct) return responseFor(direct, request.method);
 
     const lastSegment = pathname.slice(pathname.lastIndexOf("/") + 1);
@@ -167,10 +173,10 @@ for (const [route] of pages) {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/);
 }
 
-for (const [, file] of pages) {
+for (const [route, file] of pages) {
   const response = await builtWorker.fetch(new Request(`https://example.test/${file}`));
-  assert.equal(response.status, 200, `Worker file route failed: /${file}`);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/);
+  assert.equal(response.status, 308, `Worker file route should redirect: /${file}`);
+  assert.equal(response.headers.get("location"), `https://example.test${route}`);
 }
 
 for (const route of ["/css/portfolio.css", "/js/portfolio.js", "/docs/Felipe-CV.pdf"]) {

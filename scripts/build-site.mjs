@@ -20,8 +20,12 @@ const entities = {
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => entities[character]);
 const jsonForHtml = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 const rootPrefix = (pageDepth) => '../'.repeat(pageDepth);
-const localFile = (rootPath, pageDepth) => rootPrefix(pageDepth) + rootPath.replace(/^\/+/, '');
-const homeFile = (pageDepth, fragment = '') => rootPrefix(pageDepth) + 'index.html' + fragment;
+const localFile = (rootPath, pageDepth) => {
+    const relativePath = rootPath.replace(/^\/+/, '');
+    const canonicalPath = relativePath.replace(/(?:^|\/)index\.html$/, (match) => match.startsWith('/') ? '/' : '');
+    return rootPrefix(pageDepth) + canonicalPath;
+};
+const homeFile = (pageDepth, fragment = '') => rootPrefix(pageDepth) + fragment;
 
 function headMarkup({ title, description, canonicalPath, image, imageWidth, imageHeight, imageAlt, schema, pageDepth }) {
     const canonical = siteOrigin + canonicalPath;
@@ -257,7 +261,6 @@ function projectSchema(project) {
                 image: siteOrigin + project.image,
                 inLanguage: 'es-CL',
                 keywords: project.tags.join(', '),
-                sameAs: project.videoUrl,
                 creator: { '@id': siteOrigin + '/#person' }
             },
             {
@@ -375,12 +378,13 @@ for (const [index, project] of projects.entries()) {
     await writeFile(path.join(projectDirectory, 'index.html'), projectDetailPage(project, nextProject), 'utf8');
 }
 
+const siteLastModified = '2026-09-06';
 const sitemapEntries = [
-    { path: '/', lastmod: '2026-08-31', priority: '1.0', changefreq: 'monthly' },
-    { path: '/proyectos/', lastmod: '2026-08-31', priority: '0.9', changefreq: 'monthly' },
+    { path: '/', lastmod: siteLastModified, priority: '1.0', changefreq: 'monthly' },
+    { path: '/proyectos/', lastmod: siteLastModified, priority: '0.9', changefreq: 'monthly' },
     ...projects.map((project) => ({
         path: '/proyectos/' + project.slug + '/',
-        lastmod: '2026-08-31',
+        lastmod: siteLastModified,
         priority: '0.8',
         changefreq: 'monthly'
     })),
