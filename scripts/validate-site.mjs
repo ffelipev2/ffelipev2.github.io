@@ -12,7 +12,7 @@ async function collectHtmlFiles(directory) {
     const files = [];
 
     for (const entry of entries) {
-        if (entry.name === '.git' || entry.name === 'bower_components' || entry.name === 'node_modules') continue;
+        if (['.git', 'bower_components', 'node_modules', 'dist', 'test-results', 'playwright-report'].includes(entry.name)) continue;
         const absolutePath = path.join(directory, entry.name);
         if (entry.isDirectory()) files.push(...await collectHtmlFiles(absolutePath));
         else if (entry.isFile() && entry.name.endsWith('.html')) files.push(absolutePath);
@@ -203,6 +203,9 @@ function siteOriginForCheck(slug) {
 }
 
 try {
+    for (const file of ['js/hero-3d.js', 'js/hero/scene.js', 'js/hero/camera-rig.js', 'scripts/build-hero.mjs']) {
+        execFileSync(process.execPath, ['--check', path.join(rootDirectory, file)], { stdio: 'pipe' });
+    }
     execFileSync(process.execPath, ['--check', path.join(rootDirectory, 'js', 'portfolio.js')], { stdio: 'pipe' });
     execFileSync(process.execPath, ['--check', path.join(rootDirectory, 'scripts', 'build-site.mjs')], { stdio: 'pipe' });
 } catch (error) {

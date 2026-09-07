@@ -3,6 +3,8 @@ node_modules/
 
 # Salida generada por el build del worker estático
 dist/
+test-results/
+playwright-report/
 
 # Variables de entorno locales
 .env

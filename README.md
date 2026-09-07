@@ -9,6 +9,7 @@ Este repositorio contiene el código fuente del sitio personal y portfolio profe
 - HTML5, CSS3 y JavaScript sin framework.
 - Datos de proyectos en JSON.
 - Node.js con scripts ESM para generación y validación del sitio.
+- Three.js, cargado bajo demanda únicamente en el hero; esbuild genera su módulo estático.
 - OpenAI Sites / worker estático compatible con Cloudflare para el despliegue.
 
 ## Estructura del proyecto
@@ -23,6 +24,8 @@ Este repositorio contiene el código fuente del sitio personal y portfolio profe
 - `bower_components/`: recursos frontend heredados conservados por el repositorio; no se eliminan sin una auditoría específica.
 
 ## Ejecución local
+
+Instala las dependencias con `npm ci`. `npm run dev` genera el módulo 3D antes de iniciar el servidor. Si editas la escena durante la previsualización, ejecuta `node scripts/build-hero.mjs` y recarga la página.
 
 Para previsualizar el sitio con un origen HTTP local —necesario para que los videos de YouTube se reproduzcan dentro de la página— ejecuta:
 
@@ -43,6 +46,14 @@ npm run build
 ```
 
 El comando genera las páginas de proyectos, valida enlaces y metadatos, y construye el worker estático en `dist/`. También se puede ejecutar la validación por separado con `npm test`.
+
+El módulo `js/hero/scene.bundle.js` y su licencia se conservan en el repositorio para que la portada también funcione en un hosting estático sin compilación, como GitHub Pages. No se editan manualmente.
+
+## Hero 3D y sistema visual
+
+La implementación, decisiones de rendimiento, paleta, archivos y limitaciones se describen en [docs/hero-3d.md](docs/hero-3d.md).
+
+Para ejecutar las comprobaciones de navegador: instala Chrome y ejecuta `npx playwright install webkit`, luego `npm run test:browser`. Se comprueban escritorio, tablet, Android emulado y WebKit con viewport de iPhone; esto no sustituye las pruebas en teléfonos físicos. Las capturas y resultados temporales se guardan en `test-results/`, fuera del control de versiones.
 
 ## Deployment
 

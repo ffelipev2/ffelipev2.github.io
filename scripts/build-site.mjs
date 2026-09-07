@@ -41,7 +41,7 @@ function headMarkup({ title, description, canonicalPath, image, imageWidth, imag
         '    <meta name="description" content="' + escapeHtml(description) + '">',
         '    <meta name="author" content="Felipe Igor Flores Valdebenito">',
         '    <meta name="robots" content="index, follow">',
-        '    <meta name="theme-color" content="#0a1733">',
+        '    <meta name="theme-color" content="#07111F">',
         '    <link rel="canonical" href="' + canonical + '">',
         '',
         '    <meta property="og:locale" content="es_CL">',

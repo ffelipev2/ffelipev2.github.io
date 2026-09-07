@@ -7,7 +7,7 @@
     <meta name="description" content="Felipe Igor Flores Valdebenito es Ingeniero Civil Informático, especialista en IoT, Industria 4.0, fabricación digital y educación tecnológica aplicada.">
     <meta name="author" content="Felipe Igor Flores Valdebenito">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0a1733">
+    <meta name="theme-color" content="#07111F">
     <link rel="canonical" href="https://felipeflores.tech/">
     <link rel="preload" as="image" href="./images/felipe-flores-ingeniero-1200.webp" type="image/webp" fetchpriority="high">
 
@@ -104,6 +104,7 @@
     </script>
 
     <link rel="stylesheet" href="./css/portfolio.css">
+    <link rel="stylesheet" href="./css/hero-3d.css">
     <link rel="icon" href="./images/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
 </head>
@@ -163,6 +164,7 @@
 
     <main id="main-content">
         <section class="hero-v2" id="inicio" aria-labelledby="hero-title">
+          <div class="hero-stage" data-hero-stage>
             <div class="shell hero-grid-v2">
                 <div class="hero-copy-v2">
                     <p class="eyebrow-v2">IoT <span>·</span> Industria 4.0 <span>·</span> Educación tecnológica</p>
@@ -196,6 +198,25 @@
                     <figcaption>Ingeniero Civil Informático · Magíster en Gestión Educacional</figcaption>
                 </figure>
             </div>
+            <div class="hero-world" data-hero-world aria-hidden="true">
+                <div class="hero-static">
+                    <span>ESP32</span><i></i><span>Sensores</span><i></i><span>LoRa</span><i></i><span>Robótica</span><i></i><span>Gemelo digital</span>
+                </div>
+                <div class="hero-canvas" data-hero-canvas></div>
+                <div class="hero-labels">
+                    <span data-station="0">01 / ESP32</span>
+                    <span data-station="1">02 / Sensores</span>
+                    <span data-station="2">03 / LoRa</span>
+                    <span data-station="3">04 / Robótica</span>
+                    <span data-station="4">05 / Gemelo digital</span>
+                </div>
+            </div>
+            <div class="shell hero-journey">
+                <p><span class="physical-label">Mundo físico</span><span aria-hidden="true"> → </span><span class="digital-label">Mundo digital</span></p>
+                <a href="#proyectos"><span class="journey-scroll">Explorar con scroll</span><span class="journey-static">Explorar proyectos</span> <span aria-hidden="true">↓</span></a>
+                <div class="journey-progress" aria-hidden="true"><span data-journey-progress></span></div>
+            </div>
+          </div>
         </section>
 
         <section class="section-v2 projects-section" id="proyectos" aria-labelledby="projects-title">
@@ -555,5 +576,6 @@
 
     <div class="copy-toast" role="status" aria-live="polite" aria-atomic="true" hidden>Referencia copiada.</div>
     <script src="./js/portfolio.js" defer></script>
+    <script type="module" src="./js/hero-3d.js"></script>
 </body>
 </html>

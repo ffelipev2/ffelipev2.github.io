@@ -1,17 +1,22 @@
+/* Shared industrial palette: cyan = data; amber = physical systems. */
 :root {
-    --color-primary: #0a1733;
-    --color-accent: #0759f5;
-    --color-accent-dark: #0346c7;
-    --color-text: #17233d;
-    --color-muted: #5e6b82;
-    --color-background: #ffffff;
-    --color-surface: #f5f8ff;
-    --color-border: #dce3f0;
+    color-scheme: dark;
+    --color-primary: #F3F7FA;
+    --color-accent: #16B8E6;
+    --color-accent-dark: #3BD6FF;
+    --color-hardware: #F59E42;
+    --color-text: #F3F7FA;
+    --color-muted: #9AAABD;
+    --color-background: #07111F;
+    --color-surface: #0D1B2A;
+    --color-surface-raised: #112233;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-strong: #385069;
     --radius-sm: 10px;
     --radius-md: 12px;
     --radius-lg: 20px;
-    --shadow-sm: 0 8px 24px rgba(16, 35, 72, 0.07);
-    --shadow-card: 0 5px 18px rgba(16, 35, 72, 0.055);
+    --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.22);
+    --shadow-card: 0 5px 18px rgba(0, 0, 0, 0.12);
     --container-width: 1280px;
     --space-section: clamp(4rem, 6vw, 6.5rem);
     --space-block: clamp(1.25rem, 2vw, 1.75rem);
@@ -49,7 +54,7 @@ body.portfolio-page :is(a, button):focus:not(:focus-visible) {
 }
 
 body.portfolio-page :is(a, button, summary):focus-visible {
-    outline: 3px solid #82aefc !important;
+    outline: 3px solid var(--color-accent-dark) !important;
     outline-offset: 4px;
 }
 
@@ -57,7 +62,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     width: 100%;
     max-width: none;
     margin: 0;
-    background: #fff;
+    background: var(--color-surface);
 }
 
 .shell {
@@ -69,8 +74,8 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     position: sticky;
     z-index: 1000;
     top: 0;
-    border-bottom: 1px solid rgba(220, 227, 240, 0.9);
-    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(7, 17, 31, 0.94);
     backdrop-filter: blur(16px);
 }
 
@@ -106,7 +111,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 
 .desktop-nav-v2 a {
     position: relative;
-    color: #253149 !important;
+    color: var(--color-text) !important;
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
@@ -156,8 +161,8 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 .button-primary-v2 {
     border-color: var(--color-accent);
     background: var(--color-accent);
-    color: #fff !important;
-    box-shadow: 0 10px 24px rgba(7, 89, 245, 0.2);
+    color: var(--color-background) !important;
+    box-shadow: 0 10px 24px rgba(22, 184, 230, 0.2);
 }
 
 .button-primary-v2:hover {
@@ -166,14 +171,14 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 }
 
 .button-outline-v2 {
-    border-color: #8eb0fb;
-    background: #fff;
+    border-color: var(--color-border-strong);
+    background: var(--color-surface);
     color: var(--color-accent-dark) !important;
 }
 
 .button-outline-v2:hover {
     border-color: var(--color-accent);
-    background: #f2f6ff;
+    background: var(--color-surface-raised);
 }
 
 .menu-toggle-v2 {
@@ -201,8 +206,8 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     overflow: hidden;
     border-bottom: 1px solid var(--color-border);
     background:
-        radial-gradient(circle at 82% 16%, rgba(7, 89, 245, 0.11), transparent 28rem),
-        linear-gradient(110deg, #fff 0%, #fff 54%, #f3f7ff 100%);
+        radial-gradient(circle at 82% 16%, rgba(22, 184, 230, 0.11), transparent 28rem),
+        var(--color-background);
 }
 
 .hero-v2::before {
@@ -212,8 +217,8 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     width: 46%;
     height: 100%;
     background-image:
-        linear-gradient(rgba(7, 89, 245, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(7, 89, 245, 0.035) 1px, transparent 1px);
+        linear-gradient(rgba(22, 184, 230, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 184, 230, 0.035) 1px, transparent 1px);
     background-size: 40px 40px;
     content: "";
     mask-image: linear-gradient(to left, #000, transparent);
@@ -271,7 +276,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 .hero-lead-v2 {
     max-width: 660px;
     margin: 0;
-    color: #283750;
+    color: var(--color-text);
     font-size: clamp(1.08rem, 1.7vw, 1.32rem);
     line-height: 1.6;
 }
@@ -332,7 +337,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     aspect-ratio: 0.93;
     border: 1px solid rgba(142, 176, 251, 0.72);
     border-radius: 28px 28px 90px 28px;
-    background: #dbe7fb;
+    background: var(--color-surface);
     box-shadow: 0 28px 72px rgba(22, 48, 91, 0.17);
 }
 
@@ -360,8 +365,8 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     padding: 14px 18px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.94);
-    color: #33425c;
+    background: rgba(7, 17, 31, 0.94);
+    color: var(--color-muted);
     box-shadow: var(--shadow-sm);
     font-size: 0.76rem;
     font-weight: 690;
@@ -372,7 +377,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 .featured-preview-v2 {
     padding-block: clamp(64px, 7vw, 94px);
     border-bottom: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-surface);
 }
 
 .section-heading-v2 {
@@ -414,13 +419,13 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: #fff;
+    background: var(--color-surface);
     box-shadow: 0 1px 2px rgba(16, 35, 72, 0.03);
     transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .project-card-v2:hover {
-    border-color: #b9c9e7;
+    border-color: var(--color-border-strong);
     box-shadow: var(--shadow-sm);
     transform: translateY(-5px);
 }
@@ -650,7 +655,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     left: 16px;
     padding: 10px 14px;
     border-radius: var(--radius-sm);
-    background: #fff;
+    background: var(--color-surface);
     color: var(--color-primary) !important;
     box-shadow: var(--shadow-sm);
     font-weight: 750;
@@ -669,7 +674,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 
 .projects-section {
     border-bottom: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-background);
 }
 
 .compact-heading {
@@ -719,6 +724,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 
 .play-chip:hover {
     background: var(--color-accent);
+    color: var(--color-background);
 }
 
 .project-body-v2 :is(h2, h3) a {
@@ -756,7 +762,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     padding: 22px;
     flex-direction: column;
     border-left: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-surface);
     box-shadow: -24px 0 64px rgba(10, 23, 51, 0.2);
     overflow-y: auto;
     transform: translateX(105%);
@@ -852,7 +858,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 .mobile-submenu a {
     padding: 7px 10px;
     border-radius: 8px;
-    color: #47546b !important;
+    color: var(--color-muted) !important;
     font-size: 0.86rem;
     text-decoration: none;
 }
@@ -884,7 +890,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     padding: 5px;
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    color: #33425c !important;
+    color: var(--color-muted) !important;
     font-size: 0.68rem;
     font-weight: 720;
     text-align: center;
@@ -898,8 +904,8 @@ body.menu-open {
 /* Profile */
 .profile-section {
     background:
-        radial-gradient(circle at 85% 20%, rgba(7, 89, 245, 0.07), transparent 24rem),
-        var(--color-surface);
+        radial-gradient(circle at 85% 20%, rgba(22, 184, 230, 0.07), transparent 24rem),
+        var(--color-background);
 }
 
 .profile-grid {
@@ -937,7 +943,7 @@ body.menu-open {
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.82);
+    background: var(--color-surface);
     box-shadow: var(--shadow-sm);
 }
 
@@ -976,7 +982,7 @@ body.menu-open {
 .experience-section {
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-background);
 }
 
 .timeline-preview {
@@ -994,7 +1000,7 @@ body.menu-open {
     right: 0;
     left: 0;
     height: 1px;
-    background: #bdcbea;
+    background: var(--color-border-strong);
     content: "";
 }
 
@@ -1011,7 +1017,7 @@ body.menu-open {
     left: -6px;
     width: 11px;
     height: 11px;
-    border: 2px solid #fff;
+    border: 2px solid var(--color-background);
     border-radius: 50%;
     background: var(--color-accent);
     box-shadow: 0 0 0 1px var(--color-accent);
@@ -1038,7 +1044,7 @@ body.menu-open {
 
 .timeline-role {
     margin: 0 0 13px !important;
-    color: #2d3b55 !important;
+    color: var(--color-text) !important;
     font-weight: 650;
 }
 
@@ -1062,7 +1068,7 @@ body.menu-open {
     gap: 12px;
     margin-inline: auto;
     padding: 0 20px;
-    border: 1px solid #9bb8f7;
+    border: 1px solid var(--color-border-strong);
     border-radius: var(--radius-sm);
     color: var(--color-accent-dark);
     font-weight: 740;
@@ -1096,7 +1102,7 @@ body.menu-open {
 
 /* Technology */
 .technology-section {
-    background: #fafcff;
+    background: var(--color-background);
 }
 
 .technology-grid {
@@ -1110,13 +1116,13 @@ body.menu-open {
     padding: 28px 22px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: #fff;
+    background: var(--color-surface);
     text-align: center;
     transition: border-color 180ms ease, transform 180ms ease;
 }
 
 .technology-grid article:hover {
-    border-color: #a8bfea;
+    border-color: var(--color-border-strong);
     transform: translateY(-4px);
 }
 
@@ -1127,9 +1133,9 @@ body.menu-open {
     align-items: center;
     justify-content: center;
     margin-bottom: 24px;
-    border: 1px solid #b8cbf4;
+    border: 1px solid var(--color-border-strong);
     border-radius: 14px;
-    background: #f4f8ff;
+    background: var(--color-surface-raised);
     color: var(--color-accent);
     font-size: 0.82rem;
     font-weight: 850;
@@ -1160,7 +1166,7 @@ body.menu-open {
 /* Evidence */
 .evidence-section {
     border-top: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-background);
 }
 
 .evidence-grid {
@@ -1265,7 +1271,7 @@ body.menu-open {
     padding: 14px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-    background: #fff;
+    background: var(--color-surface);
 }
 
 .certification-grid img {
@@ -1342,13 +1348,13 @@ body.menu-open {
 }
 
 .author-badge {
-    background: #e8f8ef;
-    color: #116b3c;
+    background: #102D28;
+    color: #91D8B0;
 }
 
 .collaboration-badge {
-    background: #eff4ff;
-    color: #234eae;
+    background: var(--color-surface-raised);
+    color: var(--color-accent-dark);
 }
 
 .publication-card h4 {
@@ -1361,7 +1367,7 @@ body.menu-open {
 
 .publication-card > p {
     margin: 0 0 8px;
-    color: #47546a;
+    color: var(--color-muted);
     font-size: 0.84rem;
 }
 
@@ -1385,7 +1391,7 @@ body.menu-open {
     padding: 0 12px;
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: #fff;
+    background: var(--color-surface);
     color: var(--color-accent-dark) !important;
     font: inherit;
     font-size: 0.74rem;
@@ -1396,7 +1402,7 @@ body.menu-open {
 
 .publication-actions a:hover,
 .publication-actions button:hover {
-    border-color: #9bb8f7;
+    border-color: var(--color-border-strong);
     background: var(--color-surface);
 }
 
@@ -1422,8 +1428,8 @@ body.menu-open {
     overflow: hidden;
     padding-block: clamp(68px, 8vw, 104px);
     background:
-        radial-gradient(circle at 90% 30%, rgba(7, 89, 245, 0.32), transparent 28rem),
-        #071630;
+        radial-gradient(circle at 90% 30%, rgba(22, 184, 230, 0.08), transparent 28rem),
+        var(--color-background);
     color: #fff;
 }
 
@@ -1431,8 +1437,8 @@ body.menu-open {
     position: absolute;
     inset: 0 0 0 55%;
     background-image:
-        linear-gradient(rgba(100, 150, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(100, 150, 255, 0.08) 1px, transparent 1px);
+        linear-gradient(rgba(22, 184, 230, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 184, 230, 0.08) 1px, transparent 1px);
     background-size: 34px 34px;
     content: "";
     mask-image: linear-gradient(to right, transparent, #000);
@@ -1448,7 +1454,7 @@ body.menu-open {
 }
 
 .contact-section .eyebrow-v2 {
-    color: #8eb8ff;
+    color: var(--color-accent-dark);
 }
 
 .contact-section h2 {
@@ -1464,7 +1470,7 @@ body.menu-open {
 .contact-section h2 + p {
     max-width: 620px;
     margin: 0;
-    color: #bac8df;
+    color: var(--color-muted);
     font-size: 1.04rem;
 }
 
@@ -1476,19 +1482,19 @@ body.menu-open {
 }
 
 .button-light-v2 {
-    border-color: #fff;
-    background: #fff;
-    color: #0a2559 !important;
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-background) !important;
 }
 
 .button-dark-outline-v2 {
-    border-color: #57749e;
+    border-color: var(--color-border-strong);
     background: rgba(255, 255, 255, 0.03);
     color: #fff !important;
 }
 
 .button-dark-outline-v2:hover {
-    border-color: #9cbdf4;
+    border-color: var(--color-accent);
     background: rgba(255, 255, 255, 0.08);
 }
 
@@ -1507,7 +1513,7 @@ body.menu-open {
     align-items: center;
     gap: 13px;
     margin: 0;
-    color: #e9f0fc !important;
+    color: var(--color-text) !important;
     font-size: 0.96rem;
     font-weight: 620;
     text-decoration: none;
@@ -1515,14 +1521,14 @@ body.menu-open {
 
 .contact-details span {
     width: 24px;
-    color: #8eb8ff;
+    color: var(--color-accent-dark);
     font-size: 1.15rem;
     text-align: center;
 }
 
 .site-footer {
     border-top: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-surface);
 }
 
 .footer-grid {
@@ -1545,7 +1551,7 @@ body.menu-open {
 }
 
 .footer-grid nav a {
-    color: #36445c !important;
+    color: var(--color-muted) !important;
     font-weight: 660;
     text-decoration: none;
 }
@@ -1570,7 +1576,7 @@ body.menu-open {
     padding: 0;
     border: 0;
     border-radius: var(--radius-md);
-    background: #fff;
+    background: var(--color-surface);
     box-shadow: 0 30px 100px rgba(5, 14, 34, 0.38);
 }
 
@@ -1615,7 +1621,7 @@ body.menu-open {
 .inline-video-slot {
     position: relative;
     aspect-ratio: 16 / 9;
-    background: #030915;
+    background: var(--color-background);
 }
 
 .dialog-video iframe,
@@ -1650,8 +1656,9 @@ body.menu-open {
     bottom: 22px;
     padding: 12px 16px;
     border-radius: var(--radius-sm);
-    background: var(--color-primary);
-    color: #fff;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface-raised);
+    color: var(--color-text);
     box-shadow: var(--shadow-sm);
     font-size: 0.82rem;
     font-weight: 700;
@@ -1662,7 +1669,7 @@ body.menu-open {
     padding-block: clamp(64px, 8vw, 100px);
     border-bottom: 1px solid var(--color-border);
     background:
-        radial-gradient(circle at 82% 16%, rgba(7, 89, 245, 0.1), transparent 25rem),
+        radial-gradient(circle at 82% 16%, rgba(22, 184, 230, 0.1), transparent 25rem),
         var(--color-surface);
 }
 
@@ -1738,10 +1745,10 @@ body.menu-open {
     align-items: center;
     min-height: 31px;
     padding: 0 11px;
-    border: 1px solid #c7d5ef;
+    border: 1px solid var(--color-border);
     border-radius: 999px;
-    background: #f5f8ff;
-    color: #2e4c82;
+    background: var(--color-surface);
+    color: var(--color-accent-dark);
     font-size: 0.72rem;
     font-weight: 720;
 }
@@ -1772,9 +1779,9 @@ body.menu-open {
 .inline-video {
     position: relative;
     overflow: hidden;
-    border: 1px solid #b9c8e3;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: #030915;
+    background: var(--color-background);
     box-shadow: var(--shadow-sm);
 }
 
@@ -1796,7 +1803,7 @@ body.menu-open {
     justify-content: center;
     border: 8px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    background: #fff;
+    background: var(--color-surface);
     color: var(--color-primary);
     font: inherit;
     font-size: 1.4rem;
@@ -1812,7 +1819,7 @@ body.menu-open {
     padding: 24px 28px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: #fff;
+    background: var(--color-surface);
 }
 
 .project-facts h2 {
@@ -2113,7 +2120,7 @@ body.menu-open {
         justify-content: center;
         border: 1px solid var(--color-border);
         border-radius: 50%;
-        background: #fff;
+        background: var(--color-surface);
         color: var(--color-accent-dark);
         font: inherit;
         font-weight: 800;
@@ -2129,7 +2136,7 @@ body.menu-open {
         width: 7px;
         height: 7px;
         border-radius: 999px;
-        background: #d6e0f1;
+        background: var(--color-border-strong);
         transition: width 180ms ease, background-color 180ms ease;
     }
 
@@ -2194,7 +2201,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 }
 
 .site-header-v2 {
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(7, 17, 31, 0.96);
 }
 
 .header-inner-v2 {
@@ -2222,19 +2229,19 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 }
 
 .button-primary-v2 {
-    box-shadow: 0 7px 18px rgba(7, 89, 245, 0.18);
+    box-shadow: 0 7px 18px rgba(22, 184, 230, 0.18);
 }
 
 .hero-v2 {
     background:
-        radial-gradient(circle at 82% 16%, rgba(7, 89, 245, 0.055), transparent 28rem),
-        linear-gradient(110deg, #fff 0%, #fff 56%, #f5f8ff 100%);
+        radial-gradient(circle at 82% 16%, rgba(22, 184, 230, 0.055), transparent 28rem),
+        var(--color-background);
 }
 
 .hero-v2::before {
     background-image:
-        linear-gradient(rgba(7, 89, 245, 0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(7, 89, 245, 0.022) 1px, transparent 1px);
+        linear-gradient(rgba(22, 184, 230, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 184, 230, 0.022) 1px, transparent 1px);
 }
 
 .hero-grid-v2 {
@@ -2278,7 +2285,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 
 .hero-lead-v2 {
     max-width: 620px;
-    color: #26354d;
+    color: var(--color-text);
     font-size: clamp(1.02rem, 1.35vw, 1.12rem);
     line-height: 1.62;
 }
@@ -2317,9 +2324,9 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 
 .portrait-frame-v2 {
     aspect-ratio: 1;
-    border-color: rgba(10, 23, 51, 0.14);
+    border-color: var(--color-border);
     border-radius: 0;
-    background: #e9f0fc;
+    background: var(--color-text);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
@@ -2340,7 +2347,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: rgba(10, 23, 51, 0.6);
+    color: var(--color-muted);
     box-shadow: none;
     font-size: 0.78rem;
     font-weight: 500;
@@ -2416,20 +2423,20 @@ body.portfolio-page :is(a, button, summary):focus-visible {
 .project-card-v2 {
     display: flex;
     flex-direction: column;
-    border-color: #d8e1ef;
+    border-color: var(--color-border);
     box-shadow: var(--shadow-card);
 }
 
 .project-card-v2:hover,
 .technology-grid article:hover {
-    border-color: #aec3ea;
+    border-color: var(--color-border-strong);
     box-shadow: 0 9px 24px rgba(16, 35, 72, 0.09);
     transform: translateY(-2px);
 }
 
 .project-card-v2:focus-within {
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(7, 89, 245, 0.17), var(--shadow-card);
+    box-shadow: 0 0 0 3px rgba(22, 184, 230, 0.17), var(--shadow-card);
 }
 
 .project-image-v2 {
@@ -2620,9 +2627,9 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     width: 64px;
     height: 64px;
     padding: 5px;
-    border: 1px solid #e1e8f4;
+    border: 1px solid var(--color-border);
     border-radius: 10px;
-    background: #f8faff;
+    background: var(--color-surface);
 }
 
 .certification-grid h4,
@@ -2770,7 +2777,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     width: 100%;
     height: 2px;
     background: var(--color-accent);
-    box-shadow: 0 1px 8px rgba(7, 89, 245, 0.28);
+    box-shadow: 0 1px 8px rgba(22, 184, 230, 0.28);
     pointer-events: none;
     transform: scaleX(0);
     transform-origin: left center;
@@ -2801,10 +2808,6 @@ html.motion-ready .motion-reveal--media:not(.motion-is-visible) {
     transform: translate3d(0, 18px, 0) scale(0.985);
 }
 
-html.motion-ready .hero-portrait-v2.motion-reveal--media:not(.motion-is-visible) {
-    transform: translate3d(0, calc(var(--hero-portrait-offset) + 18px), 0) scale(0.985);
-}
-
 html.motion-ready .motion-reveal:not(.motion-is-visible):focus-within {
     opacity: 1;
     transform: none;
@@ -2820,10 +2823,6 @@ html.motion-ready.motion-has-started .motion-reveal.motion-reveal--immediate.mot
 
 html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
     animation-name: portfolio-motion-reveal-media;
-}
-
-html.motion-ready.motion-has-started .hero-portrait-v2.motion-reveal--media.motion-is-visible {
-    animation-name: portfolio-motion-reveal-portrait;
 }
 
 @keyframes portfolio-motion-reveal {
@@ -2847,18 +2846,6 @@ html.motion-ready.motion-has-started .hero-portrait-v2.motion-reveal--media.moti
     to {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
-    }
-}
-
-@keyframes portfolio-motion-reveal-portrait {
-    from {
-        opacity: 0;
-        transform: translate3d(0, calc(var(--hero-portrait-offset) + 18px), 0) scale(0.985);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, var(--hero-portrait-offset), 0) scale(1);
     }
 }
 
@@ -2899,8 +2886,8 @@ details.is-disclosure-animating {
 
 @media (hover: hover) {
     .technology-grid article:hover .tech-symbol {
-        border-color: #8faef0;
-        background: #eaf1ff;
+        border-color: var(--color-border-strong);
+        background: var(--color-surface-raised);
         transform: translateY(-2px) rotate(-4deg);
     }
 
@@ -3147,7 +3134,7 @@ body.portfolio-page {
 
 .project-card-v2:hover,
 .technology-grid article:hover {
-    border-color: #d8e1ef;
+    border-color: var(--color-border);
     box-shadow: var(--shadow-card);
     transform: none;
 }
@@ -3167,7 +3154,7 @@ body.portfolio-page {
 
     .project-card-v2:hover,
     .technology-grid article:hover {
-        border-color: #aec3ea;
+        border-color: var(--color-border-strong);
         box-shadow: 0 9px 24px rgba(16, 35, 72, 0.09);
         transform: translateY(-2px);
     }

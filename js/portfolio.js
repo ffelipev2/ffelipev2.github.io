@@ -24,6 +24,7 @@
     const menuClosers = document.querySelectorAll('[data-menu-close], [data-menu-link]');
     let lastFocusedElement = null;
     let menuCloseTimer = null;
+    let menuOpenFrame = null;
 
     const menuBackgroundElements = () => Array.from(document.body.children).filter(
         (element) => element !== mobileMenu && element !== menuOverlay && element.tagName !== 'SCRIPT'
@@ -59,7 +60,8 @@
         if (!menuToggle || !mobileMenu || !menuOverlay) return;
 
         window.clearTimeout(menuCloseTimer);
-        lastFocusedElement = document.activeElement;
+        // Safari does not focus a button on pointer activation; remember the invoker.
+        lastFocusedElement = menuToggle;
         menuOverlay.hidden = false;
         mobileMenu.removeAttribute('inert');
         mobileMenu.setAttribute('aria-hidden', 'false');
@@ -68,7 +70,8 @@
         document.body.classList.add('menu-open');
         setMenuBackgroundState(true);
 
-        window.requestAnimationFrame(() => {
+        menuOpenFrame = window.requestAnimationFrame(() => {
+            menuOpenFrame = null;
             menuOverlay.classList.add('is-visible');
             mobileMenu.classList.add('is-open');
             const firstFocusable = getFocusableElements(mobileMenu)[0];
@@ -78,6 +81,9 @@
 
     const closeMenu = ({ restoreFocus = true } = {}) => {
         if (!menuToggle || !mobileMenu || !menuOverlay) return;
+
+        window.cancelAnimationFrame(menuOpenFrame);
+        menuOpenFrame = null;
 
         mobileMenu.classList.remove('is-open');
         menuOverlay.classList.remove('is-visible');
@@ -112,7 +118,7 @@
     });
 
     document.addEventListener('keydown', (event) => {
-        if (!mobileMenu?.classList.contains('is-open')) return;
+        if (menuToggle?.getAttribute('aria-expanded') !== 'true') return;
 
         if (event.key === 'Escape') {
             event.preventDefault();
@@ -538,20 +544,12 @@
         };
 
         document.querySelectorAll([
-            '.hero-copy-v2 > .eyebrow-v2',
-            '.hero-copy-v2 > h1',
-            '.hero-copy-v2 > .hero-identity-v2',
-            '.hero-copy-v2 > .title-rule-v2',
-            '.hero-copy-v2 > .hero-lead-v2',
-            '.hero-copy-v2 > .hero-actions-v2',
-            '.hero-copy-v2 > .pillars-v2',
-            '.hero-portrait-v2',
             '.inner-hero .shell > *',
             '.project-detail-hero .breadcrumb',
             '.project-detail-copy',
             '.project-detail-grid > .inline-video'
         ].join(', ')).forEach((element, index) => {
-            const isMedia = element.matches('.hero-portrait-v2, .project-detail-grid > .inline-video');
+            const isMedia = element.matches('.project-detail-grid > .inline-video');
             prepareTarget(element, 70 + (index * 70), isMedia ? 'motion-reveal--media' : '');
             pageEntryTargets.push(element);
         });

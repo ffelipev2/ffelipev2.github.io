@@ -36,7 +36,8 @@ const mimeTypes = new Map([
   [".xml", "application/xml; charset=utf-8"],
 ]);
 
-const referencedFiles = new Set(["robots.txt", "sitemap.xml"]);
+// This lazy module is loaded from JavaScript, not from an HTML src attribute.
+const referencedFiles = new Set(["robots.txt", "sitemap.xml", "js/hero/scene.bundle.js", "js/hero/THREE-LICENSE.txt"]);
 const localReferencePattern = /(?:href|src)=["']([^"']+)["']/g;
 
 for (const [, file] of pages) {
@@ -179,7 +180,7 @@ for (const [route, file] of pages) {
   assert.equal(response.headers.get("location"), `https://example.test${route}`);
 }
 
-for (const route of ["/css/portfolio.css", "/js/portfolio.js", "/docs/Felipe-CV.pdf"]) {
+for (const route of ["/css/portfolio.css", "/css/hero-3d.css", "/js/portfolio.js", "/js/hero-3d.js", "/js/hero/scene.bundle.js", "/docs/Felipe-CV.pdf"]) {
   const response = await builtWorker.fetch(new Request(`https://example.test${route}`));
   assert.equal(response.status, 200, `Worker asset failed: ${route}`);
 }
