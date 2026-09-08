@@ -21,7 +21,7 @@ async function seek(page, progress) {
     await page.waitForTimeout(750);
 }
 
-test('automatic data flow activates every existing station and synchronizes the twin', async ({ page }, testInfo) => {
+test('scroll activates every station, holds without autoplay and reverses the sequence', async ({ page }, testInfo) => {
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
     page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
@@ -36,20 +36,25 @@ test('automatic data flow activates every existing station and synchronizes the 
     await page.goto('/');
     await page.locator('.hero-world').scrollIntoViewIfNeeded();
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
-    const seen = await page.evaluate(() => new Promise((resolve) => {
-        const stations = new Set();
-        const record = () => document.querySelectorAll('[data-station].is-active').forEach((label) => stations.add(label.dataset.station));
-        const observer = new MutationObserver(record);
-        observer.observe(document.querySelector('.hero-labels'), { attributes: true, subtree: true, attributeFilter: ['class'] });
-        record();
-        setTimeout(() => { observer.disconnect(); resolve([...stations].sort()); }, 8500);
-    }));
-    expect(seen).toEqual(['0', '1', '2', '3', '4']);
-    await expect.poll(() => page.locator('.hero-journey').evaluate((el) => Number(el.style.getPropertyValue('--data-pulse'))), { timeout: 8000, intervals: [40] }).toBeGreaterThan(.3);
+    await seek(page, .1);
+    // A large initial mobile scroll can need the full bounded catch-up.
+    await page.waitForTimeout(800);
+    for (const [station, target] of [.24, .39, .54, .69, .90].entries()) {
+        await seek(page, target);
+        await expect(page.locator(`[data-station="${station}"]`)).toHaveClass(/is-active/);
+        if (station === 2) {
+            const classes = await page.locator('[data-station]').evaluateAll(labels => labels.map(label => label.className));
+            await page.waitForTimeout(3200);
+            expect(await page.locator('[data-station]').evaluateAll(labels => labels.map(label => label.className))).toEqual(classes);
+        }
+    }
+    expect(await page.locator('.hero-journey').evaluate(el => Number(el.style.getPropertyValue('--data-pulse')))).toBeGreaterThan(.3);
     await page.screenshot({ path: testInfo.outputPath('physical-digital-sync.png') });
     expect(await page.evaluate(() => window.dataPointBudget)).toBeGreaterThan(0);
     expect(await page.evaluate(() => window.dataPointBudget)).toBeLessThanOrEqual(testInfo.project.name.includes('android') || testInfo.project.name.includes('ios') ? 4 : 12);
     await expect(page.locator('[data-station]')).toHaveCount(5);
+    await seek(page, .39);
+    await expect(page.locator('[data-station="1"]')).toHaveClass(/is-active/);
     await page.locator('.hero-actions-v2 a').first().click();
     await expect(page.locator('#projects-title')).toBeInViewport();
     expect(errors).toEqual([]);
@@ -67,6 +72,10 @@ test('scroll phases preserve rest and react in order even after a fast jump', as
         const pulses = [...state.pulses];
         if (active < 0) expect(pulses.every((p) => p === 0)).toBe(true);
         else expect(pulses[active]).toBeGreaterThan(.1);
+        const stopped = JSON.stringify(state);
+        for (let i = 0; i < 12; i++) sequence.update(10, target, false);
+        expect(JSON.stringify(state)).toBe(stopped);
+        expect(state.active).toBe(false);
     }
     const jump = createAnimationSequence(), visited = new Set();
     let scan = false;
@@ -79,7 +88,7 @@ test('scroll phases preserve rest and react in order even after a fast jump', as
     expect(scan).toBe(true);
     const reduced = jump.update(10, .5, true);
     expect(reduced.active).toBe(false);
-    expect(reduced.scanner + reduced.sync + reduced.wakeAfter).toBe(0);
+    expect(reduced.scanner + reduced.sync).toBe(0);
 });
 
 test('camera retains all station bounds across narrow, wide and short viewports', async ({}, testInfo) => {

@@ -24,12 +24,12 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     let visible = true, suspended = false, loading = false, failed = false;
     let progress = 0, slowFrames = 0, scrollStart = 0, scrollLength = 1;
     let densityQuery;
-    let wakeTimer = 0, lastTick = 0, lastPaint = 0;
+    let lastTick = 0, lastPaint = 0;
     let forcePaint = false;
     const pointer = { x: 0, y: 0 }, pointerTarget = { x: 0, y: 0 };
     const stop = () => {
-        cancelAnimationFrame(frame); clearTimeout(wakeTimer);
-        frame = 0; wakeTimer = 0; lastTick = 0; lastPaint = 0;
+        cancelAnimationFrame(frame);
+        frame = 0; lastTick = 0; lastPaint = 0;
     };
     const release = () => {
         generation++; stop(); scene?.dispose(); scene = null; sequence = null; loading = false;
@@ -98,11 +98,9 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         // Resizing clears the drawing buffer, including on the last scroll frame.
         const pointerMoving = pointer.x !== pointerTarget.x || pointer.y !== pointerTarget.y;
         if (qualityChanged || animation.active || pointerMoving) frame = requestAnimationFrame(draw);
-        else if (!motion.matches && animation.wakeAfter > 0) wakeTimer = setTimeout(requestDraw, animation.wakeAfter * 1000 + 10);
     };
     const requestDraw = (immediate = false) => {
         forcePaint ||= immediate === true;
-        clearTimeout(wakeTimer); wakeTimer = 0;
         if (scene && visible && !document.hidden && !suspended && !frame) frame = requestAnimationFrame(draw);
     };
     const init = async () => {

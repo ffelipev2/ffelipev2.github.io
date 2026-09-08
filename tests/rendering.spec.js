@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('renderer rests between sequences, respects its drawing budget and pauses offscreen', async ({ page }, testInfo) => {
+test('renderer stops after scroll, respects its drawing budget and pauses offscreen', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chrome', 'One instrumented desktop GPU budget check.');
     await page.addInitScript(() => {
         window.renderStats = { calls: 0, frameCalls: 0, maxCalls: 0, triangles: 0, maxTriangles: 0 };
@@ -28,9 +28,16 @@ test('renderer rests between sequences, respects its drawing budget and pauses o
     expect(await page.evaluate(() => window.renderStats.calls)).toBe(idle);
     await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 650); });
     await expect.poll(() => page.evaluate(() => window.renderStats.calls)).toBeGreaterThan(idle);
-    // Include a complete automatic cycle, including rings and both scanners.
-    await page.waitForTimeout(7600);
+    // Sweep the full scroll sequence, including rings and both scanners.
+    await page.evaluate(() => {
+        const hero = document.querySelector('.hero-v2'), stage = document.querySelector('.hero-stage');
+        const height = document.querySelector('.hero-viewport-measure').clientHeight;
+        scrollTo(0, hero.offsetTop - Math.min(72, height - stage.offsetHeight) + .98 * (hero.offsetHeight - stage.offsetHeight));
+    });
+    await page.waitForTimeout(1700);
     const stats = await page.evaluate(() => window.renderStats);
+    await page.waitForTimeout(3200);
+    expect(await page.evaluate(() => window.renderStats.calls)).toBe(stats.calls);
     expect(stats.maxCalls).toBeLessThan(42);
     expect(stats.maxTriangles).toBeLessThan(5000);
     console.log('3D budget:', JSON.stringify(stats));

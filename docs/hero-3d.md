@@ -4,9 +4,9 @@ Actualización del 8 de septiembre de 2026 sobre la escena aprobada. Se conserva
 
 ## Funcionamiento actual
 
-Un reloj compartido ejecuta una secuencia cada 5,6 segundos. El primer 20% es reposo, sin bucle de dibujo. Un paquete cyan recorre el circuito existente de ESP32 a sensores, LoRa, robótica y gemelo digital. Cada llegada activa brevemente el indicador y la etiqueta correspondiente.
+El scroll controla toda la secuencia, sin reproducción automática ni reinicio por tiempo. El primer 20% es reposo. Un paquete cyan recorre el circuito existente de ESP32 a sensores, LoRa, robótica y gemelo digital según el desplazamiento de la página. Cada llegada activa el indicador y la etiqueta correspondiente; al subir se recorre la secuencia en sentido inverso.
 
-El ESP32 tiene una lente LED elevada y más visible, con material independiente de la plataforma, halo ámbar localizado y doble parpadeo. El sensor pulsa en ámbar y emite dos anillos tenues. LoRa emite tres ondas cyan desde su antena. El brazo conserva sus piezas y pose de reposo, con un recorrido ampliado tras la revisión visual del usuario: unos 10° de base, 14° de codo y 10° de muñeca; la pinza abre/cierra 0,09 unidades por dedo. La aproximación, pausa y retorno abarcan aproximadamente 1,7 segundos del ciclo. El movimiento de espera es menor e intermitente. Con movimiento reducido, el brazo permanece en reposo y el LED está fijo.
+Se conservan todos los efectos, ahora vinculados al progreso del scroll: lente LED elevada con halo ámbar y doble parpadeo, pulsos del sensor, ondas LoRa y movimiento del brazo. El brazo mantiene el recorrido ampliado: unos 10° de base, 14° de codo y 10° de muñeca; la pinza abre/cierra 0,09 unidades por dedo. Su aproximación, pausa y retorno ocupan el tramo 63,5–94% del progreso. Con movimiento reducido, el brazo permanece en reposo y el LED está fijo.
 
 Al llegar al robot se inicia un escaneo vertical. Un plano tenue y su contorno recorren el brazo; hasta 12 puntos deterministas viajan desde él hacia vértices reales del gemelo. Las aristas se activan por altura, otro contorno recorre el wireframe y hasta cinco puntos siguen segmentos existentes. La luz del gemelo y la flecha de «Mundo físico → Mundo digital» responden a esa sincronización. No hay partículas distribuidas por el fondo, bloom ni nuevos modelos sólidos.
 
@@ -23,38 +23,38 @@ Las etiquetas mantienen sus textos 01–05. En escritorio pueden mostrar breveme
 | 65–80% | Respuesta mecánica del robot |
 | 80–100% | Escaneo, transferencia y sincronización del gemelo |
 
-La cámara, el texto y la página mantienen su respuesta directa al scroll nativo. Solo los efectos limitan su avance a 0,72 de progreso por segundo, para que un gesto rápido permita ver las estaciones sucesivas (hasta unos 1,4 segundos para alcanzar el final). Tras dos segundos sin cambiar el scroll, el ciclo automático continúa desde esa fase. No se interceptan gestos y se conserva la duración actual del hero.
+La cámara, el texto y la página mantienen su respuesta directa al scroll nativo. Solo los efectos limitan su avance a 0,72 de progreso por segundo, para que un gesto rápido permita ver las estaciones sucesivas (hasta unos 1,4 segundos para alcanzar el destino). Al alcanzar la posición elegida por el scroll, la escena queda en esa fase; esperar no cambia de objeto ni reinicia la secuencia. No se interceptan gestos y se conserva la duración actual del hero.
 
 El parallax se aplica solo a ratón con puntero fino y viewport de escritorio. Usa interpolación suave y offsets de cámara menores a medio grado, con una diferencia adicional máxima de 2px en las etiquetas. La profundidad produce desplazamientos ligeramente diferentes entre plataforma, objetos y cuadrícula. Al salir del hero vuelve al centro. No hay parallax táctil ni controles orbitales.
 
 ## Rendimiento, móvil y limpieza
 
-- Se reutilizan el RAF y la carga diferida existentes. Durante las secuencias automáticas, se limita el dibujo a 60 fps en escritorio y 30 en tablet/móvil; el scroll conserva su respuesta directa. Son límites de cadencia, no FPS garantizados.
-- RAF y temporizadores se detienen fuera de pantalla o con la pestaña oculta. El tiempo oculto no produce saltos al volver. Entre ciclos se programa un único despertar.
+- Se reutilizan el RAF y la carga diferida existentes. Durante la interpolación se limita el dibujo a 60 fps en escritorio y 30 en tablet/móvil; los eventos de scroll conservan su respuesta directa. Son límites de cadencia, no FPS garantizados.
+- El RAF se detiene al alcanzar el destino del scroll y finalizar el parallax, fuera de pantalla o con la pestaña oculta. Se eliminaron el reloj de reproducción automática y su temporizador de despertar.
 - En teléfonos: cuatro puntos de transferencia, dos puntos sobre el wireframe, una onda LoRa, un anillo de sensor y escáner sin plano transparente. Se conservan antialias, resolución adaptativa, detalles y materiales.
 - Las geometrías se fusionan por material; las piezas móviles se fusionan en el espacio de sus pivotes. Posiciones, materiales y geometrías se reservan una vez; no se crean objetos 3D por frame.
 - Si el envío de frames resulta costoso, se reducen efectos secundarios junto con el escalado adaptativo existente. Se mantienen los fallbacks de dispositivo limitado, WebGL no disponible y pérdida de contexto.
 - `prefers-reduced-motion` conserva la escena final estática, sin efectos, HUD, parallax ni temporizador automático.
 - `pagehide` libera geometrías, materiales, textura/entorno, renderer y contexto, y cancela los relojes. Se comprueban restauración de bfcache y cambios de preferencias sin duplicar canvas ni listeners de interacción.
 
-Medición local en Chrome tras ampliar el brazo y LED: máximo de 35 draw calls y 3.700 triángulos durante el ciclo completo, frente a 33 y 3.686 antes de ese ajuste. El bundle actual ocupa 516,4 KiB; gzip, 133,5 KiB. El halo utiliza una textura procedural de 32×32 y reutiliza la geometría plana existente, sin postprocesado ni luces adicionales. No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
+Medición local en Chrome tras ampliar el brazo y LED: máximo de 35 draw calls y 3.700 triángulos durante la secuencia completa. El bundle sin reproducción automática ocupa 516,2 KiB; gzip, 133,4 KiB. El halo utiliza una textura procedural de 32×32 y reutiliza la geometría plana existente, sin postprocesado ni luces adicionales. No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
 
 ## Archivos de esta actualización
 
 | Archivo | Cambio |
 | --- | --- |
-| `js/hero/animation-sequence.js` | Reloj común, fases, llegadas, pulsos y transición entre scroll y reproducción automática. |
+| `js/hero/animation-sequence.js` | Fases, llegadas y pulsos controlados solo por scroll, con interpolación acotada y reposo al alcanzar el destino. |
 | `js/hero/narrative-effects.js` | Ondas, anillos, scanners, cuadrícula y puntos preasignados. |
 | `js/hero/scene.js` | Pivotes del robot e integración de circuito, indicadores, wireframe, etiquetas y efectos. |
 | `js/hero/camera-rig.js` | Offset de cursor acotado sin cambiar el traveling existente. |
-| `js/hero-3d.js` | Único RAF, despertares, cadencia, puntero, visibilidad, reduced-motion y cleanup. |
+| `js/hero-3d.js` | Único RAF, cadencia, puntero, visibilidad, reduced-motion y cleanup; sin temporizador de reproducción. |
 | `css/hero-3d.css` | Estados decorativos de etiquetas y microanimación de la flecha. |
 | `js/hero/scene.bundle.js` | Módulo de producción regenerado. |
 | `scripts/validate-site.mjs` | Valida la sintaxis de los dos módulos nuevos. |
-| `tests/narrative.spec.js`, `tests/rendering.spec.js` | Ciclo automático, orden con scroll rápido, puntos, parallax, presupuesto y limpieza. |
+| `tests/narrative.spec.js`, `tests/rendering.spec.js` | Avance y retroceso por scroll, ausencia de autoplay al esperar, puntos, parallax, presupuesto y limpieza. |
 | `docs/hero-3d.md` | Comportamiento actual e historial de refinamientos previos. |
 
-Se conservan las pruebas de integración, contraste, resize, densidad, gestos táctiles y fallback. Se comprueba Chrome de escritorio, tablet, Android emulado y WebKit con perfil de iPhone. Resultado: 51 comprobaciones aplicables verificadas y 25 omisiones intencionadas por perfil. La primera ronda tuvo dos fallos de medición: el muestreo saltaba un pulso breve y se medía una etiqueta antes del primer frame ajustado; corregidas esas pruebas, las ocho combinaciones afectadas pasaron. El build valida 11 páginas y nueve proyectos. La emulación no sustituye una revisión en dispositivos físicos.
+Se conservan las pruebas de integración, contraste, resize, densidad, gestos táctiles y fallback. Se comprueba Chrome de escritorio, tablet, Android emulado y WebKit con perfil de iPhone. Las pruebas de secuencia y renderizado esperan más de tres segundos sin scroll para detectar cualquier reinicio automático; la prueba del controlador también simula dos minutos en cada etapa sin permitir cambios. El build valida 11 páginas y nueve proyectos. La emulación no sustituye una revisión en dispositivos físicos.
 
 ---
 
