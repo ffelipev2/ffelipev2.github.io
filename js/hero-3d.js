@@ -12,6 +12,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
     const mobile = matchMedia('(max-width: 900px)');
     const phone = matchMedia('(max-width: 600px)');
+    const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
     // svh stays fixed when mobile browser controls expand/collapse during a swipe.
     const viewport = document.createElement('div');
     viewport.className = 'hero-viewport-measure';
@@ -19,18 +20,27 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     hero.append(viewport);
     const connection = navigator.connection;
     const limited = () => connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory < 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
-    let scene = null, generation = 0, frame = 0, idle = 0;
+    let scene = null, sequence = null, generation = 0, frame = 0, idle = 0;
     let visible = true, suspended = false, loading = false, failed = false;
     let progress = 0, slowFrames = 0, scrollStart = 0, scrollLength = 1;
     let densityQuery;
-    const stop = () => { cancelAnimationFrame(frame); frame = 0; };
+    let wakeTimer = 0, lastTick = 0, lastPaint = 0;
+    let forcePaint = false;
+    const pointer = { x: 0, y: 0 }, pointerTarget = { x: 0, y: 0 };
+    const stop = () => {
+        cancelAnimationFrame(frame); clearTimeout(wakeTimer);
+        frame = 0; wakeTimer = 0; lastTick = 0; lastPaint = 0;
+    };
     const release = () => {
-        generation++; stop(); scene?.dispose(); scene = null; loading = false;
+        generation++; stop(); scene?.dispose(); scene = null; sequence = null; loading = false;
+        pointer.x = pointer.y = pointerTarget.x = pointerTarget.y = 0;
         hero.classList.remove('has-scene', 'has-travel');
         hero.style.removeProperty('--stage-height');
         progressBar.style.transform = 'scaleX(0)';
         portrait.style.removeProperty('opacity');
         journey.style.removeProperty('--journey-progress');
+        journey.style.removeProperty('--data-pulse');
+        labels.forEach((label) => { delete label.dataset.status; });
         projects?.style.removeProperty('--journey-complete');
     };
     const fallback = () => { failed = true; release(); };
@@ -52,13 +62,26 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         }
     };
     const readProgress = () => motion.matches ? 1 : Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollLength));
-    const draw = () => {
+    const draw = (time) => {
         frame = 0;
         if (!scene || !visible || document.hidden || suspended) return;
+        // Limit actual drawing on high-refresh screens; use the same RAF owner.
+        if (!forcePaint && lastPaint && time - lastPaint < (mobile.matches ? 1000 / 30 : 1000 / 60) - 1) {
+            frame = requestAnimationFrame(draw); return;
+        }
+        const delta = lastTick ? (time - lastTick) / 1000 : 0;
+        lastTick = lastPaint = time;
+        forcePaint = false;
         // Follow native scrolling directly, with no extra inertia or catch-up.
         progress = readProgress();
+        const animation = sequence.update(delta, progress, motion.matches);
+        const blend = 1 - Math.exp(-Math.min(delta, .064) / .15);
+        pointer.x += (pointerTarget.x - pointer.x) * blend;
+        pointer.y += (pointerTarget.y - pointer.y) * blend;
+        if (Math.abs(pointer.x - pointerTarget.x) < .001) pointer.x = pointerTarget.x;
+        if (Math.abs(pointer.y - pointerTarget.y) < .001) pointer.y = pointerTarget.y;
         const start = performance.now();
-        try { scene.render(progress, labels, motion.matches); } catch { fallback(); return; }
+        try { scene.render(progress, labels, motion.matches, animation, pointer); } catch { fallback(); return; }
         const cost = performance.now() - start;
         let qualityChanged = false;
         if (cost > 32) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
@@ -70,11 +93,16 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         progressBar.style.transform = `scaleX(${progress})`;
         portrait.style.opacity = motion.matches ? '1' : String(1 - progress * .10);
         journey.style.setProperty('--journey-progress', progress.toFixed(4));
+        journey.style.setProperty('--data-pulse', animation.sync.toFixed(4));
         projects?.style.setProperty('--journey-complete', Math.max(0, Math.min(1, (progress - .90) / .06)).toFixed(4));
         // Resizing clears the drawing buffer, including on the last scroll frame.
-        if (qualityChanged) frame = requestAnimationFrame(draw);
+        const pointerMoving = pointer.x !== pointerTarget.x || pointer.y !== pointerTarget.y;
+        if (qualityChanged || animation.active || pointerMoving) frame = requestAnimationFrame(draw);
+        else if (!motion.matches && animation.wakeAfter > 0) wakeTimer = setTimeout(requestDraw, animation.wakeAfter * 1000 + 10);
     };
-    const requestDraw = () => {
+    const requestDraw = (immediate = false) => {
+        forcePaint ||= immediate === true;
+        clearTimeout(wakeTimer); wakeTimer = 0;
         if (scene && visible && !document.hidden && !suspended && !frame) frame = requestAnimationFrame(draw);
     };
     const init = async () => {
@@ -82,12 +110,13 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         loading = true;
         const current = ++generation;
         try {
-            const { createHeroScene } = await import('./hero/scene.bundle.js');
+            const { createHeroScene, createAnimationSequence } = await import('./hero/scene.bundle.js');
             if (current !== generation || suspended) return;
             scene = createHeroScene(host, { compact: phone.matches, onContextLost: fallback });
+            sequence = createAnimationSequence();
             measure();
             // Render successfully before extending scroll or hiding the fallback.
-            scene.render(motion.matches ? 1 : 0, labels, motion.matches);
+            scene.render(motion.matches ? 1 : 0, labels, motion.matches, sequence.update(0, 0, motion.matches), pointer);
             hero.classList.add('has-scene');
             hero.classList.toggle('has-travel', !motion.matches);
             measure();
@@ -104,7 +133,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         else clearTimeout(idle);
     };
     const preferenceChanged = () => { cancelIdle(); release(); failed = false; slowFrames = 0; schedule(); };
-    const resized = () => { measure(); requestDraw(); };
+    const resized = () => { measure(); requestDraw(true); };
     const watchDensity = () => {
         densityQuery?.removeEventListener('change', densityChanged);
         densityQuery = matchMedia(`(resolution: ${devicePixelRatio}dppx)`);
@@ -112,21 +141,32 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     };
     const densityChanged = () => { watchDensity(); resized(); };
     const visibilityChanged = () => { if (document.hidden) stop(); else { init(); requestDraw(); } };
-    const scrolled = () => { if (!motion.matches) requestDraw(); };
+    const scrolled = () => { if (!motion.matches) requestDraw(true); };
+    const pointerMoved = (event) => {
+        if (event.pointerType !== 'mouse' || !finePointer.matches || mobile.matches || motion.matches) return;
+        const rect = stage.getBoundingClientRect();
+        pointerTarget.x = Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1));
+        pointerTarget.y = Math.max(-1, Math.min(1, (event.clientY - rect.top) / rect.height * 2 - 1));
+        requestDraw();
+    };
+    const pointerLeft = () => { pointerTarget.x = pointerTarget.y = 0; requestDraw(); };
     const observer = new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting;
         if (visible) { init(); requestDraw(); } else stop();
-    }, { rootMargin: '100px' });
+    }, { threshold: .01 });
     const resizeObserver = new ResizeObserver(resized);
     const observe = () => { observer.observe(world); resizeObserver.observe(stage); resizeObserver.observe(viewport); watchDensity(); };
     const loaded = () => { observe(); schedule(); };
     motion.addEventListener('change', preferenceChanged);
     mobile.addEventListener('change', preferenceChanged);
     phone.addEventListener('change', preferenceChanged);
+    finePointer.addEventListener('change', pointerLeft);
     connection?.addEventListener('change', preferenceChanged);
     window.addEventListener('scroll', scrolled, { passive: true });
     window.addEventListener('resize', resized, { passive: true });
     document.addEventListener('visibilitychange', visibilityChanged);
+    hero.addEventListener('pointermove', pointerMoved, { passive: true });
+    hero.addEventListener('pointerleave', pointerLeft);
     window.addEventListener('pagehide', (event) => {
         suspended = true; cancelIdle(); release(); observer.disconnect(); resizeObserver.disconnect();
         densityQuery?.removeEventListener('change', densityChanged);
@@ -134,11 +174,14 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
             motion.removeEventListener('change', preferenceChanged);
             mobile.removeEventListener('change', preferenceChanged);
             phone.removeEventListener('change', preferenceChanged);
+            finePointer.removeEventListener('change', pointerLeft);
             connection?.removeEventListener('change', preferenceChanged);
             window.removeEventListener('scroll', scrolled);
             window.removeEventListener('resize', resized);
             window.removeEventListener('load', loaded);
             document.removeEventListener('visibilitychange', visibilityChanged);
+            hero.removeEventListener('pointermove', pointerMoved);
+            hero.removeEventListener('pointerleave', pointerLeft);
         }
     });
     window.addEventListener('pageshow', (event) => {

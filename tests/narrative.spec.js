@@ -21,62 +21,65 @@ async function seek(page, progress) {
     await page.waitForTimeout(750);
 }
 
-test('the five stations activate in order, reverse correctly and keep readable labels', async ({ page }, testInfo) => {
+test('automatic data flow activates every existing station and synchronizes the twin', async ({ page }, testInfo) => {
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
     page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-    await page.goto('/');
-    await page.locator('.hero-world').scrollIntoViewIfNeeded();
-    await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
-    for (const [step, progress] of [[0, 0], [1, .22], [2, .42], [3, .62], [4, .84], [4, .97], [2, .42], [0, 0]]) {
-        await seek(page, progress);
-        await expect(page.locator('.hero-labels .is-active')).toHaveAttribute('data-station', String(step));
-        const boxes = await page.locator('[data-station]').evaluateAll((labels) => labels.map((label) => {
-            const rect = label.getBoundingClientRect();
-            return { x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom, hidden: label.hidden };
-        }));
-        for (let i = 0; i < boxes.length; i++) {
-            expect(boxes[i].hidden).toBe(false);
-            expect(boxes[i].x).toBeGreaterThanOrEqual(0);
-            expect(boxes[i].right).toBeLessThanOrEqual(page.viewportSize().width);
-            for (let j = i + 1; j < boxes.length; j++) {
-                const a = boxes[i], b = boxes[j];
-                expect(a.right + 2 <= b.x || b.right + 2 <= a.x || a.bottom + 2 <= b.y || b.bottom + 2 <= a.y, `Labels ${i} and ${j} at ${progress}`).toBe(true);
-            }
-        }
-        if (progress === .62 || progress === .97) await page.screenshot({ path: testInfo.outputPath(`narrative-${progress}.png`) });
-    }
-    await seek(page, 1);
-    await page.evaluate(() => scrollBy(0, 200));
-    await expect(page.locator('#projects-title')).toBeInViewport();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
-    expect(errors).toEqual([]);
-});
-
-test('digital wireframe activates progressively, completes and can be scrubbed backwards', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'desktop-chrome', 'One instrumented geometry check.');
     await page.addInitScript(() => {
-        const prototype = WebGL2RenderingContext.prototype;
-        const clear = prototype.clear, drawArrays = prototype.drawArrays;
-        prototype.clear = function (...args) { window.twinLineCounts = []; return clear.apply(this, args); };
-        prototype.drawArrays = function (...args) {
-            if (args[0] === this.LINES) window.twinLineCounts.push(args[2]);
-            return drawArrays.apply(this, args);
+        window.dataPointBudget = 0;
+        const original = WebGL2RenderingContext.prototype.drawArrays;
+        WebGL2RenderingContext.prototype.drawArrays = function (mode, first, count) {
+            if (mode === this.POINTS) window.dataPointBudget = Math.max(window.dataPointBudget, count);
+            return original.call(this, mode, first, count);
         };
     });
     await page.goto('/');
+    await page.locator('.hero-world').scrollIntoViewIfNeeded();
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
-    const counts = [];
-    for (const progress of [.79, .84, .89, .96, .84]) {
-        await seek(page, progress);
-        counts.push(await page.evaluate(() => window.twinLineCounts));
+    const seen = await page.evaluate(() => new Promise((resolve) => {
+        const stations = new Set();
+        const record = () => document.querySelectorAll('[data-station].is-active').forEach((label) => stations.add(label.dataset.station));
+        const observer = new MutationObserver(record);
+        observer.observe(document.querySelector('.hero-labels'), { attributes: true, subtree: true, attributeFilter: ['class'] });
+        record();
+        setTimeout(() => { observer.disconnect(); resolve([...stations].sort()); }, 8500);
+    }));
+    expect(seen).toEqual(['0', '1', '2', '3', '4']);
+    await expect.poll(() => page.locator('.hero-journey').evaluate((el) => Number(el.style.getPropertyValue('--data-pulse'))), { timeout: 8000, intervals: [40] }).toBeGreaterThan(.3);
+    await page.screenshot({ path: testInfo.outputPath('physical-digital-sync.png') });
+    expect(await page.evaluate(() => window.dataPointBudget)).toBeGreaterThan(0);
+    expect(await page.evaluate(() => window.dataPointBudget)).toBeLessThanOrEqual(testInfo.project.name.includes('android') || testInfo.project.name.includes('ios') ? 4 : 12);
+    await expect(page.locator('[data-station]')).toHaveCount(5);
+    await page.locator('.hero-actions-v2 a').first().click();
+    await expect(page.locator('#projects-title')).toBeInViewport();
+    expect(errors).toEqual([]);
+});
+
+test('scroll phases preserve rest and react in order even after a fast jump', async ({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chrome', 'Platform-independent timeline.');
+    const { createAnimationSequence } = await import('../js/hero/animation-sequence.js');
+    const sequence = createAnimationSequence();
+    let state;
+    const targets = [[.10, -1], [.24, 0], [.39, 1], [.54, 2], [.69, 3], [.90, 4]];
+    for (const [target, active] of targets) {
+        for (let i = 0; i < 75; i++) state = sequence.update(1 / 60, target, false);
+        expect(state.phase).toBeCloseTo(target, 3);
+        const pulses = [...state.pulses];
+        if (active < 0) expect(pulses.every((p) => p === 0)).toBe(true);
+        else expect(pulses[active]).toBeGreaterThan(.1);
     }
-    expect(counts[0]).toHaveLength(2); // Active edges plus quiet complete outline.
-    expect(counts[1][0]).toBeGreaterThan(counts[0][0]);
-    expect(counts[2][0]).toBeGreaterThan(counts[1][0]);
-    expect(counts[3]).toHaveLength(1); // Entire geometry uses the active material.
-    expect(counts[3][0]).toBe(counts[0][0] + counts[0][1]);
-    expect(counts[4]).toEqual(counts[1]);
+    const jump = createAnimationSequence(), visited = new Set();
+    let scan = false;
+    for (let i = 0; i < 110; i++) {
+        state = jump.update(1 / 60, 1, false);
+        state.pulses.forEach((pulse, index) => { if (pulse > .1) visited.add(index); });
+        scan ||= state.scanner > .3;
+    }
+    expect([...visited]).toEqual([0, 1, 2, 3, 4]);
+    expect(scan).toBe(true);
+    const reduced = jump.update(10, .5, true);
+    expect(reduced.active).toBe(false);
+    expect(reduced.scanner + reduced.sync + reduced.wakeAfter).toBe(0);
 });
 
 test('camera retains all station bounds across narrow, wide and short viewports', async ({}, testInfo) => {

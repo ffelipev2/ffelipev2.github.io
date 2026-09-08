@@ -53,6 +53,11 @@
     content: ''; position: absolute; top: 100%; left: calc(50% + var(--guide-x, 0px));
     height: 12px; width: 1px; background: currentColor; opacity: .45;
 }
+.hero-labels span[data-status]:not([data-status=""])::before {
+    content: attr(data-status); position: absolute; left: 8px; bottom: calc(100% + 3px);
+    color: inherit; font-size: .625rem; font-weight: 400; letter-spacing: .045em;
+    opacity: .72; white-space: nowrap;
+}
 .hero-labels span.is-below::after { top: auto; bottom: 100%; }
 .hero-labels span.is-complete { border-color: var(--color-accent); }
 .hero-labels span.is-complete:nth-child(-n+2) { border-color: var(--color-hardware); }
@@ -64,7 +69,7 @@
 .hero-journey { --journey-progress: 1; position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 8px 22px; }
 .hero-journey p { margin: 0; font-size: .875rem; font-weight: 600; letter-spacing: .07em; }
 .hero-journey p > span + span { margin-left: 10px; }
-.hero-journey p > span:nth-child(2) { display: inline-block; color: var(--color-accent-dark); opacity: calc(.6 + var(--journey-progress) * .4); transform: scaleX(calc(.75 + var(--journey-progress) * .25)); transform-origin: left; }
+.hero-journey p > span:nth-child(2) { display: inline-block; color: var(--color-accent-dark); opacity: calc(.6 + var(--journey-progress) * .25 + var(--data-pulse, 0) * .15); transform: translateX(calc(var(--data-pulse, 0) * 4px)) scaleX(calc(.75 + var(--journey-progress) * .25)); transform-origin: left; }
 .physical-label { color: var(--color-hardware); }
 .digital-label { color: var(--color-accent-dark); }
 .hero-journey a { display: inline-flex; gap: 18px; align-items: center; min-height: 44px; text-decoration: none; font-size: .8125rem; color: var(--color-muted) !important; }

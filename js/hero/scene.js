@@ -1,13 +1,16 @@
 import {
     Scene, Group, Mesh, MeshStandardMaterial, MeshBasicMaterial, LineBasicMaterial,
     BoxGeometry, CylinderGeometry, SphereGeometry, PlaneGeometry, CanvasTexture, BufferGeometry, Float32BufferAttribute,
-    EdgesGeometry, LineSegments, Vector3, HemisphereLight, DirectionalLight, PointLight,
+    EdgesGeometry, LineSegments, Vector3, Matrix4, HemisphereLight, DirectionalLight, PointLight,
     WebGLRenderer, PMREMGenerator, SRGBColorSpace, ACESFilmicToneMapping, MathUtils,
 } from 'three';
 import { mergeGeometries, mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { createCameraRig } from './camera-rig.js';
+import { STATION_PHASES, DEPARTURE_PHASES, envelope } from './animation-sequence.js';
+import { createNarrativeEffects } from './narrative-effects.js';
+export { createAnimationSequence } from './animation-sequence.js';
 
 // Original stylized geometry, not manufacturer CAD. Replace individual stations
 // with licensed low-poly assets here if more exact product shapes are needed.
@@ -145,15 +148,26 @@ export function createHeroScene(host, { compact, onContextLost }) {
         // Stylized collaborative arm; the wrist responds by a few degrees.
         cylinder(stations[3], mat.base, [0, .22, 0], .7, .44);
         const arm = new Group(); stations[3].add(arm);
+        const articulated = [];
         const joints = [[0, .65, 0], [-.65, 2.2, 0], [.8, 2.8, 0], [1.3, 1.8, 0]];
         joints.forEach((p, i) => {
-            mesh(arm, sphereGeometry, mat.steel, p, [.30, .30, .30]);
-            if (i) beam(arm, mat.steel, joints[i - 1], p, .34);
+            const joint = mesh(arm, sphereGeometry, mat.steel, p, [.30, .30, .30]);
+            if (i >= 1) articulated.push(joint);
+            if (i) {
+                const link = beam(arm, mat.steel, joints[i - 1], p, .34);
+                if (i >= 2) articulated.push(link);
+            }
             const cap = cylinder(arm, mat.base, [p[0], p[1], .25], .22, .08); cap.rotation.x = Math.PI / 2;
+            if (i >= 1) articulated.push(cap);
         });
         const wrist = new Group(); wrist.position.set(1.3, 1.8, 0); arm.add(wrist);
         box(wrist, mat.dark, [0, -.27, 0], [.42, .32, .35]);
-        for (const x of [-.22, .22]) box(wrist, mat.steel, [x, -.57, 0], [.075, .45, .14]);
+        const fingers = [-.22, .22].map((x) => box(wrist, mat.steel, [x, -.57, 0], [.075, .45, .14]));
+        // Reparent existing pieces about their mechanical joint, preserving the
+        // exact rest pose; no replacement model or detached forearm.
+        const elbow = new Group(); elbow.position.set(...joints[1]); arm.add(elbow);
+        scene.updateMatrixWorld(true);
+        for (const part of [...articulated, wrist]) elbow.attach(part);
         box(stations[3], mat.amber, [1.22, .15, 0], [.25, .25, .25]);
         // A small physical plant becomes a digital wireframe at the last station.
         const twinMaterial = keep(new LineBasicMaterial({ color: 0x3bd6ff, transparent: true, opacity: .28 }));
@@ -198,16 +212,23 @@ export function createHeroScene(host, { compact, onContextLost }) {
         }
         // Merge static geometry per material: pins do not each cost a draw call.
         const batches = new Map();
+        const movingRoots = new Set([arm, elbow, wrist]);
+        const unbatched = new Set(fingers);
+        const inverse = new Matrix4();
         scene.updateMatrixWorld(true);
         scene.traverse((object) => {
-            if (!object.isMesh || object.parent === wrist) return;
-            const geometry = object.geometry.clone().applyMatrix4(object.matrixWorld);
-            if (!batches.has(object.material)) batches.set(object.material, []);
-            batches.get(object.material).push({ geometry, object });
+            if (!object.isMesh || unbatched.has(object)) return;
+            let root = object.parent;
+            while (root !== scene && !movingRoots.has(root)) root = root.parent;
+            if (!batches.has(root)) batches.set(root, new Map());
+            const materials = batches.get(root);
+            const geometry = object.geometry.clone().applyMatrix4(inverse.copy(root.matrixWorld).invert().multiply(object.matrixWorld));
+            if (!materials.has(object.material)) materials.set(object.material, []);
+            materials.get(object.material).push({ geometry, object });
         });
-        for (const [material, entries] of batches) {
+        for (const [root, materials] of batches) for (const [material, entries] of materials) {
             const merged = keep(mergeGeometries(entries.map((entry) => entry.geometry)));
-            scene.add(new Mesh(merged, material));
+            root.add(new Mesh(merged, material));
             entries.forEach(({ geometry, object }) => { geometry.dispose(); object.removeFromParent(); });
         }
         const links = [];
@@ -224,8 +245,7 @@ export function createHeroScene(host, { compact, onContextLost }) {
             geometry.setIndex([0, 1, 1, 2]);
             const material = keep(new LineBasicMaterial({ color: 0x16b8e6, transparent: true, opacity: .25 }));
             scene.add(new LineSegments(geometry, material));
-            const packet = mesh(scene, sphereGeometry, i === 0 ? mat.amber : mat.blue, start.toArray(), [compact ? .04 : .055, .055, .055]);
-            if (i === 0) material.color.setHex(0xf59e42);
+            const packet = mesh(scene, sphereGeometry, mat.blue, start.toArray(), [compact ? .04 : .055, .055, .055]);
             const firstLength = start.distanceTo(corner);
             links.push({ material, packet, start, corner, end, split: firstLength / (firstLength + corner.distanceTo(end)) });
         }
@@ -237,14 +257,17 @@ export function createHeroScene(host, { compact, onContextLost }) {
         const twinLight = new PointLight(0x3bd6ff, 0, 4 * stationScale, 2);
         twinLight.position.set(xs[4], 1.3 * stationScale, zs[4] + .45 * stationScale);
         scene.add(twinLight);
+        const effects = createNarrativeEffects({ scene, stations, compact, keep, twinPositions: positions });
         const anchors = xs.map((x, i) => new Vector3(x, compact && i >= 3 ? -.23 * stationScale : stationScale * [1.55, 1.47, 3.22, 3.12, 2.98][i], zs[i] + (compact && i >= 3 ? stationScale * 1.19 : 0)));
         const projected = new Vector3();
-        const arrivals = [0, .18, .38, .58, .78];
-        const departures = [.08, .27, .47, .67];
         const labelWidths = new Float32Array(compact ? [70, 85, 57, 85, 120] : [78, 96, 70, 96, 130]);
         const labelHeights = new Float32Array(5).fill(30);
         const labelXs = new Float32Array(5), labelYs = new Float32Array(5), anchorXs = new Float32Array(5);
         const labelRows = compact ? [[0, 1, 2], [4, 3]] : [[0, 1, 2, 3, 4]];
+        const statuses = ['STATUS / ONLINE', 'SENSOR / SAMPLE', 'TX / ACTIVE', 'STATUS / READY', 'SYNC / ACTIVE'];
+        // Static callers (e.g. resolution checks) can still render one frame.
+        const stillAnimation = { phase: 0, pulses: new Float32Array(5), scanner: 0, sync: 0 };
+        const stillPointer = { x: 0, y: 0 };
         let labelsMeasured = false;
         // One quality policy for every layout. Native density up to 4x, bounded
         // by four million pixels and hardware limits, including external displays.
@@ -263,40 +286,45 @@ export function createHeroScene(host, { compact, onContextLost }) {
                 renderer.setDrawingBufferSize(w, h, dpr);
             },
             reduceQuality() {
+                effects.simplify();
                 if (dpr <= 1) return false;
                 dpr = Math.max(1, dpr * .8);
                 renderer.setDrawingBufferSize(width, height, dpr);
                 return true;
             },
-            render(progress, labels, reduced = false) {
-                rig.update(progress, width, height, compact);
-                let step = 0;
-                for (let i = 1; i < 5; i++) if (progress >= arrivals[i]) step = i;
+            render(progress, labels, reduced = false, animation = stillAnimation, pointer = stillPointer) {
+                rig.update(progress, width, height, compact, pointer);
+                const phase = animation.phase;
                 for (let i = 0; i < links.length; i++) {
                     const link = links[i];
-                    const local = MathUtils.smoothstep(progress, departures[i], arrivals[i + 1]);
-                    link.material.opacity = .15 + local * .55;
-                    if (local <= link.split) link.packet.position.lerpVectors(link.start, link.corner, local / link.split);
-                    else link.packet.position.lerpVectors(link.corner, link.end, (local - link.split) / (1 - link.split));
+                    const local = MathUtils.smoothstep(phase, DEPARTURE_PHASES[i], STATION_PHASES[i + 1]);
+                    link.material.opacity = .15 + MathUtils.smoothstep(progress, DEPARTURE_PHASES[i], STATION_PHASES[i + 1]) * .25 + envelope(phase, DEPARTURE_PHASES[i], STATION_PHASES[i + 1] + .02) * .22;
+                    if (link.split > 0 && local <= link.split) link.packet.position.lerpVectors(link.start, link.corner, local / link.split);
+                    else link.packet.position.lerpVectors(link.corner, link.end, link.split < 1 ? (local - link.split) / (1 - link.split) : 1);
                     link.packet.visible = !reduced && local > 0 && local < 1;
                 }
                 for (let i = 0; i < indicators.length; i++) {
                     const material = indicators[i];
-                    const enter = i === 0 ? 1 : MathUtils.smoothstep(progress, arrivals[i] - .025, arrivals[i] + .025);
-                    const leave = i === 4 ? 0 : MathUtils.smoothstep(progress, arrivals[i + 1] - .025, arrivals[i + 1] + .025);
-                    const pulse = i === 1 && !reduced ? Math.sin(Math.PI * MathUtils.smoothstep(progress, .18, .27)) * .14 : 0;
-                    material.color.setHex(i < 2 ? 0xf59e42 : 0x3bd6ff).multiplyScalar(.32 + enter * .30 + (enter - leave) * .38 + pulse);
+                    const enter = MathUtils.smoothstep(progress, STATION_PHASES[i] - .025, STATION_PHASES[i] + .025);
+                    material.color.setHex(i < 2 ? 0xf59e42 : 0x3bd6ff).multiplyScalar(.42 + enter * .20 + animation.pulses[i] * .50);
                 }
-                // A short six-degree wrist excursion, pivoted on the existing joint.
-                wrist.rotation.z = reduced ? 0 : -.105 * Math.sin(Math.PI * MathUtils.smoothstep(progress, .58, .67));
-                const build = MathUtils.smoothstep(progress, .78, .92);
-                twinLight.intensity = 4.5 * build * stationScale * stationScale;
+                const idle = reduced ? 0 : envelope(phase, .22, .46) * .18;
+                const robot = reduced ? 0 : envelope(phase, .635, .80);
+                arm.rotation.y = .061 * (robot + idle);
+                elbow.rotation.z = -.045 * (robot + idle);
+                wrist.rotation.z = -.07 * robot;
+                fingers[0].position.x = -.22 - .035 * robot;
+                fingers[1].position.x = .22 + .035 * robot;
+                const scanBuild = MathUtils.smoothstep(phase, .80, .94) * (1 - MathUtils.smoothstep(phase, .96, 1));
+                const build = Math.max(MathUtils.smoothstep(progress, .80, .96), reduced ? 1 : scanBuild);
+                twinLight.intensity = (3.5 * build + animation.sync) * stationScale * stationScale;
                 const litVertices = 2 * Math.floor(segments.length * (.07 + .93 * build));
                 twinGeometry.groups[0].count = litVertices;
                 twinGeometry.groups[1].start = litVertices;
                 twinGeometry.groups[1].count = positions.count - litVertices;
                 twinOutline.visible = build < 1;
-                twinMaterial.opacity = .28 + .65 * build;
+                twinMaterial.opacity = Math.min(.95, .28 + .55 * build + animation.sync * .18);
+                effects.update(animation, reduced, pointer.x);
                 if (!labelsMeasured && labels[0]?.offsetWidth) {
                     labels.forEach((label, i) => { labelWidths[i] = label.offsetWidth; labelHeights[i] = label.offsetHeight; });
                     labelsMeasured = true;
@@ -304,8 +332,8 @@ export function createHeroScene(host, { compact, onContextLost }) {
                 for (let i = 0; i < labels.length; i++) {
                     const label = labels[i];
                     projected.copy(anchors[i]).project(rig.camera);
-                    const x = (projected.x * .5 + .5) * width;
-                    const y = (-projected.y * .5 + .5) * height;
+                    const x = (projected.x * .5 + .5) * width + pointer.x * 2;
+                    const y = (-projected.y * .5 + .5) * height + pointer.y;
                     const visible = Math.abs(projected.x) < 1 && Math.abs(projected.y) < 1 && projected.z < 1;
                     label.hidden = !visible;
                     const halfWidth = labelWidths[i] / 2;
@@ -333,8 +361,11 @@ export function createHeroScene(host, { compact, onContextLost }) {
                     label.style.transform = `translate(${labelXs[i].toFixed(1)}px, ${labelYs[i].toFixed(1)}px) translate(-50%, ${below ? '0' : '-100%'})`;
                     label.style.setProperty('--guide-x', `${(anchorXs[i] - labelXs[i]).toFixed(1)}px`);
                     label.classList.toggle('is-below', below);
-                    label.classList.toggle('is-active', reduced || i === step);
-                    label.classList.toggle('is-complete', progress >= arrivals[i] && i < step);
+                    const active = reduced || animation.pulses[i] > .08 || (i === 3 && animation.scanner > .08) || (i === 4 && animation.sync > .08);
+                    label.classList.toggle('is-active', active);
+                    label.classList.toggle('is-complete', progress > STATION_PHASES[i] + .1);
+                    const status = active && !reduced && width > 900 && labelYs[i] > 55 ? statuses[i] : '';
+                    if (label.dataset.status !== status) label.dataset.status = status;
                 }
                 renderer.render(scene, rig.camera);
             },

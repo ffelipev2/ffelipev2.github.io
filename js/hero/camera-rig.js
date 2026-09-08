@@ -1,13 +1,13 @@
 import { PerspectiveCamera, Vector3, MathUtils } from 'three';
 
-// Fixed FOV, gentle lateral dolly, no orbit or pointer controls.
+// Fixed FOV and existing dolly, with a bounded, interpolated cursor offset.
 export function createCameraRig() {
     const camera = new PerspectiveCamera(34, 1, 0.1, 90);
     const target = new Vector3();
     let aspect = 0;
     return {
         camera,
-        update(progress, width, height, compact) {
+        update(progress, width, height, compact, pointer) {
             // Constant travel per scroll pixel; hold the final composition at 90%.
             const t = MathUtils.clamp(progress / .9, 0, 1);
             if (aspect !== width / height) {
@@ -19,6 +19,9 @@ export function createCameraRig() {
             const lateral = compact ? -.10 + t * .20 : -.35 + t * .9;
             target.set(lateral, compact ? .8 : 1.05, 0);
             camera.position.set(lateral + (compact ? .15 : 1.1), distance * (compact ? .78 : .39 - t * .012), distance * (1 - t * (compact ? .008 : .025)));
+            // Less than half a degree, no FOV change or touch interaction.
+            camera.position.x += (pointer?.x || 0) * distance * .004;
+            camera.position.y += (pointer?.y || 0) * distance * .002;
             camera.lookAt(target);
             camera.updateMatrixWorld();
         },

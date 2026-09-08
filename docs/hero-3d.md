@@ -1,3 +1,68 @@
+# Animación Mundo físico → Mundo digital
+
+Actualización del 8 de septiembre de 2026 sobre la escena aprobada. Se conservan HTML, textos, fotografía, dimensiones, composición, colores, tipografía, modelos, biseles, reflejos, sombras de contacto y disposición móvil. No se añaden dependencias ni objetos grandes.
+
+## Funcionamiento actual
+
+Un reloj compartido ejecuta una secuencia cada 5,6 segundos. El primer 20% es reposo, sin bucle de dibujo. Un paquete cyan recorre el circuito existente de ESP32 a sensores, LoRa, robótica y gemelo digital. Cada llegada activa brevemente el indicador y la etiqueta correspondiente.
+
+El ESP32 parpadea con su LED existente. El sensor pulsa en ámbar y emite dos anillos tenues. LoRa emite tres ondas cyan desde su antena. El brazo conserva sus piezas y pose original, con pivotes articulados que permiten hasta unos 3,5° de base, 2,6° de codo y 4° de muñeca; la pinza abre/cierra ligeramente. El movimiento de espera es todavía menor y también intermitente.
+
+Al llegar al robot se inicia un escaneo vertical. Un plano tenue y su contorno recorren el brazo; hasta 12 puntos deterministas viajan desde él hacia vértices reales del gemelo. Las aristas se activan por altura, otro contorno recorre el wireframe y hasta cinco puntos siguen segmentos existentes. La luz del gemelo y la flecha de «Mundo físico → Mundo digital» responden a esa sincronización. No hay partículas distribuidas por el fondo, bloom ni nuevos modelos sólidos.
+
+Las etiquetas mantienen sus textos 01–05. En escritorio pueden mostrar brevemente estados decorativos como `TX / ACTIVE` o `SYNC / ACTIVE`; no son lecturas reales. Se omiten en tamaños pequeños y con movimiento reducido. La cuadrícula CAD tiene opacidad 0,085 y queda debajo/detrás de la plataforma.
+
+## Scroll y cursor
+
+| Progreso | Actividad principal |
+| --- | --- |
+| 0–20% | Reposo |
+| 20–35% | ESP32 y salida del paquete |
+| 35–50% | Sensor y muestreo |
+| 50–65% | Transmisión LoRa |
+| 65–80% | Respuesta mecánica del robot |
+| 80–100% | Escaneo, transferencia y sincronización del gemelo |
+
+La cámara, el texto y la página mantienen su respuesta directa al scroll nativo. Solo los efectos limitan su avance a 0,72 de progreso por segundo, para que un gesto rápido permita ver las estaciones sucesivas (hasta unos 1,4 segundos para alcanzar el final). Tras dos segundos sin cambiar el scroll, el ciclo automático continúa desde esa fase. No se interceptan gestos y se conserva la duración actual del hero.
+
+El parallax se aplica solo a ratón con puntero fino y viewport de escritorio. Usa interpolación suave y offsets de cámara menores a medio grado, con una diferencia adicional máxima de 2px en las etiquetas. La profundidad produce desplazamientos ligeramente diferentes entre plataforma, objetos y cuadrícula. Al salir del hero vuelve al centro. No hay parallax táctil ni controles orbitales.
+
+## Rendimiento, móvil y limpieza
+
+- Se reutilizan el RAF y la carga diferida existentes. Durante las secuencias automáticas, se limita el dibujo a 60 fps en escritorio y 30 en tablet/móvil; el scroll conserva su respuesta directa. Son límites de cadencia, no FPS garantizados.
+- RAF y temporizadores se detienen fuera de pantalla o con la pestaña oculta. El tiempo oculto no produce saltos al volver. Entre ciclos se programa un único despertar.
+- En teléfonos: cuatro puntos de transferencia, dos puntos sobre el wireframe, una onda LoRa, un anillo de sensor y escáner sin plano transparente. Se conservan antialias, resolución adaptativa, detalles y materiales.
+- Las geometrías se fusionan por material; las piezas móviles se fusionan en el espacio de sus pivotes. Posiciones, materiales y geometrías se reservan una vez; no se crean objetos 3D por frame.
+- Si el envío de frames resulta costoso, se reducen efectos secundarios junto con el escalado adaptativo existente. Se mantienen los fallbacks de dispositivo limitado, WebGL no disponible y pérdida de contexto.
+- `prefers-reduced-motion` conserva la escena final estática, sin efectos, HUD, parallax ni temporizador automático.
+- `pagehide` libera geometrías, materiales, textura/entorno, renderer y contexto, y cancela los relojes. Se comprueban restauración de bfcache y cambios de preferencias sin duplicar canvas ni listeners de interacción.
+
+Medición local en Chrome: máximo de 33 draw calls y 3.686 triángulos durante el ciclo completo. La versión anterior tenía un máximo documentado de 23 calls y 3.682 triángulos; el incremento es principalmente líneas y puntos. El bundle pasa de 520.807 a 528.113 bytes; gzip, de 134.137 a 136.472 bytes (+2.335 bytes). No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
+
+## Archivos de esta actualización
+
+| Archivo | Cambio |
+| --- | --- |
+| `js/hero/animation-sequence.js` | Reloj común, fases, llegadas, pulsos y transición entre scroll y reproducción automática. |
+| `js/hero/narrative-effects.js` | Ondas, anillos, scanners, cuadrícula y puntos preasignados. |
+| `js/hero/scene.js` | Pivotes del robot e integración de circuito, indicadores, wireframe, etiquetas y efectos. |
+| `js/hero/camera-rig.js` | Offset de cursor acotado sin cambiar el traveling existente. |
+| `js/hero-3d.js` | Único RAF, despertares, cadencia, puntero, visibilidad, reduced-motion y cleanup. |
+| `css/hero-3d.css` | Estados decorativos de etiquetas y microanimación de la flecha. |
+| `js/hero/scene.bundle.js` | Módulo de producción regenerado. |
+| `scripts/validate-site.mjs` | Valida la sintaxis de los dos módulos nuevos. |
+| `tests/narrative.spec.js`, `tests/rendering.spec.js` | Ciclo automático, orden con scroll rápido, puntos, parallax, presupuesto y limpieza. |
+| `docs/hero-3d.md` | Comportamiento actual e historial de refinamientos previos. |
+
+Se conservan las pruebas de integración, contraste, resize, densidad, gestos táctiles y fallback. Se comprueba Chrome de escritorio, tablet, Android emulado y WebKit con perfil de iPhone. Resultado: 51 comprobaciones aplicables verificadas y 25 omisiones intencionadas por perfil. La primera ronda tuvo dos fallos de medición: el muestreo saltaba un pulso breve y se medía una etiqueta antes del primer frame ajustado; corregidas esas pruebas, las ocho combinaciones afectadas pasaron. El build valida 11 páginas y nueve proyectos. La emulación no sustituye una revisión en dispositivos físicos.
+
+---
+
+# Historial de refinamientos anteriores
+
+Los apartados siguientes describen versiones previas, antes del ciclo automático solicitado el 8 de septiembre. Sus medidas de reposo y porcentajes de activación son históricos; el comportamiento actual es el descrito arriba.
+
+
 # Refinamiento del hero existente
 
 Se conservan la implementación HTML/CSS/JavaScript, header, navegación, textos, botones, fotografía, bloques 01/02/03 y cinco estaciones originales. `index.html`, proyectos y dependencias no cambian. La paleta sigue siendo azul petróleo, ámbar para hardware y cian para datos.
