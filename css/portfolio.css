@@ -532,7 +532,7 @@ body.portfolio-page :is(a, button, summary):focus-visible {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .project-card-v2:last-child {
+    .featured-grid-v2 > .project-card-v2:last-child {
         grid-column: 1 / -1;
         width: calc(50% - 12px);
     }
@@ -1958,7 +1958,7 @@ body.menu-open {
 }
 
 @media (max-width: 900px) {
-    .project-card-v2:last-child {
+    .featured-grid-v2 > .project-card-v2:last-child {
         margin-inline: auto;
     }
 
@@ -3021,7 +3021,7 @@ details.is-disclosure-animating {
         transform: translateY(var(--hero-portrait-offset));
     }
 
-    .project-card-v2:last-child {
+    .featured-grid-v2 > .project-card-v2:last-child {
         width: calc(50% - 10px);
     }
 }
