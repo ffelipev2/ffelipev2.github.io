@@ -770,5 +770,256 @@
         }
       ]
     }
+  },
+  "surfaceRealism": {
+    "date": "2026-09-08",
+    "baselineCommit": "ff28215",
+    "reflectionFaceSize": {
+      "mobile": 64,
+      "desktop": 128
+    },
+    "contactTextureSize": 64,
+    "notes": [
+      "Procedural environment generated only during initialization; source room and generator immediately disposed.",
+      "Nine static contact patches merged into one material batch; no live shadow-map rendering.",
+      "Measurements use emulated phones on a desktop GPU, not physical phone power/temperature data."
+    ],
+    "measurement": {
+      "environment": "Local Chrome, no network/CPU throttling; three cold browser contexts per viewport/variant; frame intervals are rendering cadence, not hardware GPU timing.",
+      "browser": "152.0.7977.76",
+      "pairedComparison": true,
+      "bundleBytes": 520734,
+      "gzipBytes": 134104,
+      "results": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 0,
+          "variant": "before",
+          "lcp": 552,
+          "cls": 0,
+          "maxCalls": 21,
+          "maxTriangles": 2704,
+          "frames": 402,
+          "fcp": 552,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.400000095367432,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 0,
+          "variant": "after",
+          "lcp": 304,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 408,
+          "fcp": 304,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.399999976158142,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 1,
+          "variant": "after",
+          "lcp": 436,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 406,
+          "fcp": 436,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.400000095367432,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 1,
+          "variant": "before",
+          "lcp": 300,
+          "cls": 0,
+          "maxCalls": 21,
+          "maxTriangles": 2704,
+          "frames": 406,
+          "fcp": 300,
+          "overflow": false,
+          "frameIntervalMedian": 6.899999976158142,
+          "frameIntervalP95": 7.300000071525574,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 2,
+          "variant": "before",
+          "lcp": 296,
+          "cls": 0,
+          "maxCalls": 21,
+          "maxTriangles": 2704,
+          "frames": 406,
+          "fcp": 296,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 2,
+          "variant": "after",
+          "lcp": 336,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 406,
+          "fcp": 336,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.300000071525574,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 0,
+          "variant": "before",
+          "lcp": 320,
+          "cls": 0,
+          "maxCalls": 21,
+          "maxTriangles": 1552,
+          "frames": 477,
+          "fcp": 320,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.200000047683716,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 0,
+          "variant": "after",
+          "lcp": 284,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 2530,
+          "frames": 484,
+          "fcp": 284,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.200000047683716,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 1,
+          "variant": "after",
+          "lcp": 292,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 2530,
+          "frames": 496,
+          "fcp": 292,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 1,
+          "variant": "before",
+          "lcp": 284,
+          "cls": 0,
+          "maxCalls": 21,
+          "maxTriangles": 1552,
+          "frames": 496,
+          "fcp": 284,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 2,
+          "variant": "before",
+          "lcp": 268,
+          "cls": 0,
+          "maxCalls": 21,
+          "maxTriangles": 1552,
+          "frames": 495,
+          "fcp": 268,
+          "overflow": false,
+          "frameIntervalMedian": 6.899999976158142,
+          "frameIntervalP95": 7.399999976158142,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 2,
+          "variant": "after",
+          "lcp": 272,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 2530,
+          "frames": 496,
+          "fcp": 272,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        }
+      ]
+    }
   }
 }

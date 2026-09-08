@@ -1,10 +1,12 @@
 import {
     Scene, Group, Mesh, MeshStandardMaterial, MeshBasicMaterial, LineBasicMaterial,
-    BoxGeometry, CylinderGeometry, SphereGeometry, BufferGeometry, Float32BufferAttribute,
-    EdgesGeometry, LineSegments, Vector3, HemisphereLight, DirectionalLight,
-    WebGLRenderer, SRGBColorSpace, ACESFilmicToneMapping, MathUtils,
+    BoxGeometry, CylinderGeometry, SphereGeometry, PlaneGeometry, CanvasTexture, BufferGeometry, Float32BufferAttribute,
+    EdgesGeometry, LineSegments, Vector3, HemisphereLight, DirectionalLight, PointLight,
+    WebGLRenderer, PMREMGenerator, SRGBColorSpace, ACESFilmicToneMapping, MathUtils,
 } from 'three';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { mergeGeometries, mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { createCameraRig } from './camera-rig.js';
 
 // Original stylized geometry, not manufacturer CAD. Replace individual stations
@@ -36,15 +38,41 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         renderer.outputColorSpace = SRGBColorSpace;
         renderer.toneMapping = ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.15;
+        // Small procedural studio reflection, baked once; nothing is downloaded
+        // and no reflection cameras or shadow maps run during scrolling.
+        const studio = new RoomEnvironment();
+        const reflectionGenerator = new PMREMGenerator(renderer);
+        try {
+            const reflection = keep(reflectionGenerator.fromScene(studio, .025, .1, 100, { size: lowDetail ? 64 : 128 }));
+            scene.environment = reflection.texture;
+            scene.environmentIntensity = .85;
+            scene.environmentRotation.y = Math.PI / 6;
+        } finally {
+            studio.dispose();
+            reflectionGenerator.dispose();
+        }
         const rig = createCameraRig();
         const material = (color, metalness = .35, roughness = .55) => keep(new MeshStandardMaterial({ color, metalness, roughness }));
         const mat = {
-            base: material(0x142536, .55), steel: material(0xabb8c4, .62, .38),
-            dark: material(0x09151e, .2), board: material(0x123c3b, .2),
-            brass: material(0xb28650, .68), amber: keep(new MeshBasicMaterial({ color: 0xf59e42 })),
+            base: material(0x142536, .45, .48), steel: material(0xabb8c4, .82, .28),
+            deck: material(0x344d60, .45, .52),
+            dark: material(0x09151e, .12, .7), board: material(0x123c3b, .18, .58),
+            brass: material(0xb28650, .8, .3), amber: keep(new MeshBasicMaterial({ color: 0xf59e42 })),
             blue: keep(new MeshBasicMaterial({ color: 0x3bd6ff })),
         };
+        // Painted supports stay matte; the hardware carries the studio highlights.
+        mat.base.envMapIntensity = .16;
+        mat.deck.envMapIntensity = .25;
+        mat.dark.envMapIntensity = .18;
+        mat.board.envMapIntensity = .28;
+        for (const painted of [mat.base, mat.deck, mat.dark, mat.board]) {
+            painted.envMap = scene.environment;
+            painted.envMapRotation.copy(scene.environmentRotation);
+        }
         const boxGeometry = keep(new BoxGeometry(1, 1, 1));
+        const bevelSource = new RoundedBoxGeometry(1, 1, 1, 1, .055);
+        const beveledGeometry = keep(mergeVertices(bevelSource));
+        bevelSource.dispose();
         const cylinderGeometry = keep(new CylinderGeometry(1, 1, 1, lowDetail ? 10 : 16));
         const sphereGeometry = keep(new SphereGeometry(1, lowDetail ? 8 : 12, 8));
         const mesh = (parent, geometry, material, position, scale) => {
@@ -53,10 +81,11 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
             return object;
         };
         const box = (parent, material, pos, size) => mesh(parent, boxGeometry, material, pos, size);
+        const beveledBox = (parent, material, pos, size) => mesh(parent, beveledGeometry, material, pos, size);
         const cylinder = (parent, material, pos, radius, height) => mesh(parent, cylinderGeometry, material, pos, [radius, height, radius]);
         const beam = (parent, material, a, b, thickness) => {
             const start = new Vector3(...a), end = new Vector3(...b);
-            const object = box(parent, material, start.clone().add(end).multiplyScalar(.5).toArray(), [thickness, start.distanceTo(end), thickness]);
+            const object = beveledBox(parent, material, start.clone().add(end).multiplyScalar(.5).toArray(), [thickness, start.distanceTo(end), thickness]);
             object.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), end.sub(start).normalize());
             return object;
         };
@@ -64,18 +93,35 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         const xs = compact ? [-2.25, 0, 2.25, 1.45, -1.45] : [-8.8, -4.4, 0, 4.4, 8.8];
         const zs = compact ? [-1.5, -1.5, -1.5, 1.65, 1.65] : [0, 0, 0, 0, 0];
         const stationScale = compact ? .6 : 1;
+        // One shared alpha texture grounds the hardware and its platforms. These
+        // static contact patches join a single material batch below.
+        const shadowCanvas = document.createElement('canvas');
+        shadowCanvas.width = shadowCanvas.height = 64;
+        const shadowContext = shadowCanvas.getContext('2d');
+        const gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 32);
+        gradient.addColorStop(0, 'rgba(0,0,0,.85)');
+        gradient.addColorStop(.45, 'rgba(0,0,0,.5)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        shadowContext.fillStyle = gradient;
+        shadowContext.fillRect(0, 0, 64, 64);
+        const contactTexture = keep(new CanvasTexture(shadowCanvas));
+        const contactMaterial = keep(new MeshBasicMaterial({ map: contactTexture, transparent: true, opacity: .8, depthWrite: false, toneMapped: false }));
+        const contactGeometry = keep(new PlaneGeometry(1, 1).rotateX(-Math.PI / 2));
+        const contactSizes = [[2.2, 2.1], [1.4, 1.4], [1.7, 1.25], [1.9, 1.9]];
         const indicators = xs.map((_, i) => keep(new MeshBasicMaterial({ color: i < 2 ? 0xf59e42 : 0x3bd6ff })));
         const stations = xs.map((x, i) => {
             const group = new Group(); group.position.set(x, 0, zs[i]); group.scale.setScalar(stationScale); scene.add(group);
-            box(group, mat.base, [0, -.22, 0], [3.25, .38, 2.35]);
-            box(group, mat.steel, [0, -.005, 0], [3.12, .05, 2.22]);
+            beveledBox(group, mat.base, [0, -.22, 0], [3.25, .38, 2.35]);
+            box(group, mat.deck, [0, -.005, 0], [3.12, .05, 2.22]);
             box(group, indicators[i], [-.88, -.18, 1.19], [1.2, .035, .035]);
+            if (i < 4) mesh(group, contactGeometry, contactMaterial, [0, .028, 0], [contactSizes[i][0], 1, contactSizes[i][1]]);
+            mesh(scene, contactGeometry, contactMaterial, [x, compact ? -.248 : -.425, zs[i]], [3.7 * stationScale, 1, 2.8 * stationScale]);
             return group;
         });
         // ESP32 development board, RF shield, chip, USB socket and pin headers.
         const pcb = new Group(); stations[0].add(pcb); pcb.position.y = .85; pcb.rotation.x = .48;
         box(pcb, mat.board, [0, 0, 0], [1.55, .12, 2.35]);
-        box(pcb, mat.steel, [0, .18, -.37], [1.04, .24, 1.15]);
+        beveledBox(pcb, mat.steel, [0, .18, -.37], [1.04, .24, 1.15]);
         box(pcb, mat.dark, [0, .13, .52], [.6, .17, .5]);
         box(pcb, mat.steel, [0, .13, 1.11], [.55, .25, .4]);
         box(pcb, mat.dark, [0, .14, 1.32], [.4, .13, .025]);
@@ -91,7 +137,7 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         cylinder(stations[1], indicators[1], [0, 1.44, 0], .3, .025);
         if (!lowDetail) for (let i = 0; i < 5; i++) cylinder(stations[1], mat.base, [0, .7 + i * .11, 0], .365, .035);
         // Outdoor LoRa enclosure and antenna.
-        box(stations[2], mat.steel, [0, 1, 0], [1.22, 1.8, .65]);
+        beveledBox(stations[2], mat.steel, [0, 1, 0], [1.22, 1.8, .65]);
         box(stations[2], mat.base, [0, 1, .345], [.98, 1.5, .05]);
         cylinder(stations[2], mat.dark, [.38, 2.52, 0], .045, 1.4);
         cylinder(stations[2], mat.brass, [.38, 1.9, 0], .10, .2);
@@ -183,9 +229,14 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
             const firstLength = start.distanceTo(corner);
             links.push({ material, packet, start, corner, end, split: firstLength / (firstLength + corner.distanceTo(end)) });
         }
-        scene.add(new HemisphereLight(0xb5dfff, 0x14212e, 2.4));
-        const key = new DirectionalLight(0xc5e5ff, 3.4); key.position.set(-3, 7, 5); scene.add(key);
-        if (!lowDetail) { const warm = new DirectionalLight(0xf5b366, 2); warm.position.set(-7, 3, -4); scene.add(warm); }
+        scene.add(new HemisphereLight(0xb5dfff, 0x14212e, 1.05));
+        const key = new DirectionalLight(0xd9e8f3, 3.6); key.position.set(-3, 7, 5); scene.add(key);
+        const rim = new DirectionalLight(0x5edcff, 1.8); rim.position.set(6, 4, -5); scene.add(rim);
+        if (!lowDetail) { const warm = new DirectionalLight(0xf5b366, 1.5); warm.position.set(-7, 3, -4); scene.add(warm); }
+        // The finished wireframe lights its own base, without a bloom pass.
+        const twinLight = new PointLight(0x3bd6ff, 0, 4 * stationScale, 2);
+        twinLight.position.set(xs[4], 1.3 * stationScale, zs[4] + .45 * stationScale);
+        scene.add(twinLight);
         const anchors = xs.map((x, i) => new Vector3(x, compact && i >= 3 ? -.23 * stationScale : stationScale * [1.55, 1.47, 3.22, 3.12, 2.98][i], zs[i] + (compact && i >= 3 ? stationScale * 1.19 : 0)));
         const projected = new Vector3();
         const arrivals = [0, .18, .38, .58, .78];
@@ -228,6 +279,7 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
                 // A short six-degree wrist excursion, pivoted on the existing joint.
                 wrist.rotation.z = reduced ? 0 : -.105 * Math.sin(Math.PI * MathUtils.smoothstep(progress, .58, .67));
                 const build = MathUtils.smoothstep(progress, .78, .92);
+                twinLight.intensity = 4.5 * build * stationScale * stationScale;
                 const litVertices = 2 * Math.floor(segments.length * (.07 + .93 * build));
                 twinGeometry.groups[0].count = litVertices;
                 twinGeometry.groups[1].start = litVertices;

@@ -9,7 +9,7 @@ Se conservan la implementación HTML/CSS/JavaScript, header, navegación, textos
 | `css/hero-3d.css` | Compacta espacios, reserva el primer viewport para evitar saltos de carga, añade guías de labels y refuerza la conexión físico/digital y la transición a Proyectos. |
 | `js/hero-3d.js` | Sincroniza scroll, foto y transición. Suavizado de 90 ms, progreso móvil desde ESP32 incluso en tablets altas y estado final fijo con movimiento reducido. |
 | `js/hero/camera-rig.js` | Traveling contenido, encuadre completo y estabilización antes del final. Actualiza la matriz de proyección solo cuando cambia la proporción del viewport. |
-| `js/hero/scene.js` | Unifica activaciones, corrige el pivote de muñeca, construye el wireframe por altura, adapta la disposición móvil y distribuye labels sin solapamientos. |
+| `js/hero/scene.js` | Unifica activaciones, corrige el pivote de muñeca, construye el wireframe por altura, adapta la disposición móvil y distribuye labels sin solapamientos. Incluye materiales de estudio, biseles y sombras de contacto. |
 | `js/hero/scene.bundle.js` | Bundle minificado regenerado. |
 | `tests/hero.spec.js` | Comprueba escena final inmóvil y cambio de preferencias en vivo; mantiene navegación, fallback y comprobación de consola. |
 | `tests/narrative.spec.js` | Orden y reversibilidad, construcción real de líneas, límites de cámara, separación de labels y cambios de tamaño en vivo. |
@@ -32,7 +32,23 @@ Los porcentajes corresponden al recorrido del hero. Una misma posición produce 
 
 El gemelo conserva un contorno tenue desde el inicio. Sus siete grupos originales se fusionan en una geometría y sus aristas se ordenan por la altura del extremo superior al inicializar. Dos grupos de material delimitan la parte activa y la pendiente; cambian sus rangos sin crear geometrías ni materiales durante el recorrido. Al terminar se desactiva el material tenue para evitar un draw call vacío.
 
-Los indicadores originales usan materiales por estación. Solo un pulso de transmisión puede ser visible a la vez. No se añaden estaciones, partículas ambientales, bloom, sombras, texturas, modelos externos, controles manuales ni postprocesado.
+Los indicadores originales usan materiales por estación. Solo un pulso de transmisión puede ser visible a la vez. Se conservan las cinco estaciones sin partículas ambientales, bloom, modelos externos, controles manuales ni postprocesado. Las reflexiones y sombras de contacto se generan localmente al inicializar, como se detalla debajo.
+
+## Materiales, luz y profundidad
+
+El acabado elegido por el usuario prioriza realismo y profundidad, manteniendo la composición, los objetos, el recorrido y la paleta:
+
+- Acero y latón reciben reflejos de estudio. Las superficies pintadas y plataformas tienen menos reflectividad para dar protagonismo al hardware.
+- `RoomEnvironment` y `PMREMGenerator`, incluidos en la dependencia existente Three.js, calculan una pequeña textura de reflexión al iniciar: caras de 64 px en móvil y 128 px en escritorio. El estudio y su generador se liberan inmediatamente; la textura resultante se reutiliza durante todo el recorrido. No hay descarga de HDR ni cámaras de reflexión por frame.
+- Las bases, la carcasa LoRa, el blindaje ESP32 y los eslabones del brazo usan biseles de un segmento. La geometría se comparte y se indexa antes de fusionar las mallas; pines, antenas y detalles pequeños mantienen sus geometrías ligeras.
+- Una textura alfa de 64×64, creada una sola vez, simula sombras de contacto bajo las cuatro estaciones físicas y bajo las cinco plataformas. Las nueve superficies se fusionan en un único lote. Son aproximaciones estáticas de contacto; no mapas de sombras dinámicas.
+- Una luz principal y un contraluz cian definen mejor los volúmenes. Escritorio conserva además el relleno ámbar. Al construirse el gemelo, una luz puntual cian ilumina gradualmente su base y se estabiliza con él. No añade animación en reposo ni bloom.
+
+Con movimiento reducido, la iluminación aparece directamente en su estado final. Se conservan DPR móvil hasta 2, antialias y reducción adaptativa de resolución. Las nuevas texturas y geometrías forman parte de la liberación de recursos existente.
+
+La comparación alternada contra `ff28215` se guarda en `surfaceRealism` dentro de `hero-refinement-metrics.json`. Los máximos pasan de 21 a 23 draw calls y de 2.704/1.552 a 3.682/2.530 triángulos (escritorio/móvil). El bundle gzip aumenta 3.734 bytes, unos 3,6 KiB. La cadencia mediana se mantiene en 6,9 ms/frame y el CLS en 0, sin frames en reposo. FCP/LCP medianos: escritorio 300→336 ms, móvil 284→284 ms; son tres repeticiones locales con variación de carga, no una medición de usuarios reales ni consumo de GPU en teléfonos físicos.
+
+Las 37 pruebas aplicables pasan en escritorio, tablet, Android emulado y WebKit con perfil iPhone. Tras el ajuste final de reflectividad se volvieron a comprobar las siete pruebas de escritorio y se inspeccionó la captura móvil, sin errores de consola.
 
 ## Composición y cámara
 
@@ -47,7 +63,7 @@ Los labels usan anclajes proyectados y guías de 12 px con separación de 14 px.
 ## Móvil y movimiento reducido
 
 - Hasta 600 px, el recorrido se pliega: ESP32 → Sensores → LoRa atrás, Robótica → Gemelo digital delante. La cámara muestra las cinco estaciones con 0,2 unidades de movimiento lateral y 0,8% de dolly. Los labels delanteros quedan bajo las plataformas.
-- Entre 601–900 px se conserva la fila horizontal con encuadre completo. Hasta 900 px se usa la densidad de pantalla con tope DPR 2 y antialias nativo, conservando menos pines/segmentos y una luz direccional. El scroll es nativo, sin sticky ni longitud artificial.
+- Entre 601–900 px se conserva la fila horizontal con encuadre completo. Hasta 900 px se usa la densidad de pantalla con tope DPR 2 y antialias nativo, conservando menos pines/segmentos y una reflexión de menor resolución. El scroll es nativo, sin sticky ni longitud artificial.
 - El progreso móvil comienza en cero aunque la escena ya esté visible al cargar una tablet alta; finaliza con la escena todavía dentro de pantalla.
 - Con `prefers-reduced-motion: reduce`, el módulo se carga diferido y dibuja el final: gemelo completo, todos los labels activos, cámara fija, muñeca en reposo y sin pulsos. El scroll no solicita frames. Solo se redibuja al cambiar tamaño o reactivar visibilidad. No hay recorrido adicional.
 - Ahorro de datos, menos de 4 GB de memoria reportada o menos de cuatro núcleos mantienen el fallback HTML sin descargar Three.js. El fallback también cubre WebGL no disponible, pérdida de contexto, fallo del módulo o rendimiento persistentemente bajo. Sin JavaScript permanece el contenido profesional.
