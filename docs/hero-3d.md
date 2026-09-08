@@ -6,7 +6,7 @@ Actualización del 8 de septiembre de 2026 sobre la escena aprobada. Se conserva
 
 Un reloj compartido ejecuta una secuencia cada 5,6 segundos. El primer 20% es reposo, sin bucle de dibujo. Un paquete cyan recorre el circuito existente de ESP32 a sensores, LoRa, robótica y gemelo digital. Cada llegada activa brevemente el indicador y la etiqueta correspondiente.
 
-El ESP32 parpadea con su LED existente. El sensor pulsa en ámbar y emite dos anillos tenues. LoRa emite tres ondas cyan desde su antena. El brazo conserva sus piezas y pose original, con pivotes articulados que permiten hasta unos 3,5° de base, 2,6° de codo y 4° de muñeca; la pinza abre/cierra ligeramente. El movimiento de espera es todavía menor y también intermitente.
+El ESP32 tiene una lente LED elevada y más visible, con material independiente de la plataforma, halo ámbar localizado y doble parpadeo. El sensor pulsa en ámbar y emite dos anillos tenues. LoRa emite tres ondas cyan desde su antena. El brazo conserva sus piezas y pose de reposo, con un recorrido ampliado tras la revisión visual del usuario: unos 10° de base, 14° de codo y 10° de muñeca; la pinza abre/cierra 0,09 unidades por dedo. La aproximación, pausa y retorno abarcan aproximadamente 1,7 segundos del ciclo. El movimiento de espera es menor e intermitente. Con movimiento reducido, el brazo permanece en reposo y el LED está fijo.
 
 Al llegar al robot se inicia un escaneo vertical. Un plano tenue y su contorno recorren el brazo; hasta 12 puntos deterministas viajan desde él hacia vértices reales del gemelo. Las aristas se activan por altura, otro contorno recorre el wireframe y hasta cinco puntos siguen segmentos existentes. La luz del gemelo y la flecha de «Mundo físico → Mundo digital» responden a esa sincronización. No hay partículas distribuidas por el fondo, bloom ni nuevos modelos sólidos.
 
@@ -37,7 +37,7 @@ El parallax se aplica solo a ratón con puntero fino y viewport de escritorio. U
 - `prefers-reduced-motion` conserva la escena final estática, sin efectos, HUD, parallax ni temporizador automático.
 - `pagehide` libera geometrías, materiales, textura/entorno, renderer y contexto, y cancela los relojes. Se comprueban restauración de bfcache y cambios de preferencias sin duplicar canvas ni listeners de interacción.
 
-Medición local en Chrome: máximo de 33 draw calls y 3.686 triángulos durante el ciclo completo. La versión anterior tenía un máximo documentado de 23 calls y 3.682 triángulos; el incremento es principalmente líneas y puntos. El bundle pasa de 520.807 a 528.113 bytes; gzip, de 134.137 a 136.472 bytes (+2.335 bytes). No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
+Medición local en Chrome tras ampliar el brazo y LED: máximo de 35 draw calls y 3.700 triángulos durante el ciclo completo, frente a 33 y 3.686 antes de ese ajuste. El bundle actual ocupa 516,4 KiB; gzip, 133,5 KiB. El halo utiliza una textura procedural de 32×32 y reutiliza la geometría plana existente, sin postprocesado ni luces adicionales. No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
 
 ## Archivos de esta actualización
 

@@ -132,7 +132,21 @@ export function createHeroScene(host, { compact, onContextLost }) {
             box(pcb, mat.brass, [x, .12, -.97 + i * .16], [.08, .3, .07]);
         }
         for (let i = 0; i < 5; i++) box(pcb, mat.brass, [-.34 + i * .17, .08, -1.03], [.045, .02, .3]);
-        box(pcb, indicators[0], [.44, .1, .7], [.08, .03, .1]);
+        // Raised LED lens, separate from the platform strip so its blink reads
+        // on the PCB even at the smaller mobile scale. Local halo, no bloom.
+        const ledMaterial = keep(new MeshBasicMaterial({ color: 0xffb44f, toneMapped: false }));
+        box(pcb, mat.dark, [.44, .13, .72], [.24, .05, .27]);
+        box(pcb, ledMaterial, [.44, .18, .72], [.17, .065, .20]);
+        const ledCanvas = document.createElement('canvas');
+        ledCanvas.width = ledCanvas.height = 32;
+        const ledContext = ledCanvas.getContext('2d');
+        const ledGradient = ledContext.createRadialGradient(16, 16, 0, 16, 16, 16);
+        ledGradient.addColorStop(0, 'rgba(255,255,255,1)');
+        ledGradient.addColorStop(.3, 'rgba(255,255,255,.5)');
+        ledGradient.addColorStop(1, 'rgba(255,255,255,0)');
+        ledContext.fillStyle = ledGradient; ledContext.fillRect(0, 0, 32, 32);
+        const ledGlow = keep(new MeshBasicMaterial({ map: keep(new CanvasTexture(ledCanvas)), color: 0xffb44f, transparent: true, opacity: .12, depthWrite: false, toneMapped: false }));
+        mesh(pcb, contactGeometry, ledGlow, [.44, .219, .72], [.48, 1, .48]);
         // Industrial sensor, threaded body and sensing face.
         cylinder(stations[1], mat.dark, [0, .35, 0], .5, .7);
         cylinder(stations[1], mat.steel, [0, .94, 0], .35, .65);
@@ -308,13 +322,18 @@ export function createHeroScene(host, { compact, onContextLost }) {
                     const enter = MathUtils.smoothstep(progress, STATION_PHASES[i] - .025, STATION_PHASES[i] + .025);
                     material.color.setHex(i < 2 ? 0xf59e42 : 0x3bd6ff).multiplyScalar(.42 + enter * .20 + animation.pulses[i] * .50);
                 }
-                const idle = reduced ? 0 : envelope(phase, .22, .46) * .18;
-                const robot = reduced ? 0 : envelope(phase, .635, .80);
-                arm.rotation.y = .061 * (robot + idle);
-                elbow.rotation.z = -.045 * (robot + idle);
-                wrist.rotation.z = -.07 * robot;
-                fingers[0].position.x = -.22 - .035 * robot;
-                fingers[1].position.x = .22 + .035 * robot;
+                const ledBlink = reduced ? 0 : Math.max(envelope(phase, .20, .29), envelope(phase, .30, .39));
+                ledMaterial.color.setRGB(1, .48 + ledBlink * .42, .08 + ledBlink * .62).multiplyScalar(.4 + ledBlink * .6);
+                ledGlow.opacity = reduced ? .12 : .12 + ledBlink * .55;
+                const idle = reduced ? 0 : envelope(phase, .22, .46) * .20;
+                // Slower approach, brief hold while scanning, then smooth return.
+                // The larger elbow excursion is readable in both camera layouts.
+                const robot = reduced ? 0 : MathUtils.smoothstep(phase, .635, .755) * (1 - MathUtils.smoothstep(phase, .825, .94));
+                arm.rotation.y = .175 * (robot + idle);
+                elbow.rotation.z = -.244 * (robot + idle);
+                wrist.rotation.z = -.175 * robot;
+                fingers[0].position.x = -.22 - .09 * robot;
+                fingers[1].position.x = .22 + .09 * robot;
                 const scanBuild = MathUtils.smoothstep(phase, .80, .94) * (1 - MathUtils.smoothstep(phase, .96, 1));
                 const build = Math.max(MathUtils.smoothstep(progress, .80, .96), reduced ? 1 : scanBuild);
                 twinLight.intensity = (3.5 * build + animation.sync) * stationScale * stationScale;
