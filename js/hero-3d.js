@@ -16,7 +16,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const limited = () => connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory < 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
     let scene = null, generation = 0, frame = 0, idle = 0;
     let visible = true, suspended = false, loading = false, failed = false;
-    let target = 0, progress = 0, previousTime = 0, slowFrames = 0, degraded = false;
+    let target = 0, progress = 0, previousTime = 0, slowFrames = 0;
     const stop = () => { cancelAnimationFrame(frame); frame = 0; previousTime = 0; };
     const release = () => {
         generation++; stop(); scene?.dispose(); scene = null; loading = false;
@@ -58,16 +58,19 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         const start = performance.now();
         try { scene.render(progress, labels, motion.matches); } catch { fallback(); return; }
         const cost = performance.now() - start;
+        let qualityChanged = false;
         if (cost > 32) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
         if (slowFrames >= 8) {
-            if (degraded) { fallback(); return; }
-            scene.reduceQuality(); degraded = true; slowFrames = 0;
+            qualityChanged = scene.reduceQuality();
+            if (!qualityChanged) { fallback(); return; }
+            slowFrames = 0;
         }
         progressBar.style.transform = `scaleX(${progress})`;
         portrait.style.opacity = motion.matches ? '1' : String(1 - progress * .10);
         journey.style.setProperty('--journey-progress', progress.toFixed(4));
         projects?.style.setProperty('--journey-complete', Math.max(0, Math.min(1, (progress - .90) / .06)).toFixed(4));
-        if (progress !== target) frame = requestAnimationFrame(draw);
+        // Resizing clears the drawing buffer, including on the last scroll frame.
+        if (qualityChanged || progress !== target) frame = requestAnimationFrame(draw);
         else previousTime = 0;
     };
     const requestDraw = () => {
@@ -98,7 +101,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         if ('cancelIdleCallback' in window) cancelIdleCallback(idle);
         else clearTimeout(idle);
     };
-    const preferenceChanged = () => { cancelIdle(); release(); failed = false; degraded = false; slowFrames = 0; schedule(); };
+    const preferenceChanged = () => { cancelIdle(); release(); failed = false; slowFrames = 0; schedule(); };
     const resized = () => { measure(); requestDraw(); };
     const visibilityChanged = () => { if (document.hidden) stop(); else { init(); requestDraw(); } };
     const scrolled = () => { if (!motion.matches) requestDraw(); };

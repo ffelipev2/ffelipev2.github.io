@@ -47,7 +47,7 @@ Los labels usan anclajes proyectados y guías de 12 px con separación de 14 px.
 ## Móvil y movimiento reducido
 
 - Hasta 600 px, el recorrido se pliega: ESP32 → Sensores → LoRa atrás, Robótica → Gemelo digital delante. La cámara muestra las cinco estaciones con 0,2 unidades de movimiento lateral y 0,8% de dolly. Los labels delanteros quedan bajo las plataformas.
-- Entre 601–900 px se conserva la fila horizontal con encuadre completo. Hasta 900 px se usa DPR 1, menos pines/segmentos, una luz direccional y ningún antialias. El scroll es nativo, sin sticky ni longitud artificial.
+- Entre 601–900 px se conserva la fila horizontal con encuadre completo. Hasta 900 px se usa la densidad de pantalla con tope DPR 2 y antialias nativo, conservando menos pines/segmentos y una luz direccional. El scroll es nativo, sin sticky ni longitud artificial.
 - El progreso móvil comienza en cero aunque la escena ya esté visible al cargar una tablet alta; finaliza con la escena todavía dentro de pantalla.
 - Con `prefers-reduced-motion: reduce`, el módulo se carga diferido y dibuja el final: gemelo completo, todos los labels activos, cámara fija, muñeca en reposo y sin pulsos. El scroll no solicita frames. Solo se redibuja al cambiar tamaño o reactivar visibilidad. No hay recorrido adicional.
 - Ahorro de datos, menos de 4 GB de memoria reportada o menos de cuatro núcleos mantienen el fallback HTML sin descargar Three.js. El fallback también cubre WebGL no disponible, pérdida de contexto, fallo del módulo o rendimiento persistentemente bajo. Sin JavaScript permanece el contenido profesional.
@@ -56,9 +56,9 @@ Los labels usan anclajes proyectados y guías de 12 px con separación de 14 px.
 
 Se conservan carga diferida, fusión de mallas estáticas y reutilización de geometrías. No se crean objetos Three.js por frame; se reutilizan cámara, vectores, rangos de líneas y buffers de labels. Las actualizaciones HTML de posiciones siguen generando pequeñas cadenas de texto.
 
-El render se detiene al converger el scroll, fuera de pantalla y en pestañas ocultas. DPR máximo 1,5 en escritorio; si el envío de frames resulta repetidamente costoso se reduce a 0,85 y, si persiste, se usa fallback. Esta heurística mide CPU/envío, no tiempo físico de GPU. Se conserva liberación de recursos y restauración mediante bfcache.
+El render se detiene al converger el scroll, fuera de pantalla y en pestañas ocultas. DPR máximo 1,5 en escritorio y 2 en móvil; si el envío de frames resulta repetidamente costoso se reduce por etapas (2 → 1,5 → 1) y, si persiste, se usa fallback. Cada reducción solicita un nuevo frame porque redimensionar borra el canvas. Esta heurística mide CPU/envío, no tiempo físico de GPU. Se conserva liberación de recursos y restauración mediante bfcache.
 
-Las cifras comparativas están en `hero-refinement-metrics.json`: tres contextos nuevos de Chrome por viewport (1440×900 y 393×851), servidor local, sin throttling y recorrido sintético de 2,4 segundos. La cadencia observada depende del equipo y pantalla; no representa FPS universales. FCP/LCP y desplazamientos son datos de laboratorio, no Core Web Vitals de usuarios reales.
+Las cifras de la pasada de narrativa, anteriores a la corrección de nitidez móvil, están en `hero-refinement-metrics.json`: tres contextos nuevos de Chrome por viewport (1440×900 y 393×851), servidor local, sin throttling y recorrido sintético de 2,4 segundos. La cadencia observada depende del equipo y pantalla; no representa FPS universales. FCP/LCP y desplazamientos son datos de laboratorio, no Core Web Vitals de usuarios reales.
 
 La primera medición separada mostró variación en FCP/LCP (medianas de 252→356 ms en escritorio y 228→348 ms en móvil). Se conservaron esos resultados y se repitió la comparación alternando ambas versiones en la misma sesión, con idéntica interceptación de recursos:
 
@@ -88,6 +88,14 @@ npm run test:browser
 Primero deben ejecutarse `npm ci` y `npm run build`. WebKit requiere `npx playwright install webkit`. En esta sesión se instaló dentro del workspace y se indicó `PLAYWRIGHT_BROWSERS_PATH` al ejecutar las pruebas.
 
 ## Problemas previos y verificación
+
+### Corrección de nitidez móvil
+
+La captura de un teléfono real mostró bordes escalonados por el límite DPR 1 y la ausencia de antialias. Se separó la geometría ligera de la resolución: ahora se conserva el detalle reducido, pero se solicita antialias nativo y hasta DPR 2. En Chrome emulado se verificó un buffer de 786×680 para 393×340 CSS y antialias con cuatro muestras. También se comprobó la reducción progresiva 2 → 1,5 → 1, sin volver a renderizar por debajo de DPR 1.
+
+La comparación alternada contra `592e875` mantiene 21 draw calls, 1.552 triángulos móviles, CLS 0 y ningún frame en reposo. La mediana móvil permanece en 6,9 ms/frame; FCP/LCP pasan de 260/260 a 268/268 ms. El bundle gzip aumenta 22 bytes. Las 37 pruebas aplicables vuelven a pasar sin errores de consola. Los datos se conservan en `mobileSharpnessCorrection` dentro de `hero-refinement-metrics.json`.
+
+DPR 2 dibuja cuatro veces más píxeles que DPR 1 y el antialias añade trabajo de GPU; la mejora visual tiene ese coste. Estas mediciones locales no cuantifican consumo, temperatura ni FPS en el teléfono físico del usuario.
 
 La versión anterior calculaba labels con cinco intervalos, conexiones con cuatro y gemelo con otro intervalo. El gemelo solo cambiaba de opacidad. La muñeca pivotaba bajo la articulación; en teléfonos se recortaban estaciones y se ocultaban cuatro labels. En tablets altas, el recorrido podía empezar con LoRa activo. Esta pasada corrige esos comportamientos reutilizando la escena.
 

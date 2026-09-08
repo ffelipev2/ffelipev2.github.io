@@ -11,9 +11,10 @@ import { createCameraRig } from './camera-rig.js';
 // with licensed low-poly assets here if more exact product shapes are needed.
 export function createHeroScene(host, { compact, lowDetail = compact, onContextLost }) {
     const canvas = document.createElement('canvas');
-    const context = canvas.getContext('webgl2', { alpha: true, antialias: !lowDetail, powerPreference: 'low-power', failIfMajorPerformanceCaveat: true });
+    // Keep the low-poly geometry lightweight without sacrificing edge quality.
+    const context = canvas.getContext('webgl2', { alpha: true, antialias: true, powerPreference: 'low-power', failIfMajorPerformanceCaveat: true });
     if (!context) throw new Error('WebGL2 unavailable');
-    const renderer = new WebGLRenderer({ canvas, context, alpha: true, antialias: !lowDetail });
+    const renderer = new WebGLRenderer({ canvas, context, alpha: true, antialias: true });
     const scene = new Scene();
     const resources = new Set();
     const keep = (resource) => { resources.add(resource); return resource; };
@@ -194,11 +195,17 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         const labelXs = new Float32Array(5), labelYs = new Float32Array(5), anchorXs = new Float32Array(5);
         const labelRows = compact ? [[0, 1, 2], [4, 3]] : [[0, 1, 2, 3, 4]];
         let labelsMeasured = false;
-        let width = 1, height = 1, dpr = lowDetail ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+        let width = 1, height = 1, dpr = Math.min(window.devicePixelRatio || 1, lowDetail ? 2 : 1.5);
         host.append(canvas);
         return {
             resize(w, h) { width = w; height = h; renderer.setPixelRatio(dpr); renderer.setSize(w, h, false); labelsMeasured = false; },
-            reduceQuality() { dpr = .85; renderer.setPixelRatio(dpr); renderer.setSize(width, height, false); },
+            reduceQuality() {
+                if (dpr <= 1) return false;
+                dpr = dpr > 1.5 ? 1.5 : 1;
+                renderer.setPixelRatio(dpr);
+                renderer.setSize(width, height, false);
+                return true;
+            },
             render(progress, labels, reduced = false) {
                 rig.update(progress, width, height, compact);
                 let step = 0;
