@@ -2849,6 +2849,24 @@ html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
     }
 }
 
+/* A second upward motion on touch makes native scrolling feel accelerated. */
+@media (any-pointer: coarse) {
+    html.motion-ready .motion-reveal:not(.motion-is-visible) {
+        transform: none;
+    }
+
+    html.motion-ready.motion-has-started .motion-reveal.motion-is-visible {
+        animation-name: portfolio-motion-fade;
+        animation-duration: 240ms;
+        animation-delay: 0ms;
+    }
+}
+
+@keyframes portfolio-motion-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 html.motion-ready .motion-timeline::before {
     transform: scaleX(0);
     transform-origin: left center;

@@ -12,12 +12,18 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
     const mobile = matchMedia('(max-width: 900px)');
     const phone = matchMedia('(max-width: 600px)');
+    // svh stays fixed when mobile browser controls expand/collapse during a swipe.
+    const viewport = document.createElement('div');
+    viewport.className = 'hero-viewport-measure';
+    viewport.setAttribute('aria-hidden', 'true');
+    hero.append(viewport);
     const connection = navigator.connection;
     const limited = () => connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory < 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
     let scene = null, generation = 0, frame = 0, idle = 0;
     let visible = true, suspended = false, loading = false, failed = false;
-    let target = 0, progress = 0, previousTime = 0, slowFrames = 0;
-    const stop = () => { cancelAnimationFrame(frame); frame = 0; previousTime = 0; };
+    let progress = 0, slowFrames = 0, scrollStart = 0, scrollLength = 1;
+    let densityQuery;
+    const stop = () => { cancelAnimationFrame(frame); frame = 0; };
     const release = () => {
         generation++; stop(); scene?.dispose(); scene = null; loading = false;
         hero.classList.remove('has-scene', 'has-travel');
@@ -30,31 +36,27 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const fallback = () => { failed = true; release(); };
     const measure = () => {
         if (!scene) return;
-        hero.style.setProperty('--stage-height', `${stage.offsetHeight}px`);
+        const stageHeight = stage.offsetHeight;
+        const stageSize = `${stageHeight}px`;
+        if (hero.style.getPropertyValue('--stage-height') !== stageSize) hero.style.setProperty('--stage-height', stageSize);
         scene.resize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight));
-    };
-    const readProgress = () => {
-        if (motion.matches) return 1;
+        const viewportHeight = viewport.clientHeight || innerHeight;
         if (mobile.matches) {
             const rect = world.getBoundingClientRect();
             const worldTop = rect.top + scrollY;
-            const start = Math.max(0, worldTop - innerHeight * .85);
-            const end = worldTop - innerHeight * .30 + rect.height * .4;
-            return Math.max(0, Math.min(1, (scrollY - start) / Math.max(1, end - start)));
+            scrollStart = Math.max(0, worldTop - viewportHeight * .85);
+            scrollLength = Math.max(1, worldTop - viewportHeight * .30 + rect.height * .4 - scrollStart);
+        } else {
+            scrollStart = hero.getBoundingClientRect().top + scrollY - Math.min(72, viewportHeight - stageHeight);
+            scrollLength = Math.max(1, hero.offsetHeight - stageHeight);
         }
-        const stageHeight = stage.offsetHeight;
-        const stickyTop = Math.min(72, innerHeight - stageHeight);
-        const travel = hero.offsetHeight - stageHeight;
-        return Math.max(0, Math.min(1, (stickyTop - hero.getBoundingClientRect().top) / Math.max(1, travel)));
     };
-    const draw = (time) => {
+    const readProgress = () => motion.matches ? 1 : Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollLength));
+    const draw = () => {
         frame = 0;
         if (!scene || !visible || document.hidden || suspended) return;
-        target = readProgress();
-        const elapsed = previousTime ? Math.min(time - previousTime, 64) : 16;
-        previousTime = time;
-        progress = motion.matches ? 1 : progress + (target - progress) * (1 - Math.exp(-elapsed / 90));
-        if (Math.abs(target - progress) < .0005) progress = target;
+        // Follow native scrolling directly, with no extra inertia or catch-up.
+        progress = readProgress();
         const start = performance.now();
         try { scene.render(progress, labels, motion.matches); } catch { fallback(); return; }
         const cost = performance.now() - start;
@@ -70,8 +72,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         journey.style.setProperty('--journey-progress', progress.toFixed(4));
         projects?.style.setProperty('--journey-complete', Math.max(0, Math.min(1, (progress - .90) / .06)).toFixed(4));
         // Resizing clears the drawing buffer, including on the last scroll frame.
-        if (qualityChanged || progress !== target) frame = requestAnimationFrame(draw);
-        else previousTime = 0;
+        if (qualityChanged) frame = requestAnimationFrame(draw);
     };
     const requestDraw = () => {
         if (scene && visible && !document.hidden && !suspended && !frame) frame = requestAnimationFrame(draw);
@@ -83,12 +84,13 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         try {
             const { createHeroScene } = await import('./hero/scene.bundle.js');
             if (current !== generation || suspended) return;
-            scene = createHeroScene(host, { compact: phone.matches, lowDetail: mobile.matches, onContextLost: fallback });
+            scene = createHeroScene(host, { compact: phone.matches, onContextLost: fallback });
             measure();
             // Render successfully before extending scroll or hiding the fallback.
             scene.render(motion.matches ? 1 : 0, labels, motion.matches);
             hero.classList.add('has-scene');
             hero.classList.toggle('has-travel', !motion.matches);
+            measure();
             progress = readProgress(); requestDraw();
         } catch { if (current === generation) fallback(); }
         finally { if (current === generation) loading = false; }
@@ -103,6 +105,12 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     };
     const preferenceChanged = () => { cancelIdle(); release(); failed = false; slowFrames = 0; schedule(); };
     const resized = () => { measure(); requestDraw(); };
+    const watchDensity = () => {
+        densityQuery?.removeEventListener('change', densityChanged);
+        densityQuery = matchMedia(`(resolution: ${devicePixelRatio}dppx)`);
+        densityQuery.addEventListener('change', densityChanged);
+    };
+    const densityChanged = () => { watchDensity(); resized(); };
     const visibilityChanged = () => { if (document.hidden) stop(); else { init(); requestDraw(); } };
     const scrolled = () => { if (!motion.matches) requestDraw(); };
     const observer = new IntersectionObserver(([entry]) => {
@@ -110,7 +118,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         if (visible) { init(); requestDraw(); } else stop();
     }, { rootMargin: '100px' });
     const resizeObserver = new ResizeObserver(resized);
-    const observe = () => { observer.observe(world); resizeObserver.observe(stage); };
+    const observe = () => { observer.observe(world); resizeObserver.observe(stage); resizeObserver.observe(viewport); watchDensity(); };
     const loaded = () => { observe(); schedule(); };
     motion.addEventListener('change', preferenceChanged);
     mobile.addEventListener('change', preferenceChanged);
@@ -121,6 +129,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     document.addEventListener('visibilitychange', visibilityChanged);
     window.addEventListener('pagehide', (event) => {
         suspended = true; cancelIdle(); release(); observer.disconnect(); resizeObserver.disconnect();
+        densityQuery?.removeEventListener('change', densityChanged);
         if (!event.persisted) {
             motion.removeEventListener('change', preferenceChanged);
             mobile.removeEventListener('change', preferenceChanged);

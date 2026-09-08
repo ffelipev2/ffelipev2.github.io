@@ -5,6 +5,7 @@
     scroll-margin-top: 72px;
 }
 .hero-v2::before { display: none; }
+.hero-viewport-measure { position: fixed; top: 0; left: 0; width: 0; height: 100svh; visibility: hidden; pointer-events: none; contain: strict; }
 .hero-stage {
     position: relative;
     background: radial-gradient(ellipse at 75% 65%, rgba(22,184,230,.055), transparent 55%), var(--color-background);

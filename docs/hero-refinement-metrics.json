@@ -1021,5 +1021,265 @@
         }
       ]
     }
+  },
+  "scrollAndScreenQuality": {
+    "baselineCommit": "26df05d",
+    "changes": [
+      "Native scroll tracking without 90ms catch-up; stable small viewport range and no redundant canvas resizing",
+      "Touch reveal uses opacity only; camera travel proportional to scroll",
+      "Identical hardware detail, studio reflection and lighting across layouts; native DPR up to 4, four million pixels and GPU dimension limits",
+      "Density changes update the buffer; costly rendering can reduce resolution without simplifying geometry"
+    ],
+    "verification": {
+      "applicableTests": 46,
+      "profileSpecificSkips": 22,
+      "profiles": [
+        "desktop Chrome",
+        "tablet Chrome",
+        "Android Chrome emulation",
+        "iPhone WebKit emulation"
+      ],
+      "nativeTouch": "Chrome CDP gestures in both directions over hero and project cards",
+      "toolbar": "Simulated innerHeight/resize signal with stable svh; progress and buffer unchanged",
+      "screenDensity": "DPR 1, 2, 2.75, 3 and 4; widths 393, 820, 1440 and 3840; live DPR change with simulated media query change event (CDP omits that event)",
+      "physicalPhonePerformanceMeasured": false
+    },
+    "paired": {
+      "environment": "Local Chrome, no network/CPU throttling; three cold browser contexts per viewport/variant; frame intervals are rendering cadence, not hardware GPU timing.",
+      "browser": "152.0.7977.76",
+      "pairedComparison": true,
+      "bundleBytes": 520807,
+      "gzipBytes": 134137,
+      "results": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 0,
+          "variant": "before",
+          "lcp": 456,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 405,
+          "fcp": 456,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.399999976158142,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 0,
+          "variant": "after",
+          "lcp": 296,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 351,
+          "fcp": 284,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.399999976158142,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 1,
+          "variant": "after",
+          "lcp": 304,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 351,
+          "fcp": 304,
+          "overflow": false,
+          "frameIntervalMedian": 6.899999976158142,
+          "frameIntervalP95": 7.600000023841858,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 1,
+          "variant": "before",
+          "lcp": 400,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 406,
+          "fcp": 388,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.5,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 2,
+          "variant": "before",
+          "lcp": 308,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 407,
+          "fcp": 308,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "run": 2,
+          "variant": "after",
+          "lcp": 316,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3682,
+          "frames": 351,
+          "fcp": 304,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 0,
+          "variant": "before",
+          "lcp": 264,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 2530,
+          "frames": 484,
+          "fcp": 264,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 0,
+          "variant": "after",
+          "lcp": 276,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3598,
+          "frames": 386,
+          "fcp": 276,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 1,
+          "variant": "after",
+          "lcp": 288,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3598,
+          "frames": 385,
+          "fcp": 288,
+          "overflow": false,
+          "frameIntervalMedian": 7,
+          "frameIntervalP95": 7.5,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 1,
+          "variant": "before",
+          "lcp": 256,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 2530,
+          "frames": 496,
+          "fcp": 256,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.299999952316284,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 2,
+          "variant": "before",
+          "lcp": 308,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 2530,
+          "frames": 496,
+          "fcp": 308,
+          "overflow": false,
+          "frameIntervalMedian": 6.899999976158142,
+          "frameIntervalP95": 7.5,
+          "idleFrames": 0,
+          "errors": []
+        },
+        {
+          "viewport": {
+            "width": 393,
+            "height": 851
+          },
+          "run": 2,
+          "variant": "after",
+          "lcp": 240,
+          "cls": 0,
+          "maxCalls": 23,
+          "maxTriangles": 3598,
+          "frames": 385,
+          "fcp": 240,
+          "overflow": false,
+          "frameIntervalMedian": 6.900000095367432,
+          "frameIntervalP95": 7.199999928474426,
+          "idleFrames": 0,
+          "errors": []
+        }
+      ]
+    }
   }
 }

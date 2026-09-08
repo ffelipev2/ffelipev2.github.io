@@ -11,7 +11,7 @@ import { createCameraRig } from './camera-rig.js';
 
 // Original stylized geometry, not manufacturer CAD. Replace individual stations
 // with licensed low-poly assets here if more exact product shapes are needed.
-export function createHeroScene(host, { compact, lowDetail = compact, onContextLost }) {
+export function createHeroScene(host, { compact, onContextLost }) {
     const canvas = document.createElement('canvas');
     // Keep the low-poly geometry lightweight without sacrificing edge quality.
     const context = canvas.getContext('webgl2', { alpha: true, antialias: true, powerPreference: 'low-power', failIfMajorPerformanceCaveat: true });
@@ -43,7 +43,7 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         const studio = new RoomEnvironment();
         const reflectionGenerator = new PMREMGenerator(renderer);
         try {
-            const reflection = keep(reflectionGenerator.fromScene(studio, .025, .1, 100, { size: lowDetail ? 64 : 128 }));
+            const reflection = keep(reflectionGenerator.fromScene(studio, .025, .1, 100, { size: 128 }));
             scene.environment = reflection.texture;
             scene.environmentIntensity = .85;
             scene.environmentRotation.y = Math.PI / 6;
@@ -73,8 +73,8 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         const bevelSource = new RoundedBoxGeometry(1, 1, 1, 1, .055);
         const beveledGeometry = keep(mergeVertices(bevelSource));
         bevelSource.dispose();
-        const cylinderGeometry = keep(new CylinderGeometry(1, 1, 1, lowDetail ? 10 : 16));
-        const sphereGeometry = keep(new SphereGeometry(1, lowDetail ? 8 : 12, 8));
+        const cylinderGeometry = keep(new CylinderGeometry(1, 1, 1, 16));
+        const sphereGeometry = keep(new SphereGeometry(1, 12, 8));
         const mesh = (parent, geometry, material, position, scale) => {
             const object = new Mesh(geometry, material);
             object.position.set(...position); object.scale.set(...scale); parent.add(object);
@@ -125,17 +125,17 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         box(pcb, mat.dark, [0, .13, .52], [.6, .17, .5]);
         box(pcb, mat.steel, [0, .13, 1.11], [.55, .25, .4]);
         box(pcb, mat.dark, [0, .14, 1.32], [.4, .13, .025]);
-        for (const x of [-.68, .68]) for (let i = 0; i < (lowDetail ? 7 : 13); i++) {
-            box(pcb, mat.brass, [x, .12, -.97 + i * (lowDetail ? .30 : .16)], [.08, .3, .07]);
+        for (const x of [-.68, .68]) for (let i = 0; i < 13; i++) {
+            box(pcb, mat.brass, [x, .12, -.97 + i * .16], [.08, .3, .07]);
         }
-        if (!lowDetail) for (let i = 0; i < 5; i++) box(pcb, mat.brass, [-.34 + i * .17, .08, -1.03], [.045, .02, .3]);
+        for (let i = 0; i < 5; i++) box(pcb, mat.brass, [-.34 + i * .17, .08, -1.03], [.045, .02, .3]);
         box(pcb, indicators[0], [.44, .1, .7], [.08, .03, .1]);
         // Industrial sensor, threaded body and sensing face.
         cylinder(stations[1], mat.dark, [0, .35, 0], .5, .7);
         cylinder(stations[1], mat.steel, [0, .94, 0], .35, .65);
         cylinder(stations[1], mat.dark, [0, 1.34, 0], .42, .18);
         cylinder(stations[1], indicators[1], [0, 1.44, 0], .3, .025);
-        if (!lowDetail) for (let i = 0; i < 5; i++) cylinder(stations[1], mat.base, [0, .7 + i * .11, 0], .365, .035);
+        for (let i = 0; i < 5; i++) cylinder(stations[1], mat.base, [0, .7 + i * .11, 0], .365, .035);
         // Outdoor LoRa enclosure and antenna.
         beveledBox(stations[2], mat.steel, [0, 1, 0], [1.22, 1.8, .65]);
         box(stations[2], mat.base, [0, 1, .345], [.98, 1.5, .05]);
@@ -192,7 +192,7 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         twin.add(new LineSegments(twinGeometry, [twinMaterial, twinOutline]));
         // Quiet rails and a few structural beams establish depth, no particles.
         box(scene, mat.base, [0, compact ? -.3 : -.48, 0], [compact ? 6.8 : 23, .1, compact ? 4.8 : 3]);
-        if (!lowDetail) {
+        if (!compact) {
             for (const z of [-2.4, 2.4]) box(scene, mat.base, [0, -.6, z], [26, .14, .12]);
             for (const x of [-12, -6, 0, 6, 12]) box(scene, mat.base, [x, 1.5, -4], [.12, 5, .12]);
         }
@@ -232,7 +232,7 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         scene.add(new HemisphereLight(0xb5dfff, 0x14212e, 1.05));
         const key = new DirectionalLight(0xd9e8f3, 3.6); key.position.set(-3, 7, 5); scene.add(key);
         const rim = new DirectionalLight(0x5edcff, 1.8); rim.position.set(6, 4, -5); scene.add(rim);
-        if (!lowDetail) { const warm = new DirectionalLight(0xf5b366, 1.5); warm.position.set(-7, 3, -4); scene.add(warm); }
+        const warm = new DirectionalLight(0xf5b366, 1.5); warm.position.set(-7, 3, -4); scene.add(warm);
         // The finished wireframe lights its own base, without a bloom pass.
         const twinLight = new PointLight(0x3bd6ff, 0, 4 * stationScale, 2);
         twinLight.position.set(xs[4], 1.3 * stationScale, zs[4] + .45 * stationScale);
@@ -246,15 +246,26 @@ export function createHeroScene(host, { compact, lowDetail = compact, onContextL
         const labelXs = new Float32Array(5), labelYs = new Float32Array(5), anchorXs = new Float32Array(5);
         const labelRows = compact ? [[0, 1, 2], [4, 3]] : [[0, 1, 2, 3, 4]];
         let labelsMeasured = false;
-        let width = 1, height = 1, dpr = Math.min(window.devicePixelRatio || 1, lowDetail ? 2 : 1.5);
+        // One quality policy for every layout. Native density up to 4x, bounded
+        // by four million pixels and hardware limits, including external displays.
+        const maxDimension = Math.min(context.getParameter(context.MAX_RENDERBUFFER_SIZE), renderer.capabilities.maxTextureSize);
+        let width = 0, height = 0, dpr = 1, nativeDpr = 0;
         host.append(canvas);
         return {
-            resize(w, h) { width = w; height = h; renderer.setPixelRatio(dpr); renderer.setSize(w, h, false); labelsMeasured = false; },
+            resize(w, h) {
+                const density = window.devicePixelRatio || 1;
+                // Text can reflow even when the canvas itself keeps its size.
+                labelsMeasured = false;
+                // Mobile toolbar resizes must not clear/reallocate an unchanged canvas.
+                if (w === width && h === height && density === nativeDpr) return;
+                width = w; height = h; nativeDpr = density;
+                dpr = Math.min(density, 4, Math.sqrt(4_000_000 / (w * h)), maxDimension / w, maxDimension / h);
+                renderer.setDrawingBufferSize(w, h, dpr);
+            },
             reduceQuality() {
                 if (dpr <= 1) return false;
-                dpr = dpr > 1.5 ? 1.5 : 1;
-                renderer.setPixelRatio(dpr);
-                renderer.setSize(width, height, false);
+                dpr = Math.max(1, dpr * .8);
+                renderer.setDrawingBufferSize(width, height, dpr);
                 return true;
             },
             render(progress, labels, reduced = false) {

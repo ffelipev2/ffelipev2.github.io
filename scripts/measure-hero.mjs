@@ -13,7 +13,7 @@ const results = [];
 const compare = process.argv.includes('--compare');
 const baseline = new Map();
 const current = new Map();
-if (compare) for (const file of ['css/hero-3d.css', 'js/hero-3d.js', 'js/hero/scene.bundle.js']) {
+if (compare) for (const file of ['css/portfolio.css', 'css/hero-3d.css', 'js/hero-3d.js', 'js/hero/scene.bundle.js']) {
     baseline.set('/' + file, execFileSync('git', ['show', `HEAD:${file}`], { maxBuffer: 2 * 1024 * 1024 }));
     current.set('/' + file, await readFile(file));
 }
@@ -65,10 +65,11 @@ try {
             const range = await page.evaluate(() => {
                 const hero = document.querySelector('.hero-v2'), world = document.querySelector('.hero-world'), stage = document.querySelector('.hero-stage');
                 const worldTop = world.getBoundingClientRect().top + scrollY;
-                const start = Math.max(0, worldTop - innerHeight * .85);
+                const viewportHeight = document.querySelector('.hero-viewport-measure')?.clientHeight || innerHeight;
+                const start = Math.max(0, worldTop - viewportHeight * .85);
                 return innerWidth > 900
-                    ? [hero.offsetTop - Math.min(72, innerHeight - stage.offsetHeight), hero.offsetHeight - stage.offsetHeight]
-                    : [start, worldTop - innerHeight * .30 + world.offsetHeight * .4 - start];
+                    ? [hero.offsetTop - Math.min(72, viewportHeight - stage.offsetHeight), hero.offsetHeight - stage.offsetHeight]
+                    : [start, worldTop - viewportHeight * .30 + world.offsetHeight * .4 - start];
             });
             await page.evaluate(async ([start, length]) => {
                 scrollTo(0, Math.max(0, start));

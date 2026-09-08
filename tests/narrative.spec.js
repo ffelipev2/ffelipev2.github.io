@@ -9,12 +9,13 @@ async function seek(page, progress) {
         const world = document.querySelector('.hero-world');
         document.documentElement.style.scrollBehavior = 'auto';
         const worldTop = world.getBoundingClientRect().top + scrollY;
+        const viewportHeight = document.querySelector('.hero-viewport-measure').clientHeight;
         const start = innerWidth > 900
-            ? hero.offsetTop - Math.min(72, innerHeight - stage.offsetHeight)
-            : Math.max(0, worldTop - innerHeight * .85);
+            ? hero.offsetTop - Math.min(72, viewportHeight - stage.offsetHeight)
+            : Math.max(0, worldTop - viewportHeight * .85);
         const length = innerWidth > 900
             ? hero.offsetHeight - stage.offsetHeight
-            : worldTop - innerHeight * .30 + world.offsetHeight * .4 - start;
+            : worldTop - viewportHeight * .30 + world.offsetHeight * .4 - start;
         scrollTo(0, Math.max(0, start + t * length));
     }, progress);
     await page.waitForTimeout(750);

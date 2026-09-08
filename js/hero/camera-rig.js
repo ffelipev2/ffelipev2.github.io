@@ -8,8 +8,8 @@ export function createCameraRig() {
     return {
         camera,
         update(progress, width, height, compact) {
-            // Settle before the final hold, with enough width to retain every station.
-            const t = MathUtils.smoothstep(progress, 0, .9);
+            // Constant travel per scroll pixel; hold the final composition at 90%.
+            const t = MathUtils.clamp(progress / .9, 0, 1);
             if (aspect !== width / height) {
                 aspect = width / height;
                 camera.aspect = aspect;
