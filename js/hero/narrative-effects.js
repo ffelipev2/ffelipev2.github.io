@@ -98,6 +98,11 @@ export function createNarrativeEffects({ scene, stations, compact, keep, twinPos
                 if (t <= 0 || t >= 1 || (simplified && i >= 2)) continue;
                 first = Math.min(first, i); last = i;
                 const smooth = t * t * (3 - 2 * t);
+                // The destination is an articulated hologram, not a static box.
+                const vertex = Math.floor(i * twinPositions.count / count);
+                end[i * 3] = stations[4].position.x + twinPositions.getX(vertex) * scale;
+                end[i * 3 + 1] = twinPositions.getY(vertex) * scale;
+                end[i * 3 + 2] = stations[4].position.z + twinPositions.getZ(vertex) * scale;
                 for (let j = 0; j < 3; j++) samplePositions[i * 3 + j] = start[i * 3 + j] + (end[i * 3 + j] - start[i * 3 + j]) * smooth;
                 samplePositions[i * 3 + 1] += Math.sin(t * Math.PI) * .4 * scale;
             }

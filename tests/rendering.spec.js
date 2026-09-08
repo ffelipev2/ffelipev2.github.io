@@ -39,7 +39,8 @@ test('renderer stops after scroll, respects its drawing budget and pauses offscr
     await page.waitForTimeout(3200);
     expect(await page.evaluate(() => window.renderStats.calls)).toBe(stats.calls);
     expect(stats.maxCalls).toBeLessThan(42);
-    expect(stats.maxTriangles).toBeLessThan(5000);
+    // Includes the translucent replica of the articulated robot, sharing buffers.
+    expect(stats.maxTriangles).toBeLessThan(6000);
     console.log('3D budget:', JSON.stringify(stats));
     await page.locator('#contacto').scrollIntoViewIfNeeded();
     await page.waitForTimeout(150);

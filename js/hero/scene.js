@@ -1,7 +1,7 @@
 import {
     Scene, Group, Mesh, MeshStandardMaterial, MeshBasicMaterial, LineBasicMaterial,
     BoxGeometry, CylinderGeometry, SphereGeometry, PlaneGeometry, CanvasTexture, BufferGeometry, Float32BufferAttribute,
-    EdgesGeometry, LineSegments, Vector3, Matrix4, HemisphereLight, DirectionalLight, PointLight,
+    LineSegments, Vector3, HemisphereLight, DirectionalLight, PointLight,
     WebGLRenderer, PMREMGenerator, SRGBColorSpace, ACESFilmicToneMapping, MathUtils,
 } from 'three';
 import { mergeGeometries, mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -10,6 +10,8 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { createCameraRig } from './camera-rig.js';
 import { STATION_PHASES, DEPARTURE_PHASES, envelope } from './animation-sequence.js';
 import { createNarrativeEffects } from './narrative-effects.js';
+import { createRobotMotion } from './robot-motion.js';
+import { createRobotAssembly } from './robot-assembly.js';
 export { createAnimationSequence } from './animation-sequence.js';
 
 // Original stylized geometry, not manufacturer CAD. Replace individual stations
@@ -86,12 +88,6 @@ export function createHeroScene(host, { compact, onContextLost }) {
         const box = (parent, material, pos, size) => mesh(parent, boxGeometry, material, pos, size);
         const beveledBox = (parent, material, pos, size) => mesh(parent, beveledGeometry, material, pos, size);
         const cylinder = (parent, material, pos, radius, height) => mesh(parent, cylinderGeometry, material, pos, [radius, height, radius]);
-        const beam = (parent, material, a, b, thickness) => {
-            const start = new Vector3(...a), end = new Vector3(...b);
-            const object = beveledBox(parent, material, start.clone().add(end).multiplyScalar(.5).toArray(), [thickness, start.distanceTo(end), thickness]);
-            object.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), end.sub(start).normalize());
-            return object;
-        };
         // Same five stations; a folded path retains the complete system on phones.
         const xs = compact ? [-2.25, 0, 2.25, 1.45, -1.45] : [-8.8, -4.4, 0, 4.4, 8.8];
         const zs = compact ? [-1.5, -1.5, -1.5, 1.65, 1.65] : [0, 0, 0, 0, 0];
@@ -159,65 +155,9 @@ export function createHeroScene(host, { compact, onContextLost }) {
         cylinder(stations[2], mat.dark, [.38, 2.52, 0], .045, 1.4);
         cylinder(stations[2], mat.brass, [.38, 1.9, 0], .10, .2);
         box(stations[2], indicators[2], [-.27, .49, .385], [.08, .04, .04]);
-        // Stylized collaborative arm; the wrist responds by a few degrees.
+        // Fixed pedestal; the articulated assembly is added after static batching.
         cylinder(stations[3], mat.base, [0, .22, 0], .7, .44);
-        const arm = new Group(); stations[3].add(arm);
-        const articulated = [];
-        const joints = [[0, .65, 0], [-.65, 2.2, 0], [.8, 2.8, 0], [1.3, 1.8, 0]];
-        joints.forEach((p, i) => {
-            const joint = mesh(arm, sphereGeometry, mat.steel, p, [.30, .30, .30]);
-            if (i >= 1) articulated.push(joint);
-            if (i) {
-                const link = beam(arm, mat.steel, joints[i - 1], p, .34);
-                if (i >= 2) articulated.push(link);
-            }
-            const cap = cylinder(arm, mat.base, [p[0], p[1], .25], .22, .08); cap.rotation.x = Math.PI / 2;
-            if (i >= 1) articulated.push(cap);
-        });
-        const wrist = new Group(); wrist.position.set(1.3, 1.8, 0); arm.add(wrist);
-        box(wrist, mat.dark, [0, -.27, 0], [.42, .32, .35]);
-        const fingers = [-.22, .22].map((x) => box(wrist, mat.steel, [x, -.57, 0], [.075, .45, .14]));
-        // Reparent existing pieces about their mechanical joint, preserving the
-        // exact rest pose; no replacement model or detached forearm.
-        const elbow = new Group(); elbow.position.set(...joints[1]); arm.add(elbow);
-        scene.updateMatrixWorld(true);
-        for (const part of [...articulated, wrist]) elbow.attach(part);
-        box(stations[3], mat.amber, [1.22, .15, 0], [.25, .25, .25]);
-        // A small physical plant becomes a digital wireframe at the last station.
-        const twinMaterial = keep(new LineBasicMaterial({ color: 0x3bd6ff, transparent: true, opacity: .28 }));
-        const twinOutline = keep(new LineBasicMaterial({ color: 0x3bd6ff, transparent: true, opacity: .16 }));
-        const twin = new Group(); stations[4].add(twin);
-        const twinParts = [];
-        const wire = (geometry, pos, scale) => {
-            const edges = keep(new EdgesGeometry(geometry));
-            const object = new LineSegments(edges, twinMaterial); object.position.set(...pos); object.scale.set(...scale); twin.add(object);
-            twinParts.push(object);
-        };
-        wire(boxGeometry, [0, 1.48, 0], [3.1, 2.95, 2]);
-        wire(boxGeometry, [-.55, .65, .1], [1.4, 1.1, 1.1]);
-        wire(cylinderGeometry, [.9, 1.15, -.3], [.38, 2.25, .38]);
-        wire(cylinderGeometry, [-.8, 1.95, -.55], [.21, 1.6, .21]);
-        for (let i = 0; i < 3; i++) wire(boxGeometry, [0, .5 + i * .65, 0], [2.9, .015, 1.9]);
-        // Reuse the wireframe itself. Sort its edges by height once, then reveal
-        // existing segments in two material groups; no clipping shader or new mesh.
-        twin.updateMatrix();
-        const edgePieces = twinParts.map((part) => {
-            part.updateMatrix();
-            return part.geometry.clone().applyMatrix4(part.matrix);
-        });
-        const twinGeometry = keep(mergeGeometries(edgePieces));
-        edgePieces.forEach((geometry) => geometry.dispose());
-        twinParts.forEach((part) => part.removeFromParent());
-        const positions = twinGeometry.getAttribute('position');
-        const segments = Array.from({ length: positions.count / 2 }, (_, i) => i);
-        segments.sort((a, b) => Math.max(positions.getY(a * 2), positions.getY(a * 2 + 1)) - Math.max(positions.getY(b * 2), positions.getY(b * 2 + 1)));
-        const sorted = new Float32Array(positions.array.length);
-        segments.forEach((segment, i) => sorted.set(positions.array.subarray(segment * 6, segment * 6 + 6), i * 6));
-        positions.array.set(sorted);
-        positions.needsUpdate = true;
-        twinGeometry.addGroup(0, 0, 0);
-        twinGeometry.addGroup(0, positions.count, 1);
-        twin.add(new LineSegments(twinGeometry, [twinMaterial, twinOutline]));
+        cylinder(stations[4], mat.base, [0, .08, 0], .73, .12);
         // Quiet rails and a few structural beams establish depth, no particles.
         box(scene, mat.base, [0, compact ? -.3 : -.48, 0], [compact ? 6.8 : 23, .1, compact ? 4.8 : 3]);
         if (!compact) {
@@ -226,25 +166,38 @@ export function createHeroScene(host, { compact, onContextLost }) {
         }
         // Merge static geometry per material: pins do not each cost a draw call.
         const batches = new Map();
-        const movingRoots = new Set([arm, elbow, wrist]);
-        const unbatched = new Set(fingers);
-        const inverse = new Matrix4();
         scene.updateMatrixWorld(true);
         scene.traverse((object) => {
-            if (!object.isMesh || unbatched.has(object)) return;
-            let root = object.parent;
-            while (root !== scene && !movingRoots.has(root)) root = root.parent;
-            if (!batches.has(root)) batches.set(root, new Map());
-            const materials = batches.get(root);
-            const geometry = object.geometry.clone().applyMatrix4(inverse.copy(root.matrixWorld).invert().multiply(object.matrixWorld));
-            if (!materials.has(object.material)) materials.set(object.material, []);
-            materials.get(object.material).push({ geometry, object });
+            if (!object.isMesh) return;
+            const geometry = object.geometry.clone().applyMatrix4(object.matrixWorld);
+            if (!batches.has(object.material)) batches.set(object.material, []);
+            batches.get(object.material).push({ geometry, object });
         });
-        for (const [root, materials] of batches) for (const [material, entries] of materials) {
+        for (const [material, entries] of batches) {
             const merged = keep(mergeGeometries(entries.map((entry) => entry.geometry)));
-            root.add(new Mesh(merged, material));
+            scene.add(new Mesh(merged, material));
             entries.forEach(({ geometry, object }) => { geometry.dispose(); object.removeFromParent(); });
         }
+        const robotMotion = createRobotMotion();
+        const robotAssembly = createRobotAssembly({ parent: stations[3], keep,
+            geometries: { box: boxGeometry, bevel: beveledGeometry, cylinder: cylinderGeometry, sphere: sphereGeometry },
+            materials: [mat.steel, mat.base, mat.amber] });
+        robotAssembly.update(robotMotion.update(0));
+        let robotPhase = 0, robotReduced = false;
+        const hologramFill = keep(new MeshBasicMaterial({ color: 0x16b8e6, transparent: true, opacity: .18, depthWrite: false, toneMapped: false }));
+        const hologramDetail = keep(new MeshBasicMaterial({ color: 0x77edff, transparent: true, opacity: .3, depthWrite: false, toneMapped: false }));
+        const hologramCube = keep(new MeshBasicMaterial({ color: 0xaff8ff, transparent: true, opacity: .3, depthWrite: false, toneMapped: false }));
+        const twinMaterial = keep(new LineBasicMaterial({ color: 0x66e6ff, transparent: true, opacity: .4, depthWrite: false, toneMapped: false }));
+        robotAssembly.createHologram(stations[4], [hologramFill, hologramDetail, hologramCube], twinMaterial);
+        const positions = robotAssembly.edges.attributes.position;
+        const projectorVertices = [];
+        for (const radius of [.78, 1.04, 1.3]) for (let i = 0; i < 48; i++) {
+            const a = i * Math.PI / 24, b = (i + 1) * Math.PI / 24;
+            projectorVertices.push(Math.cos(a) * radius, .035, Math.sin(a) * radius * .72, Math.cos(b) * radius, .035, Math.sin(b) * radius * .72);
+        }
+        const projectorGeometry = keep(new BufferGeometry());
+        projectorGeometry.setAttribute('position', new Float32BufferAttribute(projectorVertices, 3));
+        stations[4].add(new LineSegments(projectorGeometry, twinMaterial));
         const links = [];
         for (let i = 0; i < 4; i++) {
             const y = compact ? .05 : .08;
@@ -325,24 +278,16 @@ export function createHeroScene(host, { compact, onContextLost }) {
                 const ledBlink = reduced ? 0 : Math.max(envelope(phase, .20, .29), envelope(phase, .30, .39));
                 ledMaterial.color.setRGB(1, .48 + ledBlink * .42, .08 + ledBlink * .62).multiplyScalar(.4 + ledBlink * .6);
                 ledGlow.opacity = reduced ? .12 : .12 + ledBlink * .55;
-                const idle = reduced ? 0 : envelope(phase, .22, .46) * .20;
-                // Slower approach, brief hold while scanning, then smooth return.
-                // The larger elbow excursion is readable in both camera layouts.
-                const robot = reduced ? 0 : MathUtils.smoothstep(phase, .635, .755) * (1 - MathUtils.smoothstep(phase, .825, .94));
-                arm.rotation.y = .175 * (robot + idle);
-                elbow.rotation.z = -.244 * (robot + idle);
-                wrist.rotation.z = -.175 * robot;
-                fingers[0].position.x = -.22 - .09 * robot;
-                fingers[1].position.x = .22 + .09 * robot;
-                const scanBuild = MathUtils.smoothstep(phase, .80, .94) * (1 - MathUtils.smoothstep(phase, .96, 1));
-                const build = Math.max(MathUtils.smoothstep(progress, .80, .96), reduced ? 1 : scanBuild);
+                if (phase !== robotPhase || reduced !== robotReduced) {
+                    robotAssembly.update(robotMotion.update(phase, reduced));
+                    robotPhase = phase; robotReduced = reduced;
+                }
+                const build = reduced ? 1 : MathUtils.smoothstep(phase, .78, .96);
                 twinLight.intensity = (3.5 * build + animation.sync) * stationScale * stationScale;
-                const litVertices = 2 * Math.floor(segments.length * (.07 + .93 * build));
-                twinGeometry.groups[0].count = litVertices;
-                twinGeometry.groups[1].start = litVertices;
-                twinGeometry.groups[1].count = positions.count - litVertices;
-                twinOutline.visible = build < 1;
-                twinMaterial.opacity = Math.min(.95, .28 + .55 * build + animation.sync * .18);
+                hologramFill.opacity = .16 + build * .19 + animation.sync * .06;
+                hologramDetail.opacity = .26 + build * .28;
+                hologramCube.opacity = .32 + build * .25;
+                twinMaterial.opacity = .35 + build * .40 + animation.sync * .15;
                 effects.update(animation, reduced, pointer.x);
                 if (!labelsMeasured && labels[0]?.offsetWidth) {
                     labels.forEach((label, i) => { labelWidths[i] = label.offsetWidth; labelHeights[i] = label.offsetHeight; });
