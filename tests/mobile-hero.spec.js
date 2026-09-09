@@ -30,7 +30,8 @@ test('phone keeps the scene visible through a longer scroll track and slower rob
     await page.locator('.hero-world').scrollIntoViewIfNeeded();
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
     const range = await page.evaluate(heroRange);
-    expect(range.length).toBeGreaterThanOrEqual(1400);
+    expect(range.length).toBeGreaterThanOrEqual(1200);
+    expect(range.length).toBeLessThanOrEqual(1800);
     const tops = [];
     for (const phase of [.10, .39, .54, .78, .90]) {
         await seekHero(page, phase);
@@ -44,7 +45,7 @@ test('phone keeps the scene visible through a longer scroll track and slower rob
     await seekHero(page, .78);
     const started = Date.now();
     await seekHero(page, .85);
-    expect(Date.now() - started).toBeGreaterThan(480);
+    expect(Date.now() - started).toBeGreaterThan(380);
     const canvas = await page.locator('.hero-canvas canvas').elementHandle();
     await page.locator('#contacto').scrollIntoViewIfNeeded();
     await seekHero(page, .85);

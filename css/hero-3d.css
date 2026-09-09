@@ -127,7 +127,7 @@
     .hero-static span { font-size: .8125rem; }
 }
 @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
-    .hero-v2.has-travel .hero-track { height: calc(var(--visual-height) + clamp(1400px, 220svh, 2200px)); }
+    .hero-v2.has-travel .hero-track { height: calc(var(--visual-height) + clamp(1200px, 180svh, 1800px)); }
     .hero-v2.has-travel .hero-visual { position: sticky; top: min(84px, calc(100svh - var(--visual-height) - 12px)); }
 }
 @media (prefers-reduced-motion: reduce) {

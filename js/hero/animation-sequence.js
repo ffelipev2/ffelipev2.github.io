@@ -22,7 +22,7 @@ export function createAnimationSequence({ mobile = false } = {}) {
             const distance = target - state.phase;
             // Give the grasp and rotation time to read, including after a fling.
             const inRobot = Math.max(target, state.phase) > .635 && Math.min(target, state.phase) < 1;
-            const speed = inRobot && state.phase >= .635 ? (mobile ? .12 : .22) : (mobile ? .28 : .55);
+            const speed = inRobot && state.phase >= .635 ? (mobile ? .15 : .22) : (mobile ? .35 : .55);
             const step = Math.max(0, Math.min(delta, .064)) * speed;
             state.phase += Math.sign(distance) * Math.min(Math.abs(distance), step);
             state.active = Math.abs(target - state.phase) > .0001;
