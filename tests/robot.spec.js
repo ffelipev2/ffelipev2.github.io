@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { createRobotMotion } from '../js/hero/robot-motion.js';
+import { seekHero } from './hero-helpers.js';
 
 test('grasp keeps the cube between the fingers, preserves link lengths and reverses without jumps', async ({}, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chrome', 'Platform-independent kinematics.');
@@ -39,17 +40,7 @@ test('scroll shows pickup, carrying and the placed cube with the matching hologr
     await page.locator('.hero-world').scrollIntoViewIfNeeded();
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
     for (const [name, progress] of [['grasp', .73], ['carry', .815], ['place', .90], ['complete', 1]]) {
-        await page.evaluate(t => {
-            document.documentElement.style.scrollBehavior = 'auto';
-            const hero = document.querySelector('.hero-v2'), stage = document.querySelector('.hero-stage');
-            const world = document.querySelector('.hero-world');
-            const height = document.querySelector('.hero-viewport-measure').clientHeight;
-            const top = world.getBoundingClientRect().top + scrollY;
-            const start = innerWidth > 900 ? hero.offsetTop - Math.min(72, height - stage.offsetHeight) : Math.max(0, top - height * .85);
-            const length = innerWidth > 900 ? hero.offsetHeight - stage.offsetHeight : top - height * .30 + world.offsetHeight * .4 - start;
-            scrollTo(0, Math.max(0, start + t * length));
-        }, progress);
-        await page.waitForTimeout(name === 'grasp' ? 1600 : 500);
+        await seekHero(page, progress);
         await page.locator('.hero-world').screenshot({ path: testInfo.outputPath(`${name}.png`) });
         await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
     }

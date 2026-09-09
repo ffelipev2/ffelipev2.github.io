@@ -12,6 +12,7 @@ import { STATION_PHASES, DEPARTURE_PHASES, envelope } from './animation-sequence
 import { createNarrativeEffects } from './narrative-effects.js';
 import { createRobotMotion } from './robot-motion.js';
 import { createRobotAssembly } from './robot-assembly.js';
+import { createRadioDisplay } from './radio-display.js';
 export { createAnimationSequence } from './animation-sequence.js';
 
 // Original stylized geometry, not manufacturer CAD. Replace individual stations
@@ -130,9 +131,9 @@ export function createHeroScene(host, { compact, onContextLost }) {
         for (let i = 0; i < 5; i++) box(pcb, mat.brass, [-.34 + i * .17, .08, -1.03], [.045, .02, .3]);
         // Raised LED lens, separate from the platform strip so its blink reads
         // on the PCB even at the smaller mobile scale. Local halo, no bloom.
-        const ledMaterial = keep(new MeshBasicMaterial({ color: 0xffb44f, toneMapped: false }));
-        box(pcb, mat.dark, [.44, .13, .72], [.24, .05, .27]);
-        box(pcb, ledMaterial, [.44, .18, .72], [.17, .065, .20]);
+        const ledMaterial = keep(new MeshBasicMaterial({ color: 0xff3528, toneMapped: false }));
+        box(pcb, mat.dark, [-.43, .13, .72], [.30, .05, .29]);
+        box(pcb, ledMaterial, [-.43, .19, .72], [.22, .10, .24]);
         const ledCanvas = document.createElement('canvas');
         ledCanvas.width = ledCanvas.height = 32;
         const ledContext = ledCanvas.getContext('2d');
@@ -141,8 +142,8 @@ export function createHeroScene(host, { compact, onContextLost }) {
         ledGradient.addColorStop(.3, 'rgba(255,255,255,.5)');
         ledGradient.addColorStop(1, 'rgba(255,255,255,0)');
         ledContext.fillStyle = ledGradient; ledContext.fillRect(0, 0, 32, 32);
-        const ledGlow = keep(new MeshBasicMaterial({ map: keep(new CanvasTexture(ledCanvas)), color: 0xffb44f, transparent: true, opacity: .12, depthWrite: false, toneMapped: false }));
-        mesh(pcb, contactGeometry, ledGlow, [.44, .219, .72], [.48, 1, .48]);
+        const ledGlow = keep(new MeshBasicMaterial({ map: keep(new CanvasTexture(ledCanvas)), color: 0xff4938, transparent: true, opacity: .3, depthWrite: false, toneMapped: false }));
+        mesh(pcb, contactGeometry, ledGlow, [-.43, .245, .72], [.70, 1, .70]);
         // Industrial sensor, threaded body and sensing face.
         cylinder(stations[1], mat.dark, [0, .35, 0], .5, .7);
         cylinder(stations[1], mat.steel, [0, .94, 0], .35, .65);
@@ -179,9 +180,11 @@ export function createHeroScene(host, { compact, onContextLost }) {
             entries.forEach(({ geometry, object }) => { geometry.dispose(); object.removeFromParent(); });
         }
         const robotMotion = createRobotMotion();
+        const radioDisplay = createRadioDisplay(stations[2], keep);
+        const robotSurface = material(0xc4ced7, .5, .34);
         const robotAssembly = createRobotAssembly({ parent: stations[3], keep,
-            geometries: { box: boxGeometry, bevel: beveledGeometry, cylinder: cylinderGeometry, sphere: sphereGeometry },
-            materials: [mat.steel, mat.base, mat.amber] });
+            geometries: { box: boxGeometry, link: keep(new CylinderGeometry(.5, .5, 1, 24)), cylinder: keep(new CylinderGeometry(1, 1, 1, 32)), sphere: keep(new SphereGeometry(1, 24, 16)) },
+            materials: [robotSurface, mat.base, mat.amber] });
         robotAssembly.update(robotMotion.update(0));
         let robotPhase = 0, robotReduced = false;
         const hologramFill = keep(new MeshBasicMaterial({ color: 0x16b8e6, transparent: true, opacity: .18, depthWrite: false, toneMapped: false }));
@@ -212,7 +215,7 @@ export function createHeroScene(host, { compact, onContextLost }) {
             geometry.setIndex([0, 1, 1, 2]);
             const material = keep(new LineBasicMaterial({ color: 0x16b8e6, transparent: true, opacity: .25 }));
             scene.add(new LineSegments(geometry, material));
-            const packet = mesh(scene, sphereGeometry, mat.blue, start.toArray(), [compact ? .04 : .055, .055, .055]);
+            const packet = mesh(scene, sphereGeometry, mat.blue, start.toArray(), [compact ? .065 : .075, .075, .075]);
             const firstLength = start.distanceTo(corner);
             links.push({ material, packet, start, corner, end, split: firstLength / (firstLength + corner.distanceTo(end)) });
         }
@@ -265,7 +268,7 @@ export function createHeroScene(host, { compact, onContextLost }) {
                 for (let i = 0; i < links.length; i++) {
                     const link = links[i];
                     const local = MathUtils.smoothstep(phase, DEPARTURE_PHASES[i], STATION_PHASES[i + 1]);
-                    link.material.opacity = .15 + MathUtils.smoothstep(progress, DEPARTURE_PHASES[i], STATION_PHASES[i + 1]) * .25 + envelope(phase, DEPARTURE_PHASES[i], STATION_PHASES[i + 1] + .02) * .22;
+                    link.material.opacity = .18 + MathUtils.smoothstep(progress, DEPARTURE_PHASES[i], STATION_PHASES[i + 1]) * .25 + envelope(phase, DEPARTURE_PHASES[i], STATION_PHASES[i + 1] + .02) * .42;
                     if (link.split > 0 && local <= link.split) link.packet.position.lerpVectors(link.start, link.corner, local / link.split);
                     else link.packet.position.lerpVectors(link.corner, link.end, link.split < 1 ? (local - link.split) / (1 - link.split) : 1);
                     link.packet.visible = !reduced && local > 0 && local < 1;
@@ -276,8 +279,9 @@ export function createHeroScene(host, { compact, onContextLost }) {
                     material.color.setHex(i < 2 ? 0xf59e42 : 0x3bd6ff).multiplyScalar(.42 + enter * .20 + animation.pulses[i] * .50);
                 }
                 const ledBlink = reduced ? 0 : Math.max(envelope(phase, .20, .29), envelope(phase, .30, .39));
-                ledMaterial.color.setRGB(1, .48 + ledBlink * .42, .08 + ledBlink * .62).multiplyScalar(.4 + ledBlink * .6);
-                ledGlow.opacity = reduced ? .12 : .12 + ledBlink * .55;
+                ledMaterial.color.setRGB(1, .04 + ledBlink * .68, .02 + ledBlink * .48).multiplyScalar(.75 + ledBlink * .25);
+                ledGlow.opacity = reduced ? .3 : .3 + ledBlink * .45;
+                radioDisplay.update(phase, reduced);
                 if (phase !== robotPhase || reduced !== robotReduced) {
                     robotAssembly.update(robotMotion.update(phase, reduced));
                     robotPhase = phase; robotReduced = reduced;

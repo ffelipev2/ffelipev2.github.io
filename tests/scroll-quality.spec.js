@@ -1,20 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { heroRange } from './hero-helpers.js';
 
 test('scroll progress follows the page without added inertia', async ({ page }) => {
     await page.goto('/');
     await page.locator('.hero-world').scrollIntoViewIfNeeded();
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
-    const samples = await page.evaluate(async () => {
-        const hero = document.querySelector('.hero-v2');
-        const stage = document.querySelector('.hero-stage');
-        const world = document.querySelector('.hero-world');
-        const viewportHeight = document.querySelector('.hero-viewport-measure').clientHeight;
-        const worldTop = world.getBoundingClientRect().top + scrollY;
-        const start = innerWidth > 900
-            ? hero.offsetTop - Math.min(72, viewportHeight - stage.offsetHeight)
-            : Math.max(0, worldTop - viewportHeight * .85);
-        const length = innerWidth > 900 ? hero.offsetHeight - stage.offsetHeight
-            : worldTop - viewportHeight * .30 + world.offsetHeight * .4 - start;
+    const range = await page.evaluate(heroRange);
+    const samples = await page.evaluate(async ({ start, length }) => {
         document.documentElement.style.scrollBehavior = 'auto';
         const samples = [];
         for (const value of [.3, .5, .4]) {
@@ -24,7 +16,7 @@ test('scroll progress follows the page without added inertia', async ({ page }) 
                 actual: Number(document.querySelector('.hero-journey').style.getPropertyValue('--journey-progress')) });
         }
         return samples;
-    });
+    }, range);
     for (const sample of samples) expect(sample.actual).toBeCloseTo(sample.expected, 3);
 });
 

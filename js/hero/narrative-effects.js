@@ -20,8 +20,8 @@ export function createNarrativeEffects({ scene, stations, compact, keep, twinPos
         parent.add(ring);
         return ring;
     });
-    const sensorRings = createRings(stations[1], 0xf59e42, compact ? 1 : 2, 1.46, false);
-    const radioRings = createRings(stations[2], 0x3bd6ff, compact ? 1 : 3, 3.15, true);
+    const sensorRings = createRings(stations[1], 0xf59e42, 2, 1.46, false);
+    const radioRings = createRings(stations[2], 0x3bd6ff, compact ? 2 : 3, 3.15, true);
 
     const scanGeometry = keep(new BufferGeometry());
     scanGeometry.setAttribute('position', new Float32BufferAttribute([
@@ -81,8 +81,8 @@ export function createNarrativeEffects({ scene, stations, compact, keep, twinPos
         simplify() { simplified = true; },
         update(state, reduced, pointerX) {
             const p = state.phase;
-            updateRings(sensorRings, p, .335, .14, .32, .45, .28);
-            updateRings(radioRings, p, .49, .16, .09, .7, .46);
+            updateRings(sensorRings, p, .335, .16, .32, .55, .55);
+            updateRings(radioRings, p, .49, .19, .09, .85, .80);
             if (reduced) { sensorRings.forEach((ring) => { ring.visible = false; }); radioRings.forEach((ring) => { ring.visible = false; }); }
             robotScan.group.visible = !reduced && state.scanner > .001;
             robotScan.group.position.y = .3 + clamp01((p - .80) / .15) * 2.85;

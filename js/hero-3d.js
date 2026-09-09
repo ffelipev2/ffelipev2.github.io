@@ -3,6 +3,8 @@ const hero = document.querySelector('.hero-v2');
 if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const stage = hero.querySelector('[data-hero-stage]');
     const world = hero.querySelector('[data-hero-world]');
+    const track = hero.querySelector('.hero-track');
+    const visual = hero.querySelector('.hero-visual');
     const host = hero.querySelector('[data-hero-canvas]');
     const labels = [...hero.querySelectorAll('[data-station]')];
     const progressBar = hero.querySelector('[data-journey-progress]');
@@ -20,12 +22,14 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     hero.append(viewport);
     const connection = navigator.connection;
     const limited = () => connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory < 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+    let wasLimited = Boolean(limited());
     let scene = null, sequence = null, generation = 0, frame = 0, idle = 0;
     let visible = true, suspended = false, loading = false, failed = false;
     let progress = 0, slowFrames = 0, scrollStart = 0, scrollLength = 1;
     let densityQuery;
     let lastTick = 0, lastPaint = 0;
     let forcePaint = false;
+    let economy = false;
     const pointer = { x: 0, y: 0 }, pointerTarget = { x: 0, y: 0 };
     const stop = () => {
         cancelAnimationFrame(frame);
@@ -36,6 +40,8 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         pointer.x = pointer.y = pointerTarget.x = pointerTarget.y = 0;
         hero.classList.remove('has-scene', 'has-travel');
         hero.style.removeProperty('--stage-height');
+        hero.style.removeProperty('--visual-height');
+        delete host.dataset.phase;
         progressBar.style.transform = 'scaleX(0)';
         portrait.style.removeProperty('opacity');
         journey.style.removeProperty('--journey-progress');
@@ -52,10 +58,11 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         scene.resize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight));
         const viewportHeight = viewport.clientHeight || innerHeight;
         if (mobile.matches) {
-            const rect = world.getBoundingClientRect();
-            const worldTop = rect.top + scrollY;
-            scrollStart = Math.max(0, worldTop - viewportHeight * .85);
-            scrollLength = Math.max(1, worldTop - viewportHeight * .30 + rect.height * .4 - scrollStart);
+            const visualHeight = visual.offsetHeight;
+            hero.style.setProperty('--visual-height', `${visualHeight}px`);
+            const top = Math.min(84, viewportHeight - visualHeight - 12);
+            scrollStart = Math.max(0, track.getBoundingClientRect().top + scrollY - top);
+            scrollLength = Math.max(1, track.offsetHeight - visualHeight);
         } else {
             scrollStart = hero.getBoundingClientRect().top + scrollY - Math.min(72, viewportHeight - stageHeight);
             scrollLength = Math.max(1, hero.offsetHeight - stageHeight);
@@ -66,7 +73,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         frame = 0;
         if (!scene || !visible || document.hidden || suspended) return;
         // Limit actual drawing on high-refresh screens; use the same RAF owner.
-        if (!forcePaint && lastPaint && time - lastPaint < (mobile.matches ? 1000 / 30 : 1000 / 60) - 1) {
+        if (!forcePaint && lastPaint && time - lastPaint < (economy ? 50 : mobile.matches ? 1000 / 30 : 1000 / 60) - 1) {
             frame = requestAnimationFrame(draw); return;
         }
         const delta = lastTick ? (time - lastTick) / 1000 : 0;
@@ -85,11 +92,15 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         const cost = performance.now() - start;
         let qualityChanged = false;
         if (cost > 32) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
-        if (slowFrames >= 8) {
+        if (slowFrames >= 12) {
             qualityChanged = scene.reduceQuality();
-            if (!qualityChanged) { fallback(); return; }
+            // A busy phone must not replace the entire scene with the fallback.
+            if (!qualityChanged) economy = true;
+            // A density reduction clears the buffer: refill it before this paint.
+            else scene.render(progress, labels, motion.matches, animation, pointer);
             slowFrames = 0;
         }
+        host.dataset.phase = animation.phase.toFixed(4);
         progressBar.style.transform = `scaleX(${progress})`;
         portrait.style.opacity = motion.matches ? '1' : String(1 - progress * .10);
         journey.style.setProperty('--journey-progress', progress.toFixed(4));
@@ -111,7 +122,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
             const { createHeroScene, createAnimationSequence } = await import('./hero/scene.bundle.js');
             if (current !== generation || suspended) return;
             scene = createHeroScene(host, { compact: phone.matches, onContextLost: fallback });
-            sequence = createAnimationSequence();
+            sequence = createAnimationSequence({ mobile: mobile.matches });
             measure();
             // Render successfully before extending scroll or hiding the fallback.
             scene.render(motion.matches ? 1 : 0, labels, motion.matches, sequence.update(0, 0, motion.matches), pointer);
@@ -130,7 +141,12 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         if ('cancelIdleCallback' in window) cancelIdleCallback(idle);
         else clearTimeout(idle);
     };
-    const preferenceChanged = () => { cancelIdle(); release(); failed = false; slowFrames = 0; schedule(); };
+    const preferenceChanged = () => { cancelIdle(); release(); failed = false; slowFrames = 0; economy = false; schedule(); };
+    const connectionChanged = () => {
+        const next = Boolean(limited());
+        if (next === wasLimited) return;
+        wasLimited = next; preferenceChanged();
+    };
     const resized = () => { measure(); requestDraw(true); };
     const watchDensity = () => {
         densityQuery?.removeEventListener('change', densityChanged);
@@ -153,13 +169,13 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         if (visible) { init(); requestDraw(); } else stop();
     }, { threshold: .01 });
     const resizeObserver = new ResizeObserver(resized);
-    const observe = () => { observer.observe(world); resizeObserver.observe(stage); resizeObserver.observe(viewport); watchDensity(); };
+    const observe = () => { observer.observe(world); resizeObserver.observe(stage); resizeObserver.observe(visual); resizeObserver.observe(viewport); watchDensity(); };
     const loaded = () => { observe(); schedule(); };
     motion.addEventListener('change', preferenceChanged);
     mobile.addEventListener('change', preferenceChanged);
     phone.addEventListener('change', preferenceChanged);
     finePointer.addEventListener('change', pointerLeft);
-    connection?.addEventListener('change', preferenceChanged);
+    connection?.addEventListener('change', connectionChanged);
     window.addEventListener('scroll', scrolled, { passive: true });
     window.addEventListener('resize', resized, { passive: true });
     document.addEventListener('visibilitychange', visibilityChanged);
@@ -173,7 +189,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
             mobile.removeEventListener('change', preferenceChanged);
             phone.removeEventListener('change', preferenceChanged);
             finePointer.removeEventListener('change', pointerLeft);
-            connection?.removeEventListener('change', preferenceChanged);
+            connection?.removeEventListener('change', connectionChanged);
             window.removeEventListener('scroll', scrolled);
             window.removeEventListener('resize', resized);
             window.removeEventListener('load', loaded);

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { seekHero } from './hero-helpers.js';
 
 test('hero, traveling, navigation and project detail remain functional', async ({ page }, testInfo) => {
     const errors = [];
@@ -12,7 +13,7 @@ test('hero, traveling, navigation and project detail remain functional', async (
     await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 0); });
     await page.screenshot({ path: testInfo.outputPath('hero-start.png') });
     const start = await page.locator('[data-station="4"]').getAttribute('style');
-    await page.evaluate(() => window.scrollTo(0, innerWidth > 900 ? 650 : document.querySelector('.hero-world').offsetTop));
+    await seekHero(page, .5);
     await expect.poll(() => page.locator('[data-station="4"]').getAttribute('style')).not.toBe(start);
     await page.screenshot({ path: testInfo.outputPath('hero-travel.png') });
     await page.locator('.hero-actions-v2 a').first().click();

@@ -1,12 +1,14 @@
 # Animación Mundo físico → Mundo digital
 
-Actualización sobre la escena aprobada. Se conservan HTML, textos, fotografía, dimensiones, composición, colores, tipografía, biseles, reflejos, sombras de contacto y disposición móvil. ESP32, sensores y LoRa mantienen sus modelos. A petición del usuario, el robot incorpora un traslado real del cubo y el contenido del gemelo se sustituye por una réplica holográfica articulada. No se añaden dependencias.
+Actualización del 9 de septiembre sobre la escena aprobada. Se conservan textos, fotografía, composición general, sombras de contacto y disposición de las cinco estaciones. En móvil se amplía el tramo de scroll con la escena visible. El robot recoge el cubo y tiene superficies más suaves; LoRa incorpora una pantalla y la ESP32 un LED más contrastado. No se añaden dependencias.
 
 ## Funcionamiento actual
 
 El scroll controla toda la secuencia, sin reproducción automática ni reinicio por tiempo. El primer 20% es reposo. Un paquete cyan recorre el circuito existente de ESP32 a sensores, LoRa, robótica y gemelo digital según el desplazamiento de la página. Cada llegada activa el indicador y la etiqueta correspondiente; al subir se recorre la secuencia en sentido inverso.
 
-Se conservan el LED elevado con halo ámbar y doble parpadeo, los pulsos del sensor y las ondas LoRa. El brazo ahora recoge y traslada el cubo: llega con la pinza abierta, cierra los dedos, eleva la pieza, gira hasta el otro lado de la base, la deposita, abre la pinza y vuelve a reposo. El cubo mide 0,34 unidades para que se distinga durante el agarre. La cinemática inversa conserva las longitudes de los tres enlaces originales; la muñeca mantiene la pinza vertical y los dedos no atraviesan la plataforma.
+El LED de la ESP32 es rojo, más grande y está al otro lado de la placa para diferenciarlo de los pines dorados; mantiene brillo de reposo, halo localizado y doble pulso claro. LoRa muestra una pantalla con nombre, estado TX, barras y progreso de transmisión. Es decorativa y se dibuja en una textura de 160×224, actualizada solo cuando cambia uno de sus 25 estados, no cada frame. Las ondas LoRa, los anillos del sensor y el paquete cyan son más visibles.
+
+El brazo conserva el agarre y traslado: llega con la pinza abierta, cierra los dedos, eleva la pieza, gira hasta el otro lado de la base, la deposita, abre la pinza y vuelve a reposo. Sus esferas pasan a 24×16 segmentos, las tapas a 32 y los enlaces a cilindros de 24 segmentos, con material satinado propio. La cinemática conserva las longitudes de los tres enlaces; la muñeca mantiene la pinza vertical y los dedos no atraviesan la plataforma.
 
 El gemelo dejó de ser una caja con líneas: ahora muestra una réplica holográfica reconocible del brazo y del cubo, con superficies cyan translúcidas, articulaciones iluminadas, contornos y anillos de proyección. Comparte los mismos buffers de geometría y la misma pose que el robot físico, por lo que reproduce exactamente el agarre, traslado y depósito. Es visible desde el inicio y gana intensidad durante la sincronización. Se mantienen el escáner vertical, hasta 12 puntos que llegan a vértices de la réplica articulada y la flecha de «Mundo físico → Mundo digital» sincronizada. No hay partículas aleatorias ni bloom.
 
@@ -25,7 +27,9 @@ Las etiquetas mantienen sus textos 01–05. En escritorio pueden mostrar breveme
 
 El traslado del robot se superpone con el escaneo: 63,5–70% acercamiento; 70–73% cierre de pinza; 73–78% elevación; 78–85% giro con la pieza elevada; 85–90% descenso; 90–92,5% liberación; 92,5–100% retirada y retorno. La pieza parte de `(1.18, .19, .48)` y termina en `(-.95, .19, .72)`, en coordenadas locales de la estación. El estado se calcula directamente desde la fase, sin eventos de attach/detach: avanzar, retroceder o saltar de posición produce el mismo resultado, sin teletransportar el cubo.
 
-La cámara, el texto y la página mantienen su respuesta directa al scroll nativo. Solo los efectos limitan su avance a 0,72 de progreso por segundo, para que un gesto rápido permita ver las estaciones sucesivas (hasta unos 1,4 segundos para alcanzar el destino). Al alcanzar la posición elegida por el scroll, la escena queda en esa fase; esperar no cambia de objeto ni reinicia la secuencia. No se interceptan gestos y se conserva la duración actual del hero.
+La cámara, el texto y la página mantienen su respuesta directa al scroll nativo. En móvil/tablet, `.hero-visual` permanece sticky mientras `.hero-track` ofrece entre 1.400 y 2.200px de recorrido (220svh); el rango se mide desde el contenedor estable, no desde el canvas que se desplaza con sticky. El texto introductorio no queda fijado. Se usa el viewport pequeño estable para que la barra del navegador no cambie el progreso.
+
+Los efectos avanzan como máximo a 0,28 de progreso por segundo en móvil y 0,55 en escritorio; el tramo del robot baja a 0,12 y 0,22 respectivamente. El traslado completo del robot necesita al menos unos tres segundos en móvil tras un gesto rápido. Al alcanzar el destino del scroll, la escena queda en esa fase; esperar no cambia de objeto ni reinicia la secuencia. Un salto extremo puede necesitar unos segundos de interpolación. No se interceptan gestos; el enlace a proyectos sigue disponible.
 
 El parallax se aplica solo a ratón con puntero fino y viewport de escritorio. Usa interpolación suave y offsets de cámara menores a medio grado, con una diferencia adicional máxima de 2px en las etiquetas. La profundidad produce desplazamientos ligeramente diferentes entre plataforma, objetos y cuadrícula. Al salir del hero vuelve al centro. No hay parallax táctil ni controles orbitales.
 
@@ -33,13 +37,14 @@ El parallax se aplica solo a ratón con puntero fino y viewport de escritorio. U
 
 - Se reutilizan el RAF y la carga diferida existentes. Durante la interpolación se limita el dibujo a 60 fps en escritorio y 30 en tablet/móvil; los eventos de scroll conservan su respuesta directa. Son límites de cadencia, no FPS garantizados.
 - El RAF se detiene al alcanzar el destino del scroll y finalizar el parallax, fuera de pantalla o con la pestaña oculta. Se eliminaron el reloj de reproducción automática y su temporizador de despertar.
-- En teléfonos: cuatro puntos de transferencia, dos puntos sobre el wireframe, una onda LoRa, un anillo de sensor y escáner sin plano transparente. Se conservan antialias, resolución adaptativa, detalles y materiales.
+- En teléfonos: cuatro puntos de transferencia, dos puntos sobre el wireframe, dos ondas LoRa, dos anillos de sensor y escáner sin plano transparente. Etiquetas de 12px, antialias y resolución adaptativa.
 - La estructura estática se fusiona por material. El robot articulado y su cubo usan tres lotes dinámicos; la réplica holográfica reutiliza sus buffers y añade un lote de contornos. Posiciones, normales, matrices y geometrías se reservan una vez. Los buffers del robot solo se actualizan cuando cambia la fase, no durante el parallax de una pose inmóvil.
-- Si el envío de frames resulta costoso, se reducen efectos secundarios junto con el escalado adaptativo existente. Se mantienen los fallbacks de dispositivo limitado, WebGL no disponible y pérdida de contexto.
+- Si el envío de frames resulta costoso, se reducen efectos secundarios y resolución. Si ya se alcanzó la resolución mínima, se reduce la cadencia de interpolación a 20 fps en vez de eliminar la escena. Tras una reducción de resolución se vuelve a dibujar en el mismo frame para no mostrar un buffer vacío. Se mantienen los fallbacks de dispositivo limitado, WebGL no disponible y pérdida de contexto.
+- Los cambios de calidad de red ya no destruyen/recrean el canvas: solo se reconsidera la carga si cambia la condición efectiva de ahorro de datos/dispositivo limitado. Esto elimina una causa concreta de desaparición y reaparición durante el uso móvil.
 - `prefers-reduced-motion` muestra la escena final estática: cubo depositado, brazo en reposo y holograma visible, sin pulsos, escáneres, HUD, parallax ni reproducción automática.
 - `pagehide` libera geometrías, materiales, textura/entorno, renderer y contexto, y cancela los relojes. Se comprueban restauración de bfcache y cambios de preferencias sin duplicar canvas ni listeners de interacción.
 
-La réplica visible añade superficies translúcidas y eleva el máximo medido a 5.064 triángulos, frente a 3.700 cuando solo había líneas en el gemelo. El máximo medido es de 33 draw calls, con un presupuesto de menos de 42 calls y 6.000 triángulos por frame. El bundle ocupa 518,7 KiB; gzip, 134,4 KiB, aproximadamente 1 KiB comprimido adicional. No se añaden dependencias, sombras dinámicas, postprocesado ni luces al sistema existente. No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
+Las superficies redondeadas del brazo y su réplica elevan el máximo medido a 9.922 triángulos y 34 draw calls. Se conserva un presupuesto de menos de 42 calls y 12.000 triángulos por frame. El bundle ocupa 519,9 KiB; gzip, 134,9 KiB. No se añaden dependencias, sombras dinámicas, postprocesado ni luces al sistema existente. No se miden aquí temperatura, batería ni tiempo real de GPU en teléfonos físicos.
 
 ## Archivos de esta actualización
 
@@ -50,16 +55,18 @@ La réplica visible añade superficies translúcidas y eleva el máximo medido a
 | `js/hero/robot-motion.js` | Cinemática inversa y fases deterministas de agarre, elevación, traslado y depósito. |
 | `js/hero/robot-assembly.js` | Articulaciones con buffers reutilizables, tres lotes por material y réplica holográfica compartida. |
 | `js/hero/scene.js` | Integra el robot articulado, cubo transportable, holograma, circuito, indicadores y etiquetas. |
+| `js/hero/radio-display.js` | Pantalla LoRa procedural con TX, barras y progreso; textura reutilizable. |
 | `js/hero/camera-rig.js` | Offset de cursor acotado sin cambiar el traveling existente. |
 | `js/hero-3d.js` | Único RAF, cadencia, puntero, visibilidad, reduced-motion y cleanup; sin temporizador de reproducción. |
-| `css/hero-3d.css` | Estados decorativos de etiquetas y microanimación de la flecha. |
+| `index.html`, `css/hero-3d.css` | Contenedores del recorrido móvil, escena sticky, etiquetas y flecha. |
 | `js/hero/scene.bundle.js` | Módulo de producción regenerado. |
 | `scripts/validate-site.mjs` | Valida la sintaxis de todos los módulos del hero, incluidos los del robot. |
 | `tests/narrative.spec.js`, `tests/rendering.spec.js` | Avance y retroceso por scroll, ausencia de autoplay al esperar, puntos, parallax, presupuesto y limpieza. |
 | `tests/robot.spec.js` | Comprueba longitudes, contacto con pinza, altura sobre la plataforma, continuidad, reversibilidad y capturas de las etapas en cada navegador. |
+| `tests/mobile-hero.spec.js`, `tests/hero-helpers.js` | Regresiones de red, rendimiento degradado, permanencia de la escena durante el scroll, velocidad y medición compartida del recorrido. |
 | `docs/hero-3d.md` | Comportamiento actual e historial de refinamientos previos. |
 
-Se conservan las pruebas de integración, contraste, resize, densidad, gestos táctiles y fallback. Resultado final: 56 pruebas aprobadas y 28 omisiones intencionadas por perfil, en Chrome de escritorio, tablet, Android emulado y WebKit con perfil de iPhone. Las pruebas de secuencia y renderizado esperan más de tres segundos sin scroll para detectar cualquier reinicio automático; la prueba del controlador también simula dos minutos en cada etapa sin permitir cambios. La cinemática se verifica en 1.001 posiciones, en ambos sentidos. El build valida 11 páginas y nueve proyectos. La emulación no sustituye una revisión en dispositivos físicos.
+Se conservan las pruebas de integración, contraste, resize, densidad, gestos táctiles y fallback, con perfiles Chrome de escritorio, tablet, Android emulado y WebKit/iPhone. Se prueban cambios de red sin recreación del canvas, coste simulado de frames, velocidad del traslado y persistencia de la escena al salir/volver. Las pruebas de secuencia esperan sin scroll para detectar cualquier reinicio automático. La cinemática se verifica en 1.001 posiciones, en ambos sentidos. El build valida 11 páginas y nueve proyectos. La emulación no sustituye una revisión en dispositivos físicos.
 
 ---
 

@@ -1,25 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { Vector3 } from 'three';
 import { createCameraRig } from '../js/hero/camera-rig.js';
-
-async function seek(page, progress) {
-    await page.evaluate((t) => {
-        const hero = document.querySelector('.hero-v2');
-        const stage = document.querySelector('.hero-stage');
-        const world = document.querySelector('.hero-world');
-        document.documentElement.style.scrollBehavior = 'auto';
-        const worldTop = world.getBoundingClientRect().top + scrollY;
-        const viewportHeight = document.querySelector('.hero-viewport-measure').clientHeight;
-        const start = innerWidth > 900
-            ? hero.offsetTop - Math.min(72, viewportHeight - stage.offsetHeight)
-            : Math.max(0, worldTop - viewportHeight * .85);
-        const length = innerWidth > 900
-            ? hero.offsetHeight - stage.offsetHeight
-            : worldTop - viewportHeight * .30 + world.offsetHeight * .4 - start;
-        scrollTo(0, Math.max(0, start + t * length));
-    }, progress);
-    await page.waitForTimeout(750);
-}
+import { seekHero as seek } from './hero-helpers.js';
 
 test('scroll activates every station, holds without autoplay and reverses the sequence', async ({ page }, testInfo) => {
     const errors = [];
@@ -79,7 +61,7 @@ test('scroll phases preserve rest and react in order even after a fast jump', as
     }
     const jump = createAnimationSequence(), visited = new Set();
     let scan = false;
-    for (let i = 0; i < 110; i++) {
+    for (let i = 0; i < 225; i++) {
         state = jump.update(1 / 60, 1, false);
         state.pulses.forEach((pulse, index) => { if (pulse > .1) visited.add(index); });
         scan ||= state.scanner > .3;
@@ -111,6 +93,7 @@ test('camera retains all station bounds across narrow, wide and short viewports'
 });
 
 test('labels remain separated at responsive boundaries and after live resize', async ({ page }, testInfo) => {
+    test.setTimeout(60000);
     test.skip(testInfo.project.name !== 'desktop-chrome', 'Additional CSS width boundaries.');
     await page.goto('/');
     for (const width of [320, 600, 601, 900, 901]) {

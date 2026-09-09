@@ -203,7 +203,7 @@ function siteOriginForCheck(slug) {
 }
 
 try {
-    for (const file of ['js/hero-3d.js', 'js/hero/scene.js', 'js/hero/camera-rig.js', 'js/hero/animation-sequence.js', 'js/hero/narrative-effects.js', 'js/hero/robot-motion.js', 'js/hero/robot-assembly.js', 'scripts/build-hero.mjs']) {
+    for (const file of ['js/hero-3d.js', 'js/hero/scene.js', 'js/hero/camera-rig.js', 'js/hero/animation-sequence.js', 'js/hero/narrative-effects.js', 'js/hero/robot-motion.js', 'js/hero/robot-assembly.js', 'js/hero/radio-display.js', 'scripts/build-hero.mjs']) {
         execFileSync(process.execPath, ['--check', path.join(rootDirectory, file)], { stdio: 'pipe' });
     }
     execFileSync(process.execPath, ['--check', path.join(rootDirectory, 'js', 'portfolio.js')], { stdio: 'pipe' });

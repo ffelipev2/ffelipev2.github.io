@@ -7,7 +7,7 @@ export const envelope = (phase, start, end) => {
     return Math.sin(t * Math.PI) ** 2;
 };
 
-export function createAnimationSequence() {
+export function createAnimationSequence({ mobile = false } = {}) {
     const state = { phase: 0, active: false, pulses: new Float32Array(5), scanner: 0, sync: 0 };
     return {
         update(delta, scroll, reduced) {
@@ -20,7 +20,10 @@ export function createAnimationSequence() {
             // scrolling directly. Elapsed time can never select another stage.
             const target = clamp01(scroll);
             const distance = target - state.phase;
-            const step = Math.max(0, Math.min(delta, .064)) * .72;
+            // Give the grasp and rotation time to read, including after a fling.
+            const inRobot = Math.max(target, state.phase) > .635 && Math.min(target, state.phase) < 1;
+            const speed = inRobot && state.phase >= .635 ? (mobile ? .12 : .22) : (mobile ? .28 : .55);
+            const step = Math.max(0, Math.min(delta, .064)) * speed;
             state.phase += Math.sign(distance) * Math.min(Math.abs(distance), step);
             state.active = Math.abs(target - state.phase) > .0001;
             if (!state.active) state.phase = target;

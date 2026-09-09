@@ -23,7 +23,7 @@ export function createRobotAssembly({ parent, keep, geometries, materials }) {
     for (let i = 0; i < 4; i++) {
         add('sphere', 0, 'joint', i, false);
         add('cylinder', 1, 'cap', i);
-        if (i) add('bevel', 0, 'link', i);
+        if (i) add('link', 0, 'link', i);
     }
     add('box', 1, 'wrist');
     add('box', 0, 'finger', -1); add('box', 0, 'finger', 1);

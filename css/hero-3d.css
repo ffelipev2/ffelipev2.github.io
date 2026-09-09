@@ -29,6 +29,7 @@
 .portrait-frame-v2 { border-radius: 4px; background: var(--color-surface); }
 .hero-portrait-v2 figcaption { color: var(--color-muted); font-size: .8125rem; }
 .hero-world { position: relative; height: clamp(260px, 33svh, 360px); margin-top: -8px; pointer-events: none; }
+.hero-track, .hero-visual { display: contents; }
 .hero-canvas, .hero-static { position: absolute; inset: 0; }
 .hero-canvas { opacity: 0; }
 .hero-canvas canvas { display: block; width: 100%; height: 100%; }
@@ -102,6 +103,7 @@
     .pillars-v2 article { grid-template-columns: 1fr; gap: 4px; }
 }
 @media (max-width: 900px) {
+    .hero-track, .hero-visual { display: block; }
     .hero-grid-v2 { grid-template-columns: minmax(0, 1fr) 170px; gap: 24px; padding-block: 38px 12px; }
     .hero-copy-v2 h1 { white-space: normal; font-size: clamp(2.75rem, 6.5vw, 4rem); }
     .hero-portrait-v2 { width: 170px; align-self: start; margin-top: 40px; }
@@ -119,10 +121,14 @@
     .portrait-frame-v2 { flex: 0 0 76px; }
     .hero-portrait-v2 figcaption { margin: 0; max-width: 230px; text-align: left; }
     .hero-world { height: 340px; }
-    .hero-labels span { font-size: .6875rem; letter-spacing: .015em; padding-inline: 5px; }
+    .hero-labels span { font-size: .75rem; letter-spacing: .015em; padding-inline: 5px; }
     .hero-journey { align-items: start; flex-direction: column; gap: 4px; }
     .hero-static { flex-wrap: wrap; align-content: center; }
     .hero-static span { font-size: .8125rem; }
+}
+@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+    .hero-v2.has-travel .hero-track { height: calc(var(--visual-height) + clamp(1400px, 220svh, 2200px)); }
+    .hero-v2.has-travel .hero-visual { position: sticky; top: min(84px, calc(100svh - var(--visual-height) - 12px)); }
 }
 @media (prefers-reduced-motion: reduce) {
     .hero-v2.has-travel { height: auto; }
