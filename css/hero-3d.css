@@ -130,6 +130,11 @@
     .hero-v2.has-travel .hero-track { height: calc(var(--visual-height) + clamp(1200px, 180svh, 1800px)); }
     .hero-v2.has-travel .hero-visual { position: sticky; top: min(84px, calc(100svh - var(--visual-height) - 12px)); }
 }
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+    /* Extra travel only: the sticky visual already contributes its own height.
+       About 2–3 ordinary swipes, with the full sequence mapped to this range. */
+    .hero-v2.has-travel .hero-track { height: calc(var(--visual-height) + clamp(480px, 70svh, 660px)); }
+}
 @media (prefers-reduced-motion: reduce) {
     .hero-v2.has-travel { height: auto; }
     .hero-stage { position: relative; }
