@@ -1,4 +1,4 @@
-// Progressive enhancement: no Three.js request until HTML and priority images load.
+// Prepare Three.js as soon as this module runs; visibility only gates animation.
 const hero = document.querySelector('.hero-v2');
 if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const stage = hero.querySelector('[data-hero-stage]');
@@ -115,12 +115,12 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         if (scene && visible && !document.hidden && !suspended && !frame) frame = requestAnimationFrame(draw);
     };
     const init = async () => {
-        if (scene || loading || failed || limited() || !visible || suspended || document.hidden) return;
+        if (scene || loading || failed || limited() || suspended || document.hidden) return;
         loading = true;
         const current = ++generation;
         try {
             const { createHeroScene, createAnimationSequence } = await import('./hero/scene.bundle.js');
-            if (current !== generation || suspended) return;
+            if (current !== generation || suspended || document.hidden) return;
             scene = createHeroScene(host, { compact: phone.matches, onContextLost: fallback });
             sequence = createAnimationSequence({ mobile: mobile.matches });
             measure();
@@ -129,18 +129,17 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
             hero.classList.add('has-scene');
             hero.classList.toggle('has-travel', !motion.matches);
             measure();
+            // Enhancement can resize the buffer. Leave a finished frame ready
+            // even when the section is still below the initial phone viewport.
+            const initial = sequence.update(0, 0, motion.matches);
+            scene.render(motion.matches ? 1 : 0, labels, motion.matches, initial, pointer);
+            host.dataset.phase = initial.phase.toFixed(4);
             progress = readProgress(); requestDraw();
         } catch { if (current === generation) fallback(); }
         finally { if (current === generation) loading = false; }
     };
-    const schedule = () => {
-        if ('requestIdleCallback' in window) idle = requestIdleCallback(init, { timeout: 1800 });
-        else idle = setTimeout(init, 100);
-    };
-    const cancelIdle = () => {
-        if ('cancelIdleCallback' in window) cancelIdleCallback(idle);
-        else clearTimeout(idle);
-    };
+    const schedule = () => { idle = setTimeout(init, 0); };
+    const cancelIdle = () => { clearTimeout(idle); };
     const preferenceChanged = () => { cancelIdle(); release(); failed = false; slowFrames = 0; economy = false; schedule(); };
     const connectionChanged = () => {
         const next = Boolean(limited());
@@ -170,7 +169,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     }, { threshold: .01 });
     const resizeObserver = new ResizeObserver(resized);
     const observe = () => { observer.observe(world); resizeObserver.observe(stage); resizeObserver.observe(visual); resizeObserver.observe(viewport); watchDensity(); };
-    const loaded = () => { observe(); schedule(); };
+    const loaded = () => { measure(); requestDraw(true); };
     motion.addEventListener('change', preferenceChanged);
     mobile.addEventListener('change', preferenceChanged);
     phone.addEventListener('change', preferenceChanged);
@@ -201,6 +200,8 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) { suspended = false; observe(); schedule(); }
     });
+    observe();
+    init();
     if (document.readyState === 'complete') loaded();
     else window.addEventListener('load', loaded, { once: true });
 }

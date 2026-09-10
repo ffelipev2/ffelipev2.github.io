@@ -37,7 +37,8 @@ El parallax se aplica solo a ratón con puntero fino y viewport de escritorio. U
 
 ## Rendimiento, móvil y limpieza
 
-- Se reutilizan el RAF y la carga diferida existentes. Durante la interpolación se limita el dibujo a 60 fps en escritorio y 30 en tablet/móvil; los eventos de scroll conservan su respuesta directa. Son límites de cadencia, no FPS garantizados.
+- El módulo 3D empieza a descargarse y prepara la escena en cuanto se ejecuta el JavaScript del hero, sin esperar al primer scroll, a que la sección entre en pantalla ni a que terminen las imágenes. Se deja un frame inicial listo; fuera de pantalla no se mantiene un bucle de animación. Se conservan las excepciones de ahorro de datos y dispositivos limitados.
+- Se reutiliza el RAF existente. Durante la interpolación se limita el dibujo a 60 fps en escritorio y 30 en tablet/móvil; los eventos de scroll conservan su respuesta directa. Son límites de cadencia, no FPS garantizados.
 - El RAF se detiene al alcanzar el destino del scroll y finalizar el parallax, fuera de pantalla o con la pestaña oculta. Se eliminaron el reloj de reproducción automática y su temporizador de despertar.
 - En teléfonos: cuatro puntos de transferencia, dos puntos sobre el wireframe, dos ondas LoRa, dos anillos de sensor y escáner sin plano transparente. Etiquetas de 12px, antialias y resolución adaptativa.
 - La estructura estática se fusiona por material. El robot articulado y su cubo usan tres lotes dinámicos; la réplica holográfica reutiliza sus buffers y añade un lote de contornos. Posiciones, normales, matrices y geometrías se reservan una vez. Los buffers del robot solo se actualizan cuando cambia la fase, no durante el parallax de una pose inmóvil.
@@ -66,6 +67,7 @@ Las superficies redondeadas del brazo y su réplica elevan el máximo medido a 9
 | `tests/narrative.spec.js`, `tests/rendering.spec.js` | Avance y retroceso por scroll, ausencia de autoplay al esperar, puntos, parallax, presupuesto y limpieza. |
 | `tests/robot.spec.js` | Comprueba longitudes, contacto con pinza, altura sobre la plataforma, continuidad, reversibilidad y capturas de las etapas en cada navegador. |
 | `tests/mobile-hero.spec.js`, `tests/hero-helpers.js` | Regresiones de red, rendimiento degradado, permanencia de la escena durante el scroll, velocidad y medición compartida del recorrido. |
+| `tests/hero-preload.spec.js` | Comprueba en Android y WebKit/iPhone que el canvas esté preparado antes del scroll y con la foto todavía cargando, permanezca en reposo fuera de pantalla y se reutilice al llegar. |
 | `docs/hero-3d.md` | Comportamiento actual e historial de refinamientos previos. |
 
 Se conservan las pruebas de integración, contraste, resize, densidad, gestos táctiles y fallback, con perfiles Chrome de escritorio, tablet, Android emulado y WebKit/iPhone. Se prueban cambios de red sin recreación del canvas, coste simulado de frames, velocidad del traslado y persistencia de la escena al salir/volver. Las pruebas de secuencia esperan sin scroll para detectar cualquier reinicio automático. La cinemática se verifica en 1.001 posiciones, en ambos sentidos. El build valida 11 páginas y nueve proyectos. La emulación no sustituye una revisión en dispositivos físicos.
