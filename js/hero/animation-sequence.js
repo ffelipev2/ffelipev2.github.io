@@ -10,6 +10,10 @@ export const envelope = (phase, start, end) => {
 export function createAnimationSequence({ mobile = false } = {}) {
     const state = { phase: 0, active: false, pulses: new Float32Array(5), scanner: 0, sync: 0 };
     return {
+        reset() {
+            state.phase = 0; state.active = false;
+            state.pulses.fill(0); state.scanner = 0; state.sync = 0;
+        },
         update(delta, scroll, reduced) {
             if (reduced) {
                 state.phase = 1; state.active = false;

@@ -16,6 +16,8 @@ Las etiquetas mantienen sus textos 01–05. En escritorio pueden mostrar breveme
 
 ## Scroll y cursor
 
+La flecha «Volver al inicio» reinicia inmediatamente la fase, los pulsos y la pose de la escena. Durante el regreso suave se conserva ese estado inicial, de modo que la siguiente bajada no arrastra una reproducción inversa pendiente. Un gesto del usuario puede interrumpir el regreso; subir manualmente sigue recorriendo la secuencia en sentido inverso. Se reutiliza el mismo canvas y se respeta movimiento reducido. `tests/hero-return.spec.js` comprueba el retorno y el avance posterior en los cuatro perfiles de navegador.
+
 | Progreso | Actividad principal |
 | --- | --- |
 | 0–20% | Reposo |

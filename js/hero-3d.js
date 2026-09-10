@@ -30,6 +30,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     let lastTick = 0, lastPaint = 0;
     let forcePaint = false;
     let economy = false;
+    let returningToStart = false, returnPosition = 0;
     const pointer = { x: 0, y: 0 }, pointerTarget = { x: 0, y: 0 };
     const stop = () => {
         cancelAnimationFrame(frame);
@@ -37,6 +38,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     };
     const release = () => {
         generation++; stop(); scene?.dispose(); scene = null; sequence = null; loading = false;
+        returningToStart = false;
         pointer.x = pointer.y = pointerTarget.x = pointerTarget.y = 0;
         hero.classList.remove('has-scene', 'has-travel');
         hero.style.removeProperty('--stage-height');
@@ -69,9 +71,9 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         }
     };
     const readProgress = () => motion.matches ? 1 : Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollLength));
-    const draw = (time) => {
+    const draw = (time, prepare = false) => {
         frame = 0;
-        if (!scene || !visible || document.hidden || suspended) return;
+        if (!scene || (!visible && !prepare) || document.hidden || suspended) return;
         // Limit actual drawing on high-refresh screens; use the same RAF owner.
         if (!forcePaint && lastPaint && time - lastPaint < (economy ? 50 : mobile.matches ? 1000 / 30 : 1000 / 60) - 1) {
             frame = requestAnimationFrame(draw); return;
@@ -80,7 +82,7 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
         lastTick = lastPaint = time;
         forcePaint = false;
         // Follow native scrolling directly, with no extra inertia or catch-up.
-        progress = readProgress();
+        progress = returningToStart ? 0 : readProgress();
         const animation = sequence.update(delta, progress, motion.matches);
         const blend = 1 - Math.exp(-Math.min(delta, .064) / .15);
         pointer.x += (pointerTarget.x - pointer.x) * blend;
@@ -154,7 +156,26 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     };
     const densityChanged = () => { watchDensity(); resized(); };
     const visibilityChanged = () => { if (document.hidden) stop(); else { init(); requestDraw(); } };
-    const scrolled = () => { if (!motion.matches) requestDraw(true); };
+    const scrolled = () => {
+        if (returningToStart && scrollY <= returnPosition && readProgress() === 0) returningToStart = false;
+        if (!motion.matches) requestDraw(true);
+    };
+    const returnToStart = (event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (!(event.target instanceof Element) || !event.target.closest('a[href="#inicio"]') || motion.matches || !scene) return;
+        // Native anchor scrolling stays intact, but is not a reverse playback.
+        returnPosition = Math.max(0, hero.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(hero).scrollMarginTop) || 0));
+        returningToStart = true;
+        stop(); sequence.reset();
+        pointer.x = pointer.y = pointerTarget.x = pointerTarget.y = 0;
+        forcePaint = true;
+        draw(performance.now(), true);
+        if (scrollY <= returnPosition && readProgress() === 0) returningToStart = false;
+    };
+    const cancelReturn = () => {
+        if (!returningToStart) return;
+        returningToStart = false; requestDraw(true);
+    };
     const pointerMoved = (event) => {
         if (event.pointerType !== 'mouse' || !finePointer.matches || mobile.matches || motion.matches) return;
         const rect = stage.getBoundingClientRect();
@@ -178,6 +199,8 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     window.addEventListener('scroll', scrolled, { passive: true });
     window.addEventListener('resize', resized, { passive: true });
     document.addEventListener('visibilitychange', visibilityChanged);
+    document.addEventListener('click', returnToStart);
+    for (const event of ['wheel', 'touchstart', 'pointerdown', 'keydown']) window.addEventListener(event, cancelReturn, { passive: true });
     hero.addEventListener('pointermove', pointerMoved, { passive: true });
     hero.addEventListener('pointerleave', pointerLeft);
     window.addEventListener('pagehide', (event) => {
@@ -193,6 +216,8 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
             window.removeEventListener('resize', resized);
             window.removeEventListener('load', loaded);
             document.removeEventListener('visibilitychange', visibilityChanged);
+            document.removeEventListener('click', returnToStart);
+            for (const event of ['wheel', 'touchstart', 'pointerdown', 'keydown']) window.removeEventListener(event, cancelReturn);
             hero.removeEventListener('pointermove', pointerMoved);
             hero.removeEventListener('pointerleave', pointerLeft);
         }
