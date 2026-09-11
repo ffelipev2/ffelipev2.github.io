@@ -1,69 +1,31 @@
-# Felipe Flores — Portfolio Personal
+# Felipe Flores
 
-Este repositorio contiene el código fuente del sitio personal y portfolio profesional de Felipe Flores, enfocado en IoT, Industria 4.0, educación tecnológica, proyectos, experiencia, publicaciones y contacto.
+**Tecnología aplicada para enseñar, innovar y construir.**
 
-**Sitio:** [felipeflores.tech](https://felipeflores.tech)
+[Visitar felipeflores.tech](https://felipeflores.tech)
 
-## Tecnologías
+Mi plataforma reúne proyectos, experiencias y conocimientos que conectan la tecnología con desafíos reales de la industria, la educación y la sociedad.
 
-- HTML5, CSS3 y JavaScript sin framework.
-- Datos de proyectos en JSON.
-- Node.js con scripts ESM para generación y validación del sitio.
-- Three.js, cargado bajo demanda únicamente en el hero; esbuild genera su módulo estático.
-- OpenAI Sites / worker estático compatible con Cloudflare para el despliegue.
+Soy Felipe Flores, Ingeniero Civil Informático y Magíster en Alta Dirección y Gestión de Instituciones Educacionales. Mi trabajo combina IoT, automatización, robótica, fabricación digital y educación superior para desarrollar soluciones y experiencias de aprendizaje aplicadas.
 
-## Estructura del proyecto
+## Explora la plataforma
 
-- `index.html`: portada y secciones principales.
-- `css/` y `js/`: estilos e interacciones del sitio.
-- `data/`: información estructurada de los proyectos.
-- `proyectos/`: índice y páginas de detalle de proyectos.
-- `images/` y `docs/`: fotografías, imágenes de proyectos, favicons y CV público.
-- `scripts/`: generación de páginas, validación y construcción del worker estático.
-- `.openai/hosting.json`: configuración necesaria para el proyecto de despliegue.
-- `bower_components/`: recursos frontend heredados conservados por el repositorio; no se eliminan sin una auditoría específica.
+- **[Inicio](https://felipeflores.tech/#inicio):** una presentación de mi trabajo y de la conexión entre el mundo físico y el digital.
+- **[Proyectos](https://felipeflores.tech/proyectos/):** soluciones y demostraciones de gemelos digitales, comunicación LoRa, robótica, visión artificial y dispositivos conectados.
+- **[Sobre mí](https://felipeflores.tech/#perfil):** mi enfoque profesional en Industria 4.0, educación tecnológica e innovación aplicada.
+- **[Experiencia](https://felipeflores.tech/#experiencia):** trayectoria profesional, docencia, coordinación académica y desarrollo de laboratorios y proyectos.
+- **[Áreas de trabajo](https://felipeflores.tech/#tecnologias):** disciplinas y herramientas presentes en mis proyectos y actividades educativas.
+- **[Formación y publicaciones](https://felipeflores.tech/#publicaciones):** estudios, certificaciones, investigación y contribuciones académicas.
+- **[Contacto](https://felipeflores.tech/#contacto):** un espacio para conversar sobre proyectos, colaboración e iniciativas educativas.
 
-## Ejecución local
+## Proyectos destacados
 
-Instala las dependencias con `npm ci`. `npm run dev` genera el módulo 3D antes de iniciar el servidor. Si editas la escena durante la previsualización, ejecuta `node scripts/build-hero.mjs` y recarga la página.
+- **[Gemelo Digital](https://felipeflores.tech/proyectos/gemelo-digital/):** monitoreo y representación digital de procesos mediante dispositivos conectados.
+- **[Chat con LoRa](https://felipeflores.tech/proyectos/chat-lora/):** intercambio de mensajes entre dispositivos mediante comunicación de largo alcance.
+- **[UFACTORY LITE 6](https://felipeflores.tech/proyectos/ufactory-lite-6/):** robótica aplicada a la educación y la industria.
 
-Para previsualizar el sitio con un origen HTTP local —necesario para que los videos de YouTube se reproduzcan dentro de la página— ejecuta:
+## Conectemos
 
-```bash
-npm run dev
-```
+Me interesa transformar ideas en soluciones concretas y compartir experiencias que acerquen la tecnología a las personas.
 
-Luego abre:
-
-`http://127.0.0.1:4173/`
-
-Para regenerar páginas, sitemap y el worker estático antes de previsualizar, ejecuta también `npm run build`.
-
-## Build
-
-```bash
-npm run build
-```
-
-El comando genera las páginas de proyectos, valida enlaces y metadatos, y construye el worker estático en `dist/`. También se puede ejecutar la validación por separado con `npm test`.
-
-El módulo `js/hero/scene.bundle.js` y su licencia se conservan en el repositorio para que la portada también funcione en un hosting estático sin compilación, como GitHub Pages. No se editan manualmente.
-
-## Hero 3D y sistema visual
-
-La implementación, decisiones de rendimiento, paleta, archivos y limitaciones se describen en [docs/hero-3d.md](docs/hero-3d.md).
-
-Para ejecutar las comprobaciones de navegador: instala Chrome y ejecuta `npx playwright install webkit`, luego `npm run test:browser`. Se comprueban escritorio, tablet, Android emulado y WebKit con viewport de iPhone; esto no sustituye las pruebas en teléfonos físicos. Las capturas y resultados temporales se guardan en `test-results/`, fuera del control de versiones.
-
-## Deployment
-
-El sitio se publica como un worker estático mediante OpenAI Sites. La configuración en `.openai/hosting.json` vincula el proyecto de hosting y es leída durante el build; no contiene secretos. El archivo `CNAME` conserva la referencia al dominio público.
-
-## Assets y uso de contenido
-
-El repositorio incluye fotografías, imágenes de proyectos, CV, textos personales y otros recursos utilizados por el sitio. El código queda sujeto a la licencia definida para el repositorio; las fotografías, CV, publicaciones, identidad visual y contenido personal no deben reutilizarse sin autorización expresa.
-
-## Autor
-
-Felipe Flores  
-Sitio: [https://felipeflores.tech](https://felipeflores.tech)
+[Hablemos de tu proyecto](https://felipeflores.tech/#contacto) · [Conoce mi trayectoria](https://felipeflores.tech/docs/Felipe-CV.pdf)
