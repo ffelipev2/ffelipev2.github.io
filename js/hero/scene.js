@@ -282,9 +282,12 @@ export function createHeroScene(host, { compact, onContextLost }) {
                 ledMaterial.color.setRGB(1, .04 + ledBlink * .68, .02 + ledBlink * .48).multiplyScalar(.75 + ledBlink * .25);
                 ledGlow.opacity = reduced ? .3 : .3 + ledBlink * .45;
                 radioDisplay.update(phase, reduced);
-                if (phase !== robotPhase || reduced !== robotReduced) {
-                    robotAssembly.update(robotMotion.update(phase, reduced));
-                    robotPhase = phase; robotReduced = reduced;
+                // The pose is constant before the grasp begins. Keep the same
+                // CPU geometry and GPU buffers throughout the first stations.
+                const posePhase = reduced ? 1 : phase <= .635 ? 0 : phase;
+                if (posePhase !== robotPhase || reduced !== robotReduced) {
+                    robotAssembly.update(robotMotion.update(posePhase, reduced));
+                    robotPhase = posePhase; robotReduced = reduced;
                 }
                 const build = reduced ? 1 : MathUtils.smoothstep(phase, .78, .96);
                 twinLight.intensity = (3.5 * build + animation.sync) * stationScale * stationScale;
@@ -303,7 +306,7 @@ export function createHeroScene(host, { compact, onContextLost }) {
                     const x = (projected.x * .5 + .5) * width + pointer.x * 2;
                     const y = (-projected.y * .5 + .5) * height + pointer.y;
                     const visible = Math.abs(projected.x) < 1 && Math.abs(projected.y) < 1 && projected.z < 1;
-                    label.hidden = !visible;
+                    if (label.hidden === visible) label.hidden = !visible;
                     const halfWidth = labelWidths[i] / 2;
                     anchorXs[i] = x;
                     labelXs[i] = Math.max(halfWidth + 8, Math.min(width - halfWidth - 8, x));

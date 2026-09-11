@@ -12,8 +12,11 @@ export function heroRange() {
 
 export async function seekHero(page, progress) {
     const range = await page.evaluate(heroRange);
-    const expected = await page.evaluate(({ top, start, length }) => {
+    const expected = await page.evaluate(async ({ top, start, length }) => {
         document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, Math.max(0, top));
+        // Mobile Chrome can finalize/round the native scroll position after
+        // this task. Compare against that settled position, not the first read.
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         return Math.max(0, Math.min(1, (scrollY - start) / length));
     }, { top: range.start + progress * range.length, ...range });
     await expect.poll(async () => Math.abs(Number(await page.locator('.hero-canvas').getAttribute('data-phase')) - expected), { timeout: 10000, intervals: [60] }).toBeLessThan(.0001);

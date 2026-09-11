@@ -1,0 +1,318 @@
+{
+  "date": "2026-09-10",
+  "baseline": "e806ba6",
+  "environment": "Local Chrome, no CPU/network throttling, three paired runs per viewport. Selected counters from scripts/measure-scroll.mjs console output. 393px profile emulates a phone at DPR 2.75; not a physical device. CPU includes instrumentation; bufferSubData bytes are CPU-to-GPU transfer, not network traffic or GPU time.",
+  "segments": [
+    "0 to 0.60 in 1800 ms plus catch-up",
+    "0.60 to 0.98 in 2400 ms plus catch-up"
+  ],
+  "navigationAttributeMutationsPer30ScrollFrames": {
+    "before": 60,
+    "after": 0
+  },
+  "idleFramesPer600ms": {
+    "visible": 0,
+    "offscreen": 0,
+    "bothVariants": true
+  },
+  "summary": [
+    {
+      "width": 1440,
+      "variants": [
+        {
+          "variant": "before",
+          "medianFrames": 252,
+          "medianUploadBytes": 70361496,
+          "medianScriptSeconds": 0.29530199999999995,
+          "medianNavScriptSeconds": 0.005175
+        },
+        {
+          "variant": "after",
+          "medianFrames": 253,
+          "medianUploadBytes": 36861336,
+          "medianScriptSeconds": 0.265548,
+          "medianNavScriptSeconds": 0.0024
+        }
+      ],
+      "uploadReductionPercent": 47.61149478686468,
+      "scriptReductionPercent": 10.075786821626654
+    },
+    {
+      "width": 393,
+      "variants": [
+        {
+          "variant": "before",
+          "medianFrames": 257,
+          "medianUploadBytes": 71470872,
+          "medianScriptSeconds": 0.28827,
+          "medianNavScriptSeconds": 0.004446
+        },
+        {
+          "variant": "after",
+          "medianFrames": 256,
+          "medianUploadBytes": 37970760,
+          "medianScriptSeconds": 0.248946,
+          "medianNavScriptSeconds": 0.002113
+        }
+      ],
+      "uploadReductionPercent": 46.87239859057547,
+      "scriptReductionPercent": 13.641377874908944
+    }
+  ],
+  "samples": [
+    {
+      "width": 1440,
+      "variant": "before",
+      "run": 1,
+      "frames": [
+        109,
+        144
+      ],
+      "uploadBytes": [
+        30429312,
+        39932184
+      ],
+      "scriptSeconds": [
+        0.146275,
+        0.203722
+      ],
+      "navScrollScript": 0.00555
+    },
+    {
+      "width": 1440,
+      "variant": "after",
+      "run": 1,
+      "frames": [
+        108,
+        145
+      ],
+      "uploadBytes": [
+        0,
+        36861480
+      ],
+      "scriptSeconds": [
+        0.099244,
+        0.166304
+      ],
+      "navScrollScript": 0.002289
+    },
+    {
+      "width": 1440,
+      "variant": "after",
+      "run": 2,
+      "frames": [
+        108,
+        145
+      ],
+      "uploadBytes": [
+        0,
+        36861336
+      ],
+      "scriptSeconds": [
+        0.100218,
+        0.160529
+      ],
+      "navScrollScript": 0.0024
+    },
+    {
+      "width": 1440,
+      "variant": "before",
+      "run": 2,
+      "frames": [
+        107,
+        145
+      ],
+      "uploadBytes": [
+        29870976,
+        40490520
+      ],
+      "scriptSeconds": [
+        0.135423,
+        0.159879
+      ],
+      "navScrollScript": 0.005059
+    },
+    {
+      "width": 1440,
+      "variant": "before",
+      "run": 3,
+      "frames": [
+        107,
+        145
+      ],
+      "uploadBytes": [
+        29870976,
+        40490664
+      ],
+      "scriptSeconds": [
+        0.121359,
+        0.162642
+      ],
+      "navScrollScript": 0.005175
+    },
+    {
+      "width": 1440,
+      "variant": "after",
+      "run": 3,
+      "frames": [
+        108,
+        145
+      ],
+      "uploadBytes": [
+        0,
+        36861336
+      ],
+      "scriptSeconds": [
+        0.123169,
+        0.196318
+      ],
+      "navScrollScript": 0.003289
+    },
+    {
+      "width": 393,
+      "variant": "before",
+      "run": 1,
+      "frames": [
+        109,
+        148
+      ],
+      "uploadBytes": [
+        30429312,
+        41041560
+      ],
+      "scriptSeconds": [
+        0.131817,
+        0.156453
+      ],
+      "navScrollScript": 0.004778
+    },
+    {
+      "width": 393,
+      "variant": "after",
+      "run": 1,
+      "frames": [
+        108,
+        149
+      ],
+      "uploadBytes": [
+        0,
+        37970760
+      ],
+      "scriptSeconds": [
+        0.093378,
+        0.155568
+      ],
+      "navScrollScript": 0.002071
+    },
+    {
+      "width": 393,
+      "variant": "after",
+      "run": 2,
+      "frames": [
+        107,
+        149
+      ],
+      "uploadBytes": [
+        0,
+        37970760
+      ],
+      "scriptSeconds": [
+        0.094168,
+        0.154205
+      ],
+      "navScrollScript": 0.002207
+    },
+    {
+      "width": 393,
+      "variant": "before",
+      "run": 2,
+      "frames": [
+        107,
+        148
+      ],
+      "uploadBytes": [
+        29870976,
+        41041608
+      ],
+      "scriptSeconds": [
+        0.122806,
+        0.157373
+      ],
+      "navScrollScript": 0.004446
+    },
+    {
+      "width": 393,
+      "variant": "before",
+      "run": 3,
+      "frames": [
+        109,
+        149
+      ],
+      "uploadBytes": [
+        30150144,
+        41599944
+      ],
+      "scriptSeconds": [
+        0.123343,
+        0.165202
+      ],
+      "navScrollScript": 0.004296
+    },
+    {
+      "width": 393,
+      "variant": "after",
+      "run": 3,
+      "frames": [
+        108,
+        148
+      ],
+      "uploadBytes": [
+        0,
+        37970760
+      ],
+      "scriptSeconds": [
+        0.093964,
+        0.160379
+      ],
+      "navScrollScript": 0.002113
+    }
+  ],
+  "visualVerification": {
+    "browser": "152.0.7977.83",
+    "comparison": "PNG byte equality and decoded RGB equality after native scroll settles",
+    "frames": [
+      {
+        "frame": "1440-0.24",
+        "identicalPNG": true
+      },
+      {
+        "frame": "1440-0.54",
+        "identicalPNG": true
+      },
+      {
+        "frame": "1440-0.78",
+        "identicalPNG": true
+      },
+      {
+        "frame": "1440-0.9",
+        "identicalPNG": true
+      },
+      {
+        "frame": "393-0.24",
+        "identicalPNG": true
+      },
+      {
+        "frame": "393-0.54",
+        "identicalPNG": true
+      },
+      {
+        "frame": "393-0.78",
+        "identicalPNG": true
+      },
+      {
+        "frame": "393-0.9",
+        "identicalPNG": true
+      }
+    ]
+  }
+}

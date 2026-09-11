@@ -102,7 +102,8 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
             else scene.render(progress, labels, motion.matches, animation, pointer);
             slowFrames = 0;
         }
-        host.dataset.phase = animation.phase.toFixed(4);
+        const phaseValue = animation.phase.toFixed(4);
+        if (host.dataset.phase !== phaseValue) host.dataset.phase = phaseValue;
         progressBar.style.transform = `scaleX(${progress})`;
         portrait.style.opacity = motion.matches ? '1' : String(1 - progress * .10);
         journey.style.setProperty('--journey-progress', progress.toFixed(4));
@@ -158,7 +159,10 @@ if (hero && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
     const visibilityChanged = () => { if (document.hidden) stop(); else { init(); requestDraw(); } };
     const scrolled = () => {
         if (returningToStart && scrollY <= returnPosition && readProgress() === 0) returningToStart = false;
-        if (!motion.matches) requestDraw(true);
+        // Keep immediate drawing throughout native travel. Before/after the
+        // track, redraw only if its target changed; catch-up owns its own RAF.
+        const next = returningToStart ? 0 : readProgress();
+        if (!motion.matches && (next !== progress || (!returningToStart && next > 0 && next < 1))) requestDraw(true);
     };
     const returnToStart = (event) => {
         if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

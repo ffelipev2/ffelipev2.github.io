@@ -149,13 +149,6 @@
         }
     });
 
-    const siteHeader = document.querySelector('[data-site-header]');
-    const updateHeader = () => {
-        siteHeader?.classList.toggle('is-scrolled', window.scrollY > 12);
-    };
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
-
     const videoDialog = document.querySelector('#video-dialog');
     const dialogVideo = videoDialog?.querySelector('[data-dialog-video]');
     const dialogTitle = videoDialog?.querySelector('#video-dialog-title');
@@ -373,53 +366,8 @@
         }, { passive: true });
     });
 
-    const setupReadingProgress = () => {
-        if (!document.body.classList.contains('portfolio-page')) return;
-
-        let progress = null;
-        let progressFrame = null;
-
-        const updateProgress = () => {
-            progressFrame = null;
-            if (!progress) return;
-            const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
-            const value = maxScroll ? Math.min(window.scrollY / maxScroll, 1) : 0;
-            progress.style.transform = 'scaleX(' + value + ')';
-        };
-
-        const requestProgressUpdate = () => {
-            if (progressFrame !== null) return;
-            progressFrame = window.requestAnimationFrame(updateProgress);
-        };
-
-        const enableProgress = () => {
-            if (progress) return;
-            progress = document.createElement('div');
-            progress.className = 'reading-progress';
-            progress.setAttribute('aria-hidden', 'true');
-            document.body.prepend(progress);
-            updateProgress();
-            window.addEventListener('scroll', requestProgressUpdate, { passive: true });
-            window.addEventListener('resize', requestProgressUpdate);
-        };
-
-        const disableProgress = () => {
-            if (progressFrame !== null) window.cancelAnimationFrame(progressFrame);
-            progressFrame = null;
-            window.removeEventListener('scroll', requestProgressUpdate);
-            window.removeEventListener('resize', requestProgressUpdate);
-            progress?.remove();
-            progress = null;
-        };
-
-        if (!prefersReducedMotion) enableProgress();
-        subscribeToMotionPreference((isReduced) => {
-            if (isReduced) disableProgress();
-            else enableProgress();
-        });
-    };
-
-    const setupSectionNavigation = () => {
+    const setupPageScroll = () => {
+        const siteHeader = document.querySelector('[data-site-header]');
         const navigationLinks = Array.from(document.querySelectorAll(
             '.desktop-nav-v2 a[href^="#"], .mobile-nav > a[href^="#"]'
         ));
@@ -430,11 +378,13 @@
             .sort((first, second) => first.offsetTop - second.offsetTop);
         const projectMenu = document.querySelector('.mobile-nav details');
         const projectSummary = projectMenu?.querySelector(':scope > summary');
-        let navigationFrame = null;
-
-        if (!navigationLinks.length || !sections.length) return;
+        let scrollFrame = null, progress = null, currentId = null, headerScrolled = null;
+        let geometryDirty = true, maxScroll = 0, viewportHeight = 0;
+        const sectionTops = new Float64Array(sections.length);
 
         const setCurrentSection = (id) => {
+            if (id === currentId) return;
+            currentId = id;
             navigationLinks.forEach((link) => {
                 const isCurrent = link.hash === '#' + id;
                 link.classList.toggle('is-current', isCurrent);
@@ -448,26 +398,57 @@
             else projectSummary?.removeAttribute('aria-current');
         };
 
-        const updateSectionNavigation = () => {
-            navigationFrame = null;
-            const readingLine = window.scrollY + (window.innerHeight * 0.38);
-            let currentSection = sections[0];
-
-            sections.forEach((section) => {
-                if (section.offsetTop <= readingLine) currentSection = section;
-            });
-
-            setCurrentSection(currentSection.id);
+        const updatePageScroll = () => {
+            scrollFrame = null;
+            // Read geometry together, only when layout has changed. Scroll
+            // frames then use cached measurements before making any DOM writes.
+            if (geometryDirty) {
+                viewportHeight = window.innerHeight;
+                maxScroll = Math.max(document.documentElement.scrollHeight - viewportHeight, 0);
+                sections.forEach((section, index) => { sectionTops[index] = section.offsetTop; });
+                geometryDirty = !('ResizeObserver' in window);
+            }
+            const top = window.scrollY;
+            const isScrolled = top > 12;
+            if (isScrolled !== headerScrolled) {
+                siteHeader?.classList.toggle('is-scrolled', isScrolled);
+                headerScrolled = isScrolled;
+            }
+            if (progress) progress.style.transform = 'scaleX(' + (maxScroll ? Math.max(0, Math.min(top / maxScroll, 1)) : 0) + ')';
+            if (sections.length) {
+                const readingLine = top + viewportHeight * .38;
+                let current = 0;
+                sectionTops.forEach((sectionTop, index) => { if (sectionTop <= readingLine) current = index; });
+                setCurrentSection(sections[current].id);
+            }
         };
-
-        const requestNavigationUpdate = () => {
-            if (navigationFrame !== null) return;
-            navigationFrame = window.requestAnimationFrame(updateSectionNavigation);
+        const requestScrollUpdate = () => {
+            if (scrollFrame === null) scrollFrame = window.requestAnimationFrame(updatePageScroll);
         };
-
-        updateSectionNavigation();
-        window.addEventListener('scroll', requestNavigationUpdate, { passive: true });
-        window.addEventListener('resize', requestNavigationUpdate);
+        const invalidateGeometry = () => { geometryDirty = true; requestScrollUpdate(); };
+        const updateProgressPreference = (isReduced) => {
+            if (isReduced) { progress?.remove(); progress = null; }
+            else if (!progress && document.body.classList.contains('portfolio-page')) {
+                progress = document.createElement('div');
+                progress.className = 'reading-progress';
+                progress.setAttribute('aria-hidden', 'true');
+                document.body.prepend(progress);
+            }
+            invalidateGeometry();
+        };
+        updateProgressPreference(prefersReducedMotion);
+        subscribeToMotionPreference(updateProgressPreference);
+        // Hero enhancement, images and disclosures can move section boundaries
+        // without resizing the window. Observe layout, not scroll transforms.
+        if ('ResizeObserver' in window) {
+            const observer = new ResizeObserver(invalidateGeometry);
+            observer.observe(document.body);
+            document.querySelectorAll('main > *, .hero-v2').forEach(element => observer.observe(element));
+        }
+        window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+        window.addEventListener('resize', invalidateGeometry, { passive: true });
+        window.addEventListener('load', invalidateGeometry, { once: true });
+        window.addEventListener('pageshow', invalidateGeometry);
     };
 
     const setupDisclosureMotion = () => {
@@ -644,8 +625,7 @@
         }
     };
 
-    setupReadingProgress();
-    setupSectionNavigation();
+    setupPageScroll();
     setupDisclosureMotion();
     setupMotionLayer();
 })();
