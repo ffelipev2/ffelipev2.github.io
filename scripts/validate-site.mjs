@@ -58,6 +58,15 @@ const descriptionValues = new Map();
 for (const htmlFile of htmlFiles) {
     const relativePath = path.relative(rootDirectory, htmlFile).replace(/\\/g, '/');
     const html = await readFile(htmlFile, 'utf8');
+    if (relativePath === 'politicasffelipev2.github.io/index.html') {
+        if (!/^<!doctype html>/i.test(html.trimStart())) errors.push(relativePath + ': missing HTML5 doctype');
+        if (!/<html\s+lang=["']en["']/i.test(html)) errors.push(relativePath + ': expected English language');
+        if (!/<meta\s+name=["']robots["']\s+content=["']noindex, follow["']/i.test(html)) {
+            errors.push(relativePath + ': legacy privacy policy must remain noindex, follow');
+        }
+        if (!html.includes('Arduino y Componentes')) errors.push(relativePath + ': legacy app policy content is missing');
+        continue;
+    }
     const ids = captureAll(html, /\sid=["']([^"']+)["']/g);
     const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
     const titles = captureAll(html, /<title>([^<]+)<\/title>/gi);
@@ -84,7 +93,18 @@ for (const htmlFile of htmlFiles) {
     if (canonicals[0] && (!canonicals[0].startsWith('https://felipeflores.tech/') || !canonicals[0].endsWith('/'))) {
         errors.push(relativePath + ': canonical must use the preferred host and trailing-slash route');
     }
+    const expectedRoute = relativePath === 'index.html' ? '/' : '/' + relativePath.replace(/index\.html$/, '');
+    if (canonicals[0] !== 'https://felipeflores.tech' + expectedRoute) {
+        errors.push(relativePath + ': canonical does not match the page route');
+    }
     if (h1Count !== 1) errors.push(relativePath + ': expected exactly one h1, found ' + h1Count);
+    const schemaMatch = html.match(/<script\s+type=["']application\/ld\+json["']>\s*([\s\S]*?)\s*<\/script>/i);
+    try {
+        const schema = JSON.parse(schemaMatch?.[1] || 'null');
+        if (schema?.['@context'] !== 'https://schema.org') errors.push(relativePath + ': missing Schema.org context');
+    } catch {
+        errors.push(relativePath + ': invalid JSON-LD');
+    }
     if (duplicateIds.length) errors.push(relativePath + ': duplicate IDs ' + [...new Set(duplicateIds)].join(', '));
     if (!/<main\s+id=["']main-content["']/i.test(html)) errors.push(relativePath + ': missing main landmark');
     if (!/class=["'][^"']*skip-link/i.test(html)) errors.push(relativePath + ': missing skip link');
@@ -173,7 +193,7 @@ if (!/^User-agent:\s*\*\s*\r?\nAllow:\s*\/\s*\r?\nSitemap:\s*https:\/\/felipeflo
 if ((portfolioCss.match(/{/g) || []).length !== (portfolioCss.match(/}/g) || []).length) {
     errors.push('portfolio.css: unbalanced braces');
 }
-if ((sitemap.match(/<url>/g) || []).length !== 12) errors.push('sitemap.xml: expected 12 URL entries');
+if ((sitemap.match(/<url>/g) || []).length !== 16) errors.push('sitemap.xml: expected 16 URL entries');
 
 const homepageSchemaMatch = homepage.match(/<script\s+type=["']application\/ld\+json["']>\s*([\s\S]*?)\s*<\/script>/i);
 if (!homepageSchemaMatch) {
@@ -185,7 +205,7 @@ if (!homepageSchemaMatch) {
         const person = entities.find((entity) => entity['@type'] === 'Person');
         const profilePage = entities.find((entity) => Array.isArray(entity['@type']) && entity['@type'].includes('ProfilePage'));
 
-        if (person?.name !== 'Felipe Igor Flores Valdebenito') errors.push('index.html: Person schema must contain the full professional name');
+        if (person?.name !== 'Felipe Flores Valdebenito') errors.push('index.html: Person schema must contain the full professional name');
         if (!Array.isArray(person?.alternateName) || !person.alternateName.includes('Felipe Flores')) {
             errors.push('index.html: Person schema must include Felipe Flores as an alternate name');
         }
@@ -209,7 +229,7 @@ const expectedSitemapUrls = [
     'https://felipeflores.tech/',
     'https://felipeflores.tech/proyectos/',
     ...slugs.map((slug) => 'https://felipeflores.tech/proyectos/' + slug + '/'),
-    'https://felipeflores.tech/docs/Felipe-CV.pdf'
+    ...['esp32', 'iot', 'industria-4-0', 'robotica', 'publicaciones'].map((slug) => 'https://felipeflores.tech/' + slug + '/')
 ];
 if (new Set(sitemapUrls).size !== sitemapUrls.length) errors.push('sitemap.xml: duplicate URL entries');
 for (const url of expectedSitemapUrls) {
@@ -217,6 +237,21 @@ for (const url of expectedSitemapUrls) {
 }
 for (const url of sitemapUrls) {
     if (url.startsWith('http://') || url.includes('?')) errors.push('sitemap.xml: non-canonical URL ' + url);
+    if (!expectedSitemapUrls.includes(url)) errors.push('sitemap.xml: unexpected URL ' + url);
+}
+
+for (const topic of ['esp32', 'iot', 'industria-4-0', 'robotica']) {
+    if (!projectData.some((project) => project.topics?.includes(topic))) {
+        errors.push('projects.json: empty topic ' + topic);
+    }
+}
+
+const publications = JSON.parse(await readFile(path.join(rootDirectory, 'data', 'publications.json'), 'utf8'));
+if (publications.length !== 3 || publications.filter((publication) => publication.role === 'Autor').length !== 1) {
+    errors.push('publications.json: expected one authored paper and two recognized collaborations');
+}
+if (new Set(publications.map((publication) => publication.doi)).size !== publications.length) {
+    errors.push('publications.json: duplicate DOI');
 }
 
 for (const project of projectData) {
@@ -227,6 +262,21 @@ for (const project of projectData) {
         errors.push('projects.json: missing image ' + project.image);
     }
     if (!project.seoTitle || !project.seoDescription) errors.push('projects.json: missing unique SEO fields for ' + project.slug);
+    for (const image of project.images || []) {
+        if (!image.src || !image.alt || !Number.isInteger(image.width) || !Number.isInteger(image.height)) {
+            errors.push('projects.json: incomplete gallery image for ' + project.slug);
+        } else if (!await fileExists(path.join(rootDirectory, image.src.replace(/^\/+/, '')))) {
+            errors.push('projects.json: missing gallery image ' + image.src);
+        }
+    }
+    for (const resource of project.resources || []) {
+        if (!resource.label || !resource.url) errors.push('projects.json: incomplete resource for ' + project.slug);
+    }
+    for (const topic of project.topics || []) {
+        if (!['esp32', 'iot', 'industria-4-0', 'robotica'].includes(topic)) {
+            errors.push('projects.json: unknown topic ' + topic + ' from ' + project.slug);
+        }
+    }
     const relatedSlugs = project.relatedProjects || [];
     if (new Set(relatedSlugs).size !== relatedSlugs.length || relatedSlugs.length > 3 || relatedSlugs.includes(project.slug)) {
         errors.push('projects.json: invalid related-project references for ' + project.slug);

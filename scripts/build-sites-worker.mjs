@@ -19,6 +19,12 @@ const pages = [
   ["/proyectos/sensor-higrow-esp32-app/", "proyectos/sensor-higrow-esp32-app/index.html"],
   ["/proyectos/ufactory-lite-6/", "proyectos/ufactory-lite-6/index.html"],
   ["/proyectos/vehiculo-arduino-camara-wifi/", "proyectos/vehiculo-arduino-camara-wifi/index.html"],
+  ["/esp32/", "esp32/index.html"],
+  ["/iot/", "iot/index.html"],
+  ["/industria-4-0/", "industria-4-0/index.html"],
+  ["/robotica/", "robotica/index.html"],
+  ["/publicaciones/", "publicaciones/index.html"],
+  ["/politicasffelipev2.github.io/", "politicasffelipev2.github.io/index.html"],
 ];
 const pageFiles = new Set(pages.map(([, file]) => file));
 
@@ -26,6 +32,7 @@ const mimeTypes = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
   [".ico", "image/x-icon"],
+  [".jpg", "image/jpeg"],
   [".js", "text/javascript; charset=utf-8"],
   [".json", "application/json; charset=utf-8"],
   [".pdf", "application/pdf"],
@@ -37,7 +44,7 @@ const mimeTypes = new Map([
 ]);
 
 // This lazy module is loaded from JavaScript, not from an HTML src attribute.
-const referencedFiles = new Set(["robots.txt", "sitemap.xml", "js/hero/scene.bundle.js", "js/hero/THREE-LICENSE.txt"]);
+const referencedFiles = new Set(["robots.txt", "sitemap.xml", "js/hero/scene.bundle.js", "js/hero/THREE-LICENSE.txt", "images/felipe-flores-social.jpg"]);
 const localReferencePattern = /(?:href|src)=["']([^"']+)["']/g;
 
 for (const [, file] of pages) {
@@ -119,6 +126,11 @@ export default {
     }
 
     const url = new URL(request.url);
+    if (url.hostname === "www.felipeflores.tech" || (url.hostname === "felipeflores.tech" && url.protocol === "http:")) {
+      url.protocol = "https:";
+      url.hostname = "felipeflores.tech";
+      return Response.redirect(url.toString(), 308);
+    }
     let pathname;
     try {
       pathname = decodeURIComponent(url.pathname);
@@ -135,8 +147,7 @@ export default {
     const direct = assets[pathname];
     if (direct) return responseFor(direct, request.method);
 
-    const lastSegment = pathname.slice(pathname.lastIndexOf("/") + 1);
-    if (!lastSegment.includes(".") && !pathname.endsWith("/")) {
+    if (!pathname.endsWith("/")) {
       const slashRoute = pathname + "/";
       if (assets[slashRoute]) {
         url.pathname = slashRoute;
@@ -184,6 +195,20 @@ for (const route of ["/css/portfolio.css", "/css/hero-3d.css", "/js/portfolio.js
   const response = await builtWorker.fetch(new Request(`https://example.test${route}`));
   assert.equal(response.status, 200, `Worker asset failed: ${route}`);
 }
+
+const socialImage = await builtWorker.fetch(new Request("https://example.test/images/felipe-flores-social.jpg"));
+assert.equal(socialImage.status, 200, "Social sharing image must be served");
+
+const canonicalHost = await builtWorker.fetch(new Request("http://www.felipeflores.tech/esp32/?ref=test"));
+assert.equal(canonicalHost.status, 308);
+assert.equal(canonicalHost.headers.get("location"), "https://felipeflores.tech/esp32/?ref=test");
+
+const legacyPolicy = await builtWorker.fetch(new Request("https://example.test/politicasffelipev2.github.io/"));
+assert.equal(legacyPolicy.status, 200, "Legacy app privacy policy must remain available");
+assert.match(await legacyPolicy.text(), /<meta name="robots" content="noindex, follow">/);
+const legacyPolicyRedirect = await builtWorker.fetch(new Request("https://example.test/politicasffelipev2.github.io"));
+assert.equal(legacyPolicyRedirect.status, 308);
+assert.equal(legacyPolicyRedirect.headers.get("location"), "https://example.test/politicasffelipev2.github.io/");
 
 const redirect = await builtWorker.fetch(new Request("https://example.test/proyectos"));
 assert.equal(redirect.status, 308);

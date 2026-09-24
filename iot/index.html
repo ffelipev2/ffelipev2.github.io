@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Proyectos de IoT con ESP32 y sensores | Felipe Flores</title>
+    <meta name="description" content="Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.">
+    <meta name="author" content="Felipe Flores Valdebenito">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#07111F">
+    <link rel="canonical" href="https://felipeflores.tech/iot/">
+
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Felipe Flores">
+    <meta property="og:title" content="Proyectos de IoT con ESP32 y sensores | Felipe Flores">
+    <meta property="og:description" content="Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.">
+    <meta property="og:image" content="https://felipeflores.tech/images/img7.webp">
+    <meta property="og:image:width" content="500">
+    <meta property="og:image:height" content="333">
+    <meta property="og:image:alt" content="Figura física junto a su representación 3D en una pantalla">
+    <meta property="og:url" content="https://felipeflores.tech/iot/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Proyectos de IoT con ESP32 y sensores | Felipe Flores">
+    <meta name="twitter:description" content="Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.">
+    <meta name="twitter:image" content="https://felipeflores.tech/images/img7.webp">
+    <meta name="twitter:image:alt" content="Figura física junto a su representación 3D en una pantalla">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"Proyectos de IoT e Internet de las Cosas","description":"Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.","url":"https://felipeflores.tech/iot/","inLanguage":"es-CL","author":{"@id":"https://felipeflores.tech/#person"},"hasPart":[{"@type":"CreativeWork","name":"Gemelo Digital","url":"https://felipeflores.tech/proyectos/gemelo-digital/"},{"@type":"CreativeWork","name":"Sensor HiGrow (ESP32) + App","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"},{"@type":"CreativeWork","name":"Shield Ethernet + Sensor biométrico","url":"https://felipeflores.tech/proyectos/ethernet-sensor-biometrico/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"IoT","item":"https://felipeflores.tech/iot/"}]}]}</script>
+    <link rel="stylesheet" href="../css/portfolio.css">
+    <link rel="icon" href="../images/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+</head>
+<body class="portfolio-page">
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+    <header class="site-header-v2" data-site-header>
+        <div class="shell header-inner-v2">
+            <a class="brand-v2" href="../" aria-label="Felipe Flores, inicio">Felipe <span>Flores</span></a>
+            <nav class="desktop-nav-v2" aria-label="Navegación principal">
+                <a href="../proyectos/">Proyectos</a>
+                <a href="../#experiencia">Experiencia</a>
+                <a href="../#perfil">Perfil</a>
+                <a href="../publicaciones/">Publicaciones</a>
+                <a href="../#contacto">Contacto</a>
+            </nav>
+            <a class="button-v2 button-primary-v2 cv-button-v2" href="../docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer">Descargar CV <span aria-hidden="true">↓</span></a>
+            <button class="menu-toggle-v2" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+    <div class="menu-overlay" data-menu-close hidden></div>
+    <aside class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú móvil" aria-hidden="true" tabindex="-1" inert>
+        <div class="mobile-menu-head">
+            <a class="brand-v2" href="../" data-menu-link>Felipe <span>Flores</span></a>
+            <button class="menu-close" type="button" aria-label="Cerrar menú" data-menu-close>×</button>
+        </div>
+        <nav class="mobile-nav" aria-label="Navegación móvil">
+            <a href="../" data-menu-link><span aria-hidden="true">⌂</span> Inicio</a>
+            <details open>
+                <summary><span><span aria-hidden="true">□</span> Proyectos</span><span aria-hidden="true">⌄</span></summary>
+                <div class="mobile-submenu">
+                    <a href="../proyectos/gemelo-digital/" data-menu-link>Gemelo Digital</a>
+                    <a href="../proyectos/chat-lora/" data-menu-link>Chat con LoRa</a>
+                    <a href="../proyectos/ufactory-lite-6/" data-menu-link>UFACTORY LITE 6</a>
+                    <a href="../proyectos/" data-menu-link>Todos los proyectos</a>
+                </div>
+            </details>
+            <a href="../#experiencia" data-menu-link><span aria-hidden="true">◇</span> Experiencia</a>
+            <a href="../#perfil" data-menu-link><span aria-hidden="true">○</span> Perfil</a>
+            <a href="../publicaciones/" data-menu-link><span aria-hidden="true">▱</span> Publicaciones</a>
+            <a href="../#contacto" data-menu-link><span aria-hidden="true">✉</span> Contacto</a>
+        </nav>
+        <div class="mobile-menu-footer">
+            <a class="button-v2 button-outline-v2" href="../docs/Felipe-CV.pdf" target="_blank" rel="noopener noreferrer">Descargar CV <span aria-hidden="true">↓</span></a>
+            <div class="mobile-socials">
+                <a href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
+            </div>
+        </div>
+    </aside>
+    <main id="main-content">
+        <section class="inner-hero" aria-labelledby="topic-title"><div class="shell">
+                <nav aria-label="Migas de pan">
+                    <ol class="breadcrumb">
+                        <li><a href="../">Inicio</a></li>
+                        <li aria-current="page">IoT</li>
+                    </ol>
+                </nav>
+            <p class="eyebrow-v2">Áreas de trabajo</p>
+            <h1 id="topic-title">Proyectos de IoT e Internet de las Cosas</h1>
+            <p>Mi trabajo con IoT combina dispositivos conectados, sensores y herramientas de visualización. Estos proyectos muestran distintas formas de observar procesos y registrar información.</p>
+        </div></section>
+
+        <section class="section-v2" aria-labelledby="topic-projects-title"><div class="shell">
+            <h2 id="topic-projects-title">Proyectos relacionados con IoT</h2>
+            <div class="all-projects-grid topic-project-grid">
+                <article class="project-card-v2">
+                    <div class="project-media-v2">
+                        <a class="project-image-v2" href="../proyectos/gemelo-digital/" aria-label="Conocer el proyecto Gemelo Digital">
+                            <img src="../images/img7.webp" width="500" height="333" loading="lazy" decoding="async" alt="Figura física junto a su representación 3D en una pantalla">
+                        </a>
+                        <button class="play-chip" type="button" data-video-id="3qvjLGoXVLs" data-video-title="Gemelo Digital" aria-label="Ver demostración de Gemelo Digital"><span aria-hidden="true">▶</span> Demo</button>
+                    </div>
+                    <div class="project-body-v2">
+                        <p class="project-tags-v2">ESP32 · IoT · Visualización web</p>
+                        <h3><a href="../proyectos/gemelo-digital/">Gemelo Digital</a></h3>
+                        <p>Integración de ESP32 y visualización web para monitoreo y representación digital de procesos en tiempo real.</p>
+                        <a href="../proyectos/gemelo-digital/">Explorar Gemelo Digital <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+                <article class="project-card-v2">
+                    <div class="project-media-v2">
+                        <a class="project-image-v2" href="../proyectos/sensor-higrow-esp32-app/" aria-label="Conocer el proyecto Sensor HiGrow (ESP32) + App">
+                            <img src="../images/img2.webp" width="500" height="333" loading="lazy" decoding="async" alt="Sensor HiGrow instalado en una maceta junto a una tableta con datos ambientales">
+                        </a>
+                        <button class="play-chip" type="button" data-video-id="TMQDseOsFwY" data-video-title="Sensor HiGrow (ESP32) + App" aria-label="Ver demostración de Sensor HiGrow (ESP32) + App"><span aria-hidden="true">▶</span> Demo</button>
+                    </div>
+                    <div class="project-body-v2">
+                        <p class="project-tags-v2">ESP32 · Sensor HiGrow · App móvil</p>
+                        <h3><a href="../proyectos/sensor-higrow-esp32-app/">Sensor HiGrow + App</a></h3>
+                        <p>Monitoreo de variables ambientales con ESP32, sensor HiGrow y aplicación móvil.</p>
+                        <a href="../proyectos/sensor-higrow-esp32-app/">Explorar Sensor HiGrow + App <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+                <article class="project-card-v2">
+                    <div class="project-media-v2">
+                        <a class="project-image-v2" href="../proyectos/ethernet-sensor-biometrico/" aria-label="Conocer el proyecto Shield Ethernet + Sensor biométrico">
+                            <img src="../images/img3.webp" width="500" height="333" loading="lazy" decoding="async" alt="Dedo sobre lector de huella conectado a una placa y pantalla LCD">
+                        </a>
+                        <button class="play-chip" type="button" data-video-id="VRg4iup6pJo" data-video-title="Shield Ethernet + Sensor biométrico" aria-label="Ver demostración de Shield Ethernet + Sensor biométrico"><span aria-hidden="true">▶</span> Demo</button>
+                    </div>
+                    <div class="project-body-v2">
+                        <p class="project-tags-v2">Ethernet · Biometría · IoT</p>
+                        <h3><a href="../proyectos/ethernet-sensor-biometrico/">Ethernet + Sensor biométrico</a></h3>
+                        <p>Control de acceso y registro biométrico con conectividad Ethernet e integración IoT.</p>
+                        <a href="../proyectos/ethernet-sensor-biometrico/">Explorar Ethernet + Sensor biométrico <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+            </div>
+        </div></section>
+
+        <section class="section-v2 topic-link-section" aria-labelledby="other-topics-title"><div class="shell">
+            <h2 id="other-topics-title">Explorar otras áreas</h2>
+            <ul class="topic-link-list"><li><a href="../esp32/">ESP32</a></li><li><a href="../industria-4-0/">Industria 4.0</a></li><li><a href="../robotica/">Robótica</a></li></ul>
+        </div></section>
+        <section class="contact-section" id="contacto" aria-labelledby="contact-title">
+            <div class="shell contact-grid">
+                <div>
+                    <p class="eyebrow-v2">Contacto</p>
+                    <h2 id="contact-title">¿Tienes una idea o desafío tecnológico?</h2>
+                    <p>Estoy disponible para colaborar en proyectos, docencia, investigación y desarrollo tecnológico.</p>
+                    <div class="contact-actions">
+                        <a class="button-v2 button-light-v2" href="mailto:ffelipev2@gmail.com">Contactarme <span aria-hidden="true">↗</span></a>
+                        <a class="button-v2 button-dark-outline-v2" href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">Ver en LinkedIn <span aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+                <address class="contact-details">
+                    <a href="mailto:ffelipev2@gmail.com"><span aria-hidden="true">✉</span> ffelipev2@gmail.com</a>
+                    <a href="tel:+56961284180"><span aria-hidden="true">☎</span> +56 9 6128 4180</a>
+                    <p><span aria-hidden="true">⌖</span> Santiago, Chile</p>
+                </address>
+            </div>
+        </section>
+    </main>
+    <dialog class="video-dialog" id="video-dialog" aria-labelledby="video-dialog-title">
+        <div class="dialog-header">
+            <h2 id="video-dialog-title">Demostración del proyecto</h2>
+            <button type="button" data-dialog-close aria-label="Cerrar video">×</button>
+        </div>
+        <div class="dialog-video" data-dialog-video></div>
+        <div class="dialog-footer">
+            <p>El reproductor se carga solo después de tu interacción y no inicia automáticamente.</p>
+            <a data-dialog-youtube href="#" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>
+        </div>
+    </dialog>
+    <footer class="site-footer">
+        <div class="shell footer-grid">
+            <p>© 2026 Felipe Flores Valdebenito.</p>
+            <nav aria-label="Enlaces sociales">
+                <a href="https://www.linkedin.com/in/felipe-flores-2972b14a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/ffelipev2" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.facebook.com/arduinoproyectos/" target="_blank" rel="noopener noreferrer">Proyectos Arduino</a>
+            </nav>
+            <a class="back-to-top" href="#main-content" aria-label="Volver al inicio">↑</a>
+        </div>
+    </footer>
+    <script src="../js/portfolio.js" defer></script>
+</body>
+</html>

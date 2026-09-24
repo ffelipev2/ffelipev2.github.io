@@ -7,7 +7,46 @@ const rootDirectory = path.resolve(scriptDirectory, '..');
 const projects = JSON.parse(
     await readFile(path.join(rootDirectory, 'data', 'projects.json'), 'utf8')
 );
+const publications = JSON.parse(
+    await readFile(path.join(rootDirectory, 'data', 'publications.json'), 'utf8')
+);
 const siteOrigin = 'https://felipeflores.tech';
+const topics = [
+    {
+        slug: 'esp32',
+        name: 'ESP32',
+        title: 'Proyectos con ESP32',
+        seoTitle: 'Proyectos con ESP32: IoT, sensores y automatización | Felipe Flores',
+        description: 'Proyectos de Felipe Flores con ESP32: gemelo digital, reconocimiento de colores con HuskyLens y monitoreo ambiental con HiGrow.',
+        intro: 'En estos proyectos, ESP32 se integra con visualización web, sensores o reconocimiento de colores para explorar aplicaciones de monitoreo y automatización.'
+    },
+    {
+        slug: 'iot',
+        name: 'IoT',
+        title: 'Proyectos de IoT e Internet de las Cosas',
+        seoTitle: 'Proyectos de IoT con ESP32 y sensores | Felipe Flores',
+        description: 'Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.',
+        intro: 'Mi trabajo con IoT combina dispositivos conectados, sensores y herramientas de visualización. Estos proyectos muestran distintas formas de observar procesos y registrar información.'
+    },
+    {
+        slug: 'industria-4-0',
+        name: 'Industria 4.0',
+        title: 'Industria 4.0: experiencia y proyectos',
+        seoTitle: 'Industria 4.0, laboratorios y proyectos | Felipe Flores',
+        description: 'Experiencia de Felipe Flores en laboratorios de Industria 4.0 y proyectos relacionados con gemelos digitales, IoT, robótica y visión artificial.',
+        intro: 'Participo en la implementación y actualización de laboratorios físicos y virtuales de Industria 4.0 en Santiago. Allí convergen IoT, automatización, software y fabricación digital.',
+        experience: 'Desde abril de 2022 trabajo como Ingeniero en Tecnologías de la Industria 4.0 en la Universidad San Sebastián, con foco en la puesta en marcha y actualización del laboratorio.',
+        publicationDoi: '10.3390/app14219746'
+    },
+    {
+        slug: 'robotica',
+        name: 'Robótica',
+        title: 'Proyectos de robótica aplicada',
+        seoTitle: 'Proyectos de robótica: UFACTORY y Robot Otto | Felipe Flores',
+        description: 'Explora proyectos de robótica de Felipe Flores: clasificación de objetos con UFACTORY LITE 6 y un robot Otto con Arduino e impresión 3D.',
+        intro: 'Estos proyectos reúnen robótica aplicada a clasificación de objetos y aprendizaje práctico de electrónica, control remoto y fabricación digital.'
+    }
+];
 
 const entities = {
     '&': '&amp;',
@@ -26,8 +65,27 @@ const localFile = (rootPath, pageDepth) => {
     return rootPrefix(pageDepth) + canonicalPath;
 };
 const homeFile = (pageDepth, fragment = '') => rootPrefix(pageDepth) + fragment;
+const breadcrumbSchema = (items) => ({
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem', position: index + 1, name: item.name, item: siteOrigin + item.path
+    }))
+});
+const breadcrumbMarkup = (items, pageDepth) => [
+    '                <nav aria-label="Migas de pan">',
+    '                    <ol class="breadcrumb">',
+    items.map((item, index) => {
+        const label = escapeHtml(item.name);
+        const entry = index === items.length - 1
+            ? '<li aria-current="page">' + label + '</li>'
+            : '<li><a href="' + (item.path === '/' ? homeFile(pageDepth) : localFile(item.path + 'index.html', pageDepth)) + '">' + label + '</a></li>';
+        return '                        ' + entry;
+    }).join('\n'),
+    '                    </ol>',
+    '                </nav>'
+].join('\n');
 
-function headMarkup({ title, description, canonicalPath, image, imageWidth, imageHeight, imageAlt, schema, pageDepth }) {
+function headMarkup({ title, description, canonicalPath, image, imageWidth, imageHeight, imageAlt, schema, pageDepth, ogType = 'website' }) {
     const canonical = siteOrigin + canonicalPath;
     const absoluteImage = image.startsWith('http') ? image : siteOrigin + image;
 
@@ -53,7 +111,7 @@ function headMarkup({ title, description, canonicalPath, image, imageWidth, imag
         '    <meta property="og:image:height" content="' + imageHeight + '">',
         '    <meta property="og:image:alt" content="' + escapeHtml(imageAlt) + '">',
         '    <meta property="og:url" content="' + canonical + '">',
-        '    <meta property="og:type" content="website">',
+        '    <meta property="og:type" content="' + ogType + '">',
         '',
         '    <meta name="twitter:card" content="summary_large_image">',
         '    <meta name="twitter:title" content="' + escapeHtml(title) + '">',
@@ -76,10 +134,10 @@ function headerMarkup(pageDepth) {
         '        <div class="shell header-inner-v2">',
         '            <a class="brand-v2" href="' + homeFile(pageDepth) + '" aria-label="Felipe Flores, inicio">Felipe <span>Flores</span></a>',
         '            <nav class="desktop-nav-v2" aria-label="Navegación principal">',
-        '                <a href="' + homeFile(pageDepth, '#proyectos') + '">Proyectos</a>',
+        '                <a href="' + localFile('/proyectos/index.html', pageDepth) + '">Proyectos</a>',
         '                <a href="' + homeFile(pageDepth, '#experiencia') + '">Experiencia</a>',
         '                <a href="' + homeFile(pageDepth, '#perfil') + '">Perfil</a>',
-        '                <a href="' + homeFile(pageDepth, '#publicaciones') + '">Publicaciones</a>',
+        '                <a href="' + localFile('/publicaciones/index.html', pageDepth) + '">Publicaciones</a>',
         '                <a href="' + homeFile(pageDepth, '#contacto') + '">Contacto</a>',
         '            </nav>',
         '            <a class="button-v2 button-primary-v2 cv-button-v2" href="' + localFile('/docs/Felipe-CV.pdf', pageDepth) + '" target="_blank" rel="noopener noreferrer">Descargar CV <span aria-hidden="true">↓</span></a>',
@@ -105,7 +163,7 @@ function headerMarkup(pageDepth) {
         '            </details>',
         '            <a href="' + homeFile(pageDepth, '#experiencia') + '" data-menu-link><span aria-hidden="true">◇</span> Experiencia</a>',
         '            <a href="' + homeFile(pageDepth, '#perfil') + '" data-menu-link><span aria-hidden="true">○</span> Perfil</a>',
-        '            <a href="' + homeFile(pageDepth, '#publicaciones') + '" data-menu-link><span aria-hidden="true">▱</span> Publicaciones</a>',
+        '            <a href="' + localFile('/publicaciones/index.html', pageDepth) + '" data-menu-link><span aria-hidden="true">▱</span> Publicaciones</a>',
         '            <a href="' + homeFile(pageDepth, '#contacto') + '" data-menu-link><span aria-hidden="true">✉</span> Contacto</a>',
         '        </nav>',
         '        <div class="mobile-menu-footer">',
@@ -178,7 +236,7 @@ function videoDialogMarkup() {
     ].join('\n');
 }
 
-function projectCardMarkup(project, pageDepth) {
+function projectCardMarkup(project, pageDepth, headingLevel = 2) {
     const projectPath = localFile('/proyectos/' + project.slug + '/index.html', pageDepth);
     return [
         '                <article class="project-card-v2">',
@@ -190,7 +248,7 @@ function projectCardMarkup(project, pageDepth) {
         '                    </div>',
         '                    <div class="project-body-v2">',
         '                        <p class="project-tags-v2">' + project.tags.map(escapeHtml).join(' · ') + '</p>',
-        '                        <h2><a href="' + projectPath + '">' + escapeHtml(project.cardTitle) + '</a></h2>',
+        '                        <h' + headingLevel + '><a href="' + projectPath + '">' + escapeHtml(project.cardTitle) + '</a></h' + headingLevel + '>',
         '                        <p>' + escapeHtml(project.description) + '</p>',
         '                        <a href="' + projectPath + '">Explorar ' + escapeHtml(project.cardTitle) + ' <span aria-hidden="true">→</span></a>',
         '                    </div>',
@@ -198,21 +256,160 @@ function projectCardMarkup(project, pageDepth) {
     ].join('\n');
 }
 
+function topicPage(topic) {
+    const canonicalPath = '/' + topic.slug + '/';
+    const topicProjects = projects.filter((project) => project.topics?.includes(topic.slug));
+    const leadImage = topicProjects[0];
+    const crumbs = [{ name: 'Inicio', path: '/' }, { name: topic.name, path: canonicalPath }];
+    const schema = {
+        '@context': 'https://schema.org',
+        '@graph': [{
+            '@type': 'CollectionPage',
+            name: topic.title,
+            description: topic.description,
+            url: siteOrigin + canonicalPath,
+            inLanguage: 'es-CL',
+            author: { '@id': siteOrigin + '/#person' },
+            hasPart: topicProjects.map((project) => ({
+                '@type': 'CreativeWork', name: project.title,
+                url: siteOrigin + '/proyectos/' + project.slug + '/'
+            }))
+        }, breadcrumbSchema(crumbs)]
+    };
+    return [
+        headMarkup({
+            title: topic.seoTitle, description: topic.description, canonicalPath,
+            image: leadImage.image, imageWidth: leadImage.imageWidth,
+            imageHeight: leadImage.imageHeight, imageAlt: leadImage.alt,
+            schema, pageDepth: 1
+        }),
+        headerMarkup(1),
+        '    <main id="main-content">',
+        '        <section class="inner-hero" aria-labelledby="topic-title"><div class="shell">',
+        breadcrumbMarkup(crumbs, 1),
+        '            <p class="eyebrow-v2">Áreas de trabajo</p>',
+        '            <h1 id="topic-title">' + escapeHtml(topic.title) + '</h1>',
+        '            <p>' + escapeHtml(topic.intro) + '</p>',
+        '        </div></section>',
+        topic.experience ? [
+            '        <section class="section-v2 topic-experience" aria-labelledby="topic-experience-title"><div class="shell">',
+            '            <h2 id="topic-experience-title">Experiencia profesional</h2>',
+            '            <p>' + escapeHtml(topic.experience) + '</p>',
+            '            <a class="text-link" href="' + homeFile(1, '#experiencia') + '">Conoce mi trayectoria profesional <span aria-hidden="true">→</span></a>',
+            '        </div></section>'
+        ].join('\n') : '',
+        '        <section class="section-v2" aria-labelledby="topic-projects-title"><div class="shell">',
+        '            <h2 id="topic-projects-title">Proyectos relacionados con ' + escapeHtml(topic.name) + '</h2>',
+        '            <div class="all-projects-grid topic-project-grid">',
+        topicProjects.map((project) => projectCardMarkup(project, 1, 3)).join('\n'),
+        '            </div>',
+        '        </div></section>',
+        topic.publicationDoi ? [
+            '        <section class="section-v2 topic-experience" aria-labelledby="topic-publication-title"><div class="shell">',
+            '            <h2 id="topic-publication-title">Publicación relacionada</h2>',
+            '            <p>' + escapeHtml(publications.find((publication) => publication.doi === topic.publicationDoi).summary) + '</p>',
+            '            <a class="text-link" href="' + localFile('/publicaciones/index.html', 1) + '">Ver publicaciones y colaboraciones <span aria-hidden="true">→</span></a>',
+            '        </div></section>'
+        ].join('\n') : '',
+        '        <section class="section-v2 topic-link-section" aria-labelledby="other-topics-title"><div class="shell">',
+        '            <h2 id="other-topics-title">Explorar otras áreas</h2>',
+        '            <ul class="topic-link-list">' + topics.filter((other) => other.slug !== topic.slug).map((other) => '<li><a href="' + localFile('/' + other.slug + '/index.html', 1) + '">' + escapeHtml(other.name) + '</a></li>').join('') + '</ul>',
+        '        </div></section>',
+        contactMarkup(),
+        '    </main>',
+        videoDialogMarkup(),
+        footerMarkup(1)
+    ].join('\n');
+}
+
+function publicationCardMarkup(publication) {
+    return [
+        '                <article class="publication-card">',
+        '                    <div class="publication-topline"><span class="status-badge ' + (publication.role === 'Autor' ? 'author-badge' : 'collaboration-badge') + '">' + escapeHtml(publication.role) + '</span><span>' + publication.year + '</span></div>',
+        '                    <h3>' + escapeHtml(publication.title) + '</h3>',
+        '                    <p><strong>Autores:</strong> ' + escapeHtml(publication.authors) + '</p>',
+        '                    <p class="publication-source"><em>' + escapeHtml(publication.journal) + '</em> · ' + escapeHtml(publication.citation) + '</p>',
+        '                    <p>' + escapeHtml(publication.summary) + '</p>',
+        '                    <div class="publication-actions"><a href="https://doi.org/' + escapeHtml(publication.doi) + '" target="_blank" rel="noopener noreferrer">Leer publicación en DOI <span aria-hidden="true">↗</span></a></div>',
+        '                </article>'
+    ].join('\n');
+}
+
+function publicationsPage() {
+    const canonicalPath = '/publicaciones/';
+    const crumbs = [{ name: 'Inicio', path: '/' }, { name: 'Publicaciones', path: canonicalPath }];
+    const authored = publications.filter((publication) => publication.role === 'Autor');
+    const collaborations = publications.filter((publication) => publication.role !== 'Autor');
+    const schema = {
+        '@context': 'https://schema.org',
+        '@graph': [{
+            '@type': 'CollectionPage', name: 'Publicaciones y colaboraciones científicas de Felipe Flores',
+            url: siteOrigin + canonicalPath, inLanguage: 'es-CL',
+            description: 'Publicaciones académicas y colaboraciones reconocidas de Felipe Flores en educación en ingeniería e Industria 4.0.',
+            author: { '@id': siteOrigin + '/#person' }
+        }, ...authored.map((publication) => ({
+            '@type': 'ScholarlyArticle',
+            name: publication.title,
+            url: 'https://doi.org/' + publication.doi,
+            identifier: 'https://doi.org/' + publication.doi,
+            datePublished: String(publication.year),
+            author: publication.authors.split('; ').map((name) => ({ '@type': 'Person', name })),
+            isPartOf: { '@type': 'Periodical', name: publication.journal }
+        })), breadcrumbSchema(crumbs)]
+    };
+    return [
+        headMarkup({
+            title: 'Publicaciones y colaboraciones científicas | Felipe Flores',
+            description: 'Publicaciones de Felipe Flores sobre tecnologías 4.0 en educación en ingeniería y colaboraciones reconocidas en investigación científica.',
+            canonicalPath, image: '/images/felipe-flores-social.jpg', imageWidth: 1200,
+            imageHeight: 1200, imageAlt: 'Retrato de Felipe Flores Valdebenito',
+            schema, pageDepth: 1
+        }),
+        headerMarkup(1),
+        '    <main id="main-content">',
+        '        <section class="inner-hero" aria-labelledby="publications-page-title"><div class="shell">',
+        breadcrumbMarkup(crumbs, 1),
+        '            <p class="eyebrow-v2">Investigación y docencia</p>',
+        '            <h1 id="publications-page-title">Publicaciones y colaboraciones científicas</h1>',
+        '            <p>Publicaciones donde figuro como autor y trabajos que reconocen mi colaboración desde el Laboratorio de Industria 4.0 de la Universidad San Sebastián.</p>',
+        '        </div></section>',
+        '        <section class="section-v2" aria-labelledby="authored-title"><div class="shell">',
+        '            <h2 id="authored-title">Publicaciones como autor</h2>',
+        '            <div class="publication-list">' + authored.map(publicationCardMarkup).join('\n') + '</div>',
+        '        </div></section>',
+        '        <section class="section-v2" aria-labelledby="collaborations-title"><div class="shell">',
+        '            <h2 id="collaborations-title">Colaboraciones reconocidas</h2>',
+        '            <p class="section-intro">En estos trabajos aparezco en los agradecimientos; no figuro como autor.</p>',
+        '            <div class="publication-list">' + collaborations.map(publicationCardMarkup).join('\n') + '</div>',
+        '        </div></section>',
+        '        <section class="section-v2 topic-link-section" aria-labelledby="publication-projects-title"><div class="shell">',
+        '            <h2 id="publication-projects-title">Tecnología aplicada</h2>',
+        '            <p>La investigación y la docencia se conectan con mi trabajo en laboratorios y proyectos tecnológicos.</p>',
+        '            <ul class="topic-link-list"><li><a href="' + localFile('/industria-4-0/index.html', 1) + '">Industria 4.0</a></li><li><a href="' + localFile('/proyectos/index.html', 1) + '">Explorar proyectos</a></li></ul>',
+        '        </div></section>',
+        contactMarkup(),
+        '    </main>',
+        footerMarkup(1)
+    ].join('\n');
+}
+
 function projectsIndexPage() {
     const schema = {
         '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        name: 'Proyectos tecnológicos de Felipe Flores',
-        description: 'Proyectos de IoT, ESP32, LoRa, robótica, automatización, visión artificial y fabricación digital.',
-        url: siteOrigin + '/proyectos/',
-        inLanguage: 'es-CL',
-        author: { '@id': siteOrigin + '/#person' },
-        hasPart: projects.map((project) => ({
-            '@type': 'CreativeWork',
-            name: project.title,
-            url: siteOrigin + '/proyectos/' + project.slug + '/',
-            image: siteOrigin + project.image
-        }))
+        '@graph': [{
+            '@type': 'CollectionPage',
+            name: 'Proyectos tecnológicos de Felipe Flores',
+            description: 'Proyectos de IoT, ESP32, LoRa, robótica, automatización, visión artificial y fabricación digital.',
+            url: siteOrigin + '/proyectos/',
+            inLanguage: 'es-CL',
+            author: { '@id': siteOrigin + '/#person' },
+            hasPart: projects.map((project) => ({
+                '@type': 'CreativeWork',
+                name: project.title,
+                url: siteOrigin + '/proyectos/' + project.slug + '/',
+                image: siteOrigin + project.image
+            }))
+        }, breadcrumbSchema([{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }])]
     };
 
     return [
@@ -231,9 +428,10 @@ function projectsIndexPage() {
         '    <main id="main-content">',
         '        <section class="inner-hero" aria-labelledby="all-projects-title">',
         '            <div class="shell">',
+        breadcrumbMarkup([{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }], 1),
         '                <p class="eyebrow-v2">Portfolio de proyectos</p>',
-        '                <h1 id="all-projects-title">Tecnología aplicada en proyectos reales.</h1>',
-        '                <p>Casos breves de IoT, ESP32, LoRa, robótica, automatización y visión artificial, junto con proyectos de Arduino y fabricación digital.</p>',
+        '                <h1 id="all-projects-title">Proyectos de IoT, ESP32 y robótica</h1>',
+        '                <p>Proyectos reales de IoT, Industria 4.0, ESP32, robótica, automatización y tecnologías aplicadas, además de experiencias con LoRa, Arduino y fabricación digital.</p>',
         '            </div>',
         '        </section>',
         '        <section class="section-v2" aria-label="Todos los proyectos">',
@@ -241,6 +439,10 @@ function projectsIndexPage() {
         projects.map((project) => projectCardMarkup(project, 1)).join('\n'),
         '            </div>',
         '        </section>',
+        '        <section class="section-v2 topic-link-section" aria-labelledby="project-topics-title"><div class="shell">',
+        '            <h2 id="project-topics-title">Explorar por área</h2>',
+        '            <ul class="topic-link-list">' + topics.map((topic) => '<li><a href="' + localFile('/' + topic.slug + '/index.html', 1) + '">' + escapeHtml(topic.name) + '</a></li>').join('') + '</ul>',
+        '        </div></section>',
         contactMarkup(),
         '    </main>',
         videoDialogMarkup(),
@@ -271,26 +473,29 @@ function projectSchema(project) {
                     }))
                 } : {})
             },
-            {
-                '@type': 'BreadcrumbList',
-                itemListElement: [
-                    { '@type': 'ListItem', position: 1, name: 'Inicio', item: siteOrigin + '/' },
-                    { '@type': 'ListItem', position: 2, name: 'Proyectos', item: siteOrigin + '/proyectos/' },
-                    { '@type': 'ListItem', position: 3, name: project.title, item: siteOrigin + '/proyectos/' + project.slug + '/' }
-                ]
-            }
+            breadcrumbSchema([
+                { name: 'Inicio', path: '/' },
+                { name: 'Proyectos', path: '/proyectos/' },
+                { name: project.title, path: '/proyectos/' + project.slug + '/' }
+            ])
         ]
     };
 }
 
 function projectDetailPage(project) {
     const canonicalPath = '/proyectos/' + project.slug + '/';
-    const tags = project.tags.map((tag) => '<span>' + escapeHtml(tag) + '</span>').join('');
+    const tags = '<ul class="tag-row">' + project.tags.map((tag) => '<li>' + escapeHtml(tag) + '</li>').join('') + '</ul>';
     const relatedProjects = projects.filter((candidate) => project.relatedProjects?.includes(candidate.slug));
     const optionalDetails = [
-        ['objective', 'Objetivo'],
-        ['howItWorks', 'Cómo funciona'],
-        ['result', 'Resultado']
+        ['objective', 'Objetivo del proyecto'],
+        ['problem', 'Problema que aborda'],
+        ['architecture', 'Arquitectura o funcionamiento'],
+        ['howItWorks', 'Flujo de funcionamiento'],
+        ['development', 'Desarrollo e implementación'],
+        ['challenges', 'Desafíos técnicos'],
+        ['result', 'Resultados'],
+        ['applications', 'Aplicaciones posibles'],
+        ['learning', 'Aprendizajes']
     ].flatMap(([field, heading]) => project[field] ? [
         '        <section class="section-v2 project-detail-section" aria-labelledby="project-' + field + '">',
         '            <div class="shell">',
@@ -299,6 +504,37 @@ function projectDetailPage(project) {
         '            </div>',
         '        </section>'
     ] : []);
+    const factLists = [
+        ['hardware', 'Hardware utilizado'],
+        ['software', 'Software y tecnologías']
+    ].flatMap(([field, heading]) => project[field]?.length ? [
+        '        <section class="section-v2 project-detail-section" aria-labelledby="project-' + field + '">',
+        '            <div class="shell">',
+        '                <h2 id="project-' + field + '">' + heading + '</h2>',
+        '                <ul class="case-study-list">' + project[field].map((item) => '<li>' + escapeHtml(item) + '</li>').join('') + '</ul>',
+        '            </div>',
+        '        </section>'
+    ] : []);
+    const galleryMarkup = project.images?.length ? [
+        '        <section class="section-v2 project-gallery" aria-labelledby="project-gallery-title"><div class="shell">',
+        '            <h2 id="project-gallery-title">Imágenes del proyecto</h2>',
+        '            <div class="case-study-gallery">',
+        project.images.map((item) => [
+            '                <figure>',
+            '                    <img src="' + localFile(item.src, 2) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async" alt="' + escapeHtml(item.alt) + '">',
+            item.caption ? '                    <figcaption>' + escapeHtml(item.caption) + '</figcaption>' : '',
+            '                </figure>'
+        ].join('\n')).join('\n'),
+        '            </div>',
+        '        </div></section>'
+    ] : '';
+    const resourcesMarkup = project.resources?.length ? [
+        '        <section class="section-v2 project-detail-section" aria-labelledby="project-resources-title"><div class="shell">',
+        '            <h2 id="project-resources-title">Recursos relacionados</h2>',
+        '            <ul class="case-study-list">' + project.resources.map((resource) => '<li><a href="' + escapeHtml(resource.url) + '"' + (/^https?:\/\//i.test(resource.url) ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + escapeHtml(resource.label) + '</a></li>').join('') + '</ul>',
+        '        </div></section>'
+    ] : '';
+    const topicLinks = topics.filter((topic) => project.topics?.includes(topic.slug));
     const relatedMarkup = relatedProjects.length ? [
         '        <section class="section-v2 related-project-section" aria-labelledby="related-projects-title">',
         '            <div class="shell">',
@@ -306,8 +542,9 @@ function projectDetailPage(project) {
         '                <div class="feature-grid related-projects-grid">',
         relatedProjects.map((relatedProject) => [
             '                    <article>',
-            '                        <h3><a href="' + localFile('/proyectos/' + relatedProject.slug + '/index.html', 2) + '">Ver ' + escapeHtml(relatedProject.title) + '</a></h3>',
+            '                        <h3><a href="' + localFile('/proyectos/' + relatedProject.slug + '/index.html', 2) + '">' + escapeHtml(relatedProject.title) + '</a></h3>',
             '                        <p class="project-tags-v2">' + relatedProject.tags.map(escapeHtml).join(' · ') + '</p>',
+            '                        <p>' + escapeHtml(relatedProject.description) + '</p>',
             '                    </article>'
         ].join('\n')).join('\n'),
         '                </div>',
@@ -325,23 +562,18 @@ function projectDetailPage(project) {
             imageHeight: project.imageHeight,
             imageAlt: project.alt,
             schema: projectSchema(project),
-            pageDepth: 2
+            pageDepth: 2,
+            ogType: 'article'
         }),
         headerMarkup(2),
         '    <main id="main-content">',
         '        <article class="project-detail-article" aria-labelledby="project-title">',
         '        <section class="project-detail-hero" aria-labelledby="project-title">',
         '            <div class="shell">',
-        '                <nav aria-label="Migas de pan">',
-        '                    <ol class="breadcrumb">',
-        '                    <li><a href="' + homeFile(2) + '">Inicio</a></li><li aria-hidden="true">›</li>',
-        '                    <li><a href="' + localFile('/proyectos/index.html', 2) + '">Proyectos</a></li><li aria-hidden="true">›</li>',
-        '                    <li aria-current="page">' + escapeHtml(project.cardTitle) + '</li>',
-        '                    </ol>',
-        '                </nav>',
+        breadcrumbMarkup([{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }, { name: project.cardTitle, path: canonicalPath }], 2),
         '                <div class="project-detail-grid">',
         '                    <div class="project-detail-copy">',
-        '                        <div class="tag-row">' + tags + '</div>',
+        tags,
         '                        <h1 id="project-title">' + escapeHtml(project.title) + '</h1>',
         '                        <p>' + escapeHtml(project.description) + '</p>',
         '                        <div class="project-detail-actions">',
@@ -358,10 +590,14 @@ function projectDetailPage(project) {
         '        </section>',
         '        <section class="section-v2 project-facts-section" aria-labelledby="project-technologies-title">',
         '            <div class="shell project-facts">',
-        '                <div><h2 id="project-technologies-title">Tecnologías</h2><div class="tag-row">' + tags + '</div></div>',
+        '                <div><h2 id="project-technologies-title">Tecnologías</h2>' + tags + '</div>',
+        topicLinks.length ? '                <nav aria-label="Áreas relacionadas"><ul class="project-topic-links">' + topicLinks.map((topic) => '<li><a href="' + localFile('/' + topic.slug + '/index.html', 2) + '">Más proyectos de ' + escapeHtml(topic.name) + '</a></li>').join('') + '</ul></nav>' : '',
         '            </div>',
         '        </section>',
         ...optionalDetails,
+        ...factLists,
+        galleryMarkup,
+        resourcesMarkup,
         ...relatedMarkup,
         '        </article>',
         contactMarkup(),
@@ -380,28 +616,29 @@ for (const project of projects) {
     await writeFile(path.join(projectDirectory, 'index.html'), projectDetailPage(project), 'utf8');
 }
 
-const siteLastModified = new Date().toISOString().slice(0, 10);
-const sitemapEntries = [
-    { path: '/', lastmod: siteLastModified, priority: '1.0', changefreq: 'monthly' },
-    { path: '/proyectos/', lastmod: siteLastModified, priority: '0.9', changefreq: 'monthly' },
-    ...projects.map((project) => ({
-        path: '/proyectos/' + project.slug + '/',
-        lastmod: siteLastModified,
-        priority: '0.8',
-        changefreq: 'monthly'
-    })),
-    { path: '/docs/Felipe-CV.pdf', lastmod: '2026-04-09', priority: '0.4', changefreq: 'yearly' }
+for (const topic of topics) {
+    const topicDirectory = path.join(rootDirectory, topic.slug);
+    await mkdir(topicDirectory, { recursive: true });
+    await writeFile(path.join(topicDirectory, 'index.html'), topicPage(topic), 'utf8');
+}
+
+const publicationsDirectory = path.join(rootDirectory, 'publicaciones');
+await mkdir(publicationsDirectory, { recursive: true });
+await writeFile(path.join(publicationsDirectory, 'index.html'), publicationsPage(), 'utf8');
+
+const sitemapPaths = [
+    '/', '/proyectos/',
+    ...projects.map((project) => '/proyectos/' + project.slug + '/'),
+    ...topics.map((topic) => '/' + topic.slug + '/'),
+    '/publicaciones/'
 ];
 
 const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    sitemapEntries.map((entry) => [
+    sitemapPaths.map((route) => [
         '  <url>',
-        '    <loc>' + siteOrigin + entry.path + '</loc>',
-        '    <lastmod>' + entry.lastmod + '</lastmod>',
-        '    <changefreq>' + entry.changefreq + '</changefreq>',
-        '    <priority>' + entry.priority + '</priority>',
+        '    <loc>' + siteOrigin + route + '</loc>',
         '  </url>'
     ].join('\n')).join('\n'),
     '</urlset>',
@@ -409,4 +646,4 @@ const sitemap = [
 ].join('\n');
 
 await writeFile(path.join(rootDirectory, 'sitemap.xml'), sitemap, 'utf8');
-console.log('Generated project index, ' + projects.length + ' detail pages, and sitemap.');
+console.log('Generated project index, ' + projects.length + ' detail pages, ' + topics.length + ' topic pages, publications, and sitemap.');

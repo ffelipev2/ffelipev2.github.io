@@ -16,6 +16,8 @@ Soy Felipe Flores, Ingeniero Civil Informático y Magíster en Alta Dirección y
 - **[Experiencia](https://felipeflores.tech/#experiencia):** trayectoria profesional, docencia, coordinación académica y desarrollo de laboratorios y proyectos.
 - **[Áreas de trabajo](https://felipeflores.tech/#tecnologias):** disciplinas y herramientas presentes en mis proyectos y actividades educativas.
 - **[Formación y publicaciones](https://felipeflores.tech/#publicaciones):** estudios, certificaciones, investigación y contribuciones académicas.
+- **[Publicaciones](https://felipeflores.tech/publicaciones/):** autoría y colaboraciones reconocidas, con enlaces DOI.
+- **Áreas:** [ESP32](https://felipeflores.tech/esp32/), [IoT](https://felipeflores.tech/iot/), [Industria 4.0](https://felipeflores.tech/industria-4-0/) y [robótica](https://felipeflores.tech/robotica/).
 - **[Contacto](https://felipeflores.tech/#contacto):** un espacio para conversar sobre proyectos, colaboración e iniciativas educativas.
 
 ## Proyectos destacados
@@ -29,3 +31,13 @@ Soy Felipe Flores, Ingeniero Civil Informático y Magíster en Alta Dirección y
 Me interesa transformar ideas en soluciones concretas y compartir experiencias que acerquen la tecnología a las personas.
 
 [Hablemos de tu proyecto](https://felipeflores.tech/#contacto) · [Conoce mi trayectoria](https://felipeflores.tech/docs/Felipe-CV.pdf)
+
+## Contenido del sitio
+
+El sitio es HTML, CSS y JavaScript estáticos. `data/projects.json` alimenta las nueve fichas, el índice y las páginas temáticas mediante `scripts/build-site.mjs`. `data/publications.json` alimenta la página de publicaciones. Ejecuta `npm run build` tras editar los datos; el comando regenera las páginas, el sitemap, valida el sitio y crea el worker de alojamiento.
+
+Las fichas admiten `objective`, `problem`, `architecture`, `hardware`, `software`, `howItWorks`, `development`, `challenges`, `result`, `applications`, `learning`, `images` (con `src`, `alt`, `width`, `height` y `caption` opcional) y `resources` (con `label` y `url`). Cada campo solo se muestra cuando tiene contenido. Para ampliarlas hacen falta datos reales sobre componentes, arquitectura, dificultades, resultados, fechas, fotografías y repositorios. No se deben publicar cifras o características deducidas de los vídeos sin verificarlas.
+
+El CV en `docs/Felipe-CV.pdf` sigue disponible. Su URL se retiró del sitemap para dar prioridad a la página HTML de perfil. La política de la app «Arduino y Componentes» en `/politicasffelipev2.github.io/` se recuperó de la URL pública y se conserva funcional, con `noindex, follow` y fuera del sitemap. Conviene revisar manualmente su vigencia legal antes de modificar su texto.
+
+Los datos que faltan y las comprobaciones posteriores al despliegue están en [Pendientes de contenido y SEO](docs/PENDIENTES-SEO.md).
