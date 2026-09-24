@@ -63,6 +63,7 @@ for (const htmlFile of htmlFiles) {
     const titles = captureAll(html, /<title>([^<]+)<\/title>/gi);
     const descriptions = captureAll(html, /<meta\s+name=["']description["']\s+content=["']([^"']+)["']/gi);
     const canonicals = captureAll(html, /<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/gi);
+    const robotsDirectives = captureAll(html, /<meta\s+name=["']robots["']\s+content=["']([^"']+)["']/gi);
     const h1Count = (html.match(/<h1(?:\s|>)/gi) || []).length;
     const imageTags = Array.from(html.matchAll(/<img\b[^>]*>/gi), (match) => match[0]);
     const anchorTags = Array.from(html.matchAll(/<a\b[^>]*>/gi), (match) => match[0]);
@@ -72,6 +73,17 @@ for (const htmlFile of htmlFiles) {
     if (titles.length !== 1) errors.push(relativePath + ': expected exactly one title');
     if (descriptions.length !== 1) errors.push(relativePath + ': expected exactly one meta description');
     if (canonicals.length !== 1) errors.push(relativePath + ': expected exactly one canonical');
+    if (robotsDirectives.length !== 1 || robotsDirectives[0] !== 'index, follow') errors.push(relativePath + ': expected index, follow robots directive');
+    if (!/<meta\s+property=["']og:title["']/i.test(html) || !/<meta\s+property=["']og:description["']/i.test(html) || !/<meta\s+property=["']og:url["']/i.test(html)) {
+        errors.push(relativePath + ': Open Graph title, description, or URL is missing');
+    }
+    if (!/<meta\s+name=["']twitter:card["']/i.test(html) || !/<meta\s+name=["']twitter:title["']/i.test(html) || !/<meta\s+name=["']twitter:description["']/i.test(html) || !/<meta\s+name=["']twitter:image["']/i.test(html)) {
+        errors.push(relativePath + ': Twitter card metadata is incomplete');
+    }
+    if (/name=["']keywords["']/i.test(html)) errors.push(relativePath + ': meta keywords should not be used');
+    if (canonicals[0] && (!canonicals[0].startsWith('https://felipeflores.tech/') || !canonicals[0].endsWith('/'))) {
+        errors.push(relativePath + ': canonical must use the preferred host and trailing-slash route');
+    }
     if (h1Count !== 1) errors.push(relativePath + ': expected exactly one h1, found ' + h1Count);
     if (duplicateIds.length) errors.push(relativePath + ': duplicate IDs ' + [...new Set(duplicateIds)].join(', '));
     if (!/<main\s+id=["']main-content["']/i.test(html)) errors.push(relativePath + ': missing main landmark');
@@ -145,6 +157,7 @@ const portfolioCss = await readFile(path.join(rootDirectory, 'css', 'portfolio.c
 const portfolioJs = await readFile(path.join(rootDirectory, 'js', 'portfolio.js'), 'utf8');
 const projectData = JSON.parse(await readFile(path.join(rootDirectory, 'data', 'projects.json'), 'utf8'));
 const sitemap = await readFile(path.join(rootDirectory, 'sitemap.xml'), 'utf8');
+const robots = await readFile(path.join(rootDirectory, 'robots.txt'), 'utf8');
 const homepage = await readFile(path.join(rootDirectory, 'index.html'), 'utf8');
 
 if (!/:focus-visible/.test(portfolioCss)) errors.push('portfolio.css: missing focus-visible styles');
@@ -154,6 +167,9 @@ if (!/youtube-nocookie\.com/.test(portfolioJs)) errors.push('portfolio.js: priva
 if (!/event\.key === 'Escape'/.test(portfolioJs)) errors.push('portfolio.js: Escape handling missing');
 if (!/document\.body\.classList\.add\('menu-open'\)/.test(portfolioJs)) errors.push('portfolio.js: body scroll lock missing');
 if (projectData.length !== 9) errors.push('projects.json: expected 9 projects, found ' + projectData.length);
+if (!/^User-agent:\s*\*\s*\r?\nAllow:\s*\/\s*\r?\nSitemap:\s*https:\/\/felipeflores\.tech\/sitemap\.xml\s*$/i.test(robots.trim())) {
+    errors.push('robots.txt: expected open crawling and the canonical sitemap URL');
+}
 if ((portfolioCss.match(/{/g) || []).length !== (portfolioCss.match(/}/g) || []).length) {
     errors.push('portfolio.css: unbalanced braces');
 }
@@ -180,7 +196,7 @@ if (!homepageSchemaMatch) {
         errors.push('index.html: invalid JSON-LD identity markup');
     }
 }
-if (!/<p\s+class=["']hero-identity-v2["']>\s*Felipe Igor Flores Valdebenito/i.test(homepage)) {
+if (!/<p\s+class=["']hero-identity-v2["']>\s*Felipe Flores Valdebenito/i.test(homepage)) {
     errors.push('index.html: missing visible full-name identity line');
 }
 
@@ -188,6 +204,20 @@ const slugs = projectData.map((project) => project.slug);
 const videoIds = projectData.map((project) => project.videoId);
 if (new Set(slugs).size !== slugs.length) errors.push('projects.json: duplicate slug');
 if (new Set(videoIds).size !== videoIds.length) errors.push('projects.json: duplicate video ID');
+const sitemapUrls = captureAll(sitemap, /<loc>([^<]+)<\/loc>/g);
+const expectedSitemapUrls = [
+    'https://felipeflores.tech/',
+    'https://felipeflores.tech/proyectos/',
+    ...slugs.map((slug) => 'https://felipeflores.tech/proyectos/' + slug + '/'),
+    'https://felipeflores.tech/docs/Felipe-CV.pdf'
+];
+if (new Set(sitemapUrls).size !== sitemapUrls.length) errors.push('sitemap.xml: duplicate URL entries');
+for (const url of expectedSitemapUrls) {
+    if (!sitemapUrls.includes(url)) errors.push('sitemap.xml: missing indexable URL ' + url);
+}
+for (const url of sitemapUrls) {
+    if (url.startsWith('http://') || url.includes('?')) errors.push('sitemap.xml: non-canonical URL ' + url);
+}
 
 for (const project of projectData) {
     const detailFile = path.join(rootDirectory, 'proyectos', project.slug, 'index.html');
@@ -195,6 +225,31 @@ for (const project of projectData) {
     if (!sitemap.includes(siteOriginForCheck(project.slug))) errors.push('sitemap.xml: missing ' + project.slug);
     if (!await fileExists(path.join(rootDirectory, project.image.replace(/^\/+/, '')))) {
         errors.push('projects.json: missing image ' + project.image);
+    }
+    if (!project.seoTitle || !project.seoDescription) errors.push('projects.json: missing unique SEO fields for ' + project.slug);
+    const relatedSlugs = project.relatedProjects || [];
+    if (new Set(relatedSlugs).size !== relatedSlugs.length || relatedSlugs.length > 3 || relatedSlugs.includes(project.slug)) {
+        errors.push('projects.json: invalid related-project references for ' + project.slug);
+    }
+    for (const relatedSlug of relatedSlugs) {
+        if (!slugs.includes(relatedSlug)) errors.push('projects.json: unknown related project ' + relatedSlug + ' from ' + project.slug);
+    }
+    if (await fileExists(detailFile)) {
+        const detailHtml = await readFile(detailFile, 'utf8');
+        if (!detailHtml.includes('<title>' + project.seoTitle + '</title>')) errors.push(project.slug + ': SEO title was not generated from projects.json');
+        if (!detailHtml.includes('<meta name="description" content="' + project.seoDescription + '">')) errors.push(project.slug + ': SEO description was not generated from projects.json');
+        if (!/<nav\s+aria-label=["']Migas de pan["']>\s*<ol\s+class=["']breadcrumb["']>/i.test(detailHtml)) {
+            errors.push(project.slug + ': breadcrumb should use a labelled nav around its ordered list');
+        }
+        const projectSchemaMatch = detailHtml.match(/<script\s+type=["']application\/ld\+json["']>\s*([\s\S]*?)\s*<\/script>/i);
+        try {
+            const projectSchema = JSON.parse(projectSchemaMatch?.[1] || 'null');
+            const graph = Array.isArray(projectSchema?.['@graph']) ? projectSchema['@graph'] : [];
+            if (!graph.some((entity) => entity['@type'] === 'CreativeWork')) errors.push(project.slug + ': missing CreativeWork structured data');
+            if (!graph.some((entity) => entity['@type'] === 'BreadcrumbList')) errors.push(project.slug + ': missing BreadcrumbList structured data');
+        } catch {
+            errors.push(project.slug + ': invalid project structured data');
+        }
     }
 }
 

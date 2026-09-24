@@ -1857,7 +1857,9 @@ body.menu-open {
 .detail-content-grid h2,
 .project-features h2,
 .project-gallery h2,
-.project-technologies h2 {
+.project-technologies h2,
+.project-detail-section h2,
+.related-projects-title {
     margin: 0 0 18px;
     color: var(--color-primary);
     font-size: clamp(1.55rem, 2.7vw, 2.25rem);
@@ -1898,6 +1900,32 @@ body.menu-open {
     font-size: 1rem;
     font-weight: 740;
     line-height: 1.45;
+}
+
+.related-projects-grid article {
+    min-height: 0;
+}
+
+.related-projects-grid h3 a {
+    color: inherit;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.18em;
+    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+.related-projects-grid h3 a:hover {
+    color: var(--color-accent-dark);
+    text-decoration-color: currentColor;
+}
+
+.related-projects-grid .project-tags-v2 {
+    margin: 14px 0 0;
+}
+
+.project-detail-section p {
+    max-width: 720px;
+    margin: 0;
+    color: var(--color-muted);
 }
 
 .technology-badges {

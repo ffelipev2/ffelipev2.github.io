@@ -39,7 +39,7 @@ function headMarkup({ title, description, canonicalPath, image, imageWidth, imag
         '    <meta name="viewport" content="width=device-width, initial-scale=1">',
         '    <title>' + escapeHtml(title) + '</title>',
         '    <meta name="description" content="' + escapeHtml(description) + '">',
-        '    <meta name="author" content="Felipe Igor Flores Valdebenito">',
+        '    <meta name="author" content="Felipe Flores Valdebenito">',
         '    <meta name="robots" content="index, follow">',
         '    <meta name="theme-color" content="#07111F">',
         '    <link rel="canonical" href="' + canonical + '">',
@@ -192,7 +192,7 @@ function projectCardMarkup(project, pageDepth) {
         '                        <p class="project-tags-v2">' + project.tags.map(escapeHtml).join(' · ') + '</p>',
         '                        <h2><a href="' + projectPath + '">' + escapeHtml(project.cardTitle) + '</a></h2>',
         '                        <p>' + escapeHtml(project.description) + '</p>',
-        '                        <a href="' + projectPath + '">Ver proyecto <span aria-hidden="true">→</span></a>',
+        '                        <a href="' + projectPath + '">Explorar ' + escapeHtml(project.cardTitle) + ' <span aria-hidden="true">→</span></a>',
         '                    </div>',
         '                </article>'
     ].join('\n');
@@ -203,7 +203,7 @@ function projectsIndexPage() {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
         name: 'Proyectos tecnológicos de Felipe Flores',
-        description: 'Nueve proyectos reales de IoT, robótica, automatización, comunicaciones y fabricación digital.',
+        description: 'Proyectos de IoT, ESP32, LoRa, robótica, automatización, visión artificial y fabricación digital.',
         url: siteOrigin + '/proyectos/',
         inLanguage: 'es-CL',
         author: { '@id': siteOrigin + '/#person' },
@@ -217,8 +217,8 @@ function projectsIndexPage() {
 
     return [
         headMarkup({
-            title: 'Proyectos tecnológicos | Felipe Flores',
-            description: 'Proyectos reales de Felipe Flores en IoT con ESP32, LoRa, robótica, visión artificial, domótica, sensores e impresión 3D.',
+            title: 'Proyectos de IoT, ESP32 y robótica | Felipe Flores',
+            description: 'Proyectos de Felipe Flores en IoT, ESP32, LoRa, robótica, automatización, visión artificial, Arduino e impresión 3D.',
             canonicalPath: '/proyectos/',
             image: '/images/img7.webp',
             imageWidth: 500,
@@ -233,7 +233,7 @@ function projectsIndexPage() {
         '            <div class="shell">',
         '                <p class="eyebrow-v2">Portfolio de proyectos</p>',
         '                <h1 id="all-projects-title">Tecnología aplicada en proyectos reales.</h1>',
-        '                <p>Una selección completa de soluciones con IoT, ESP32, LoRa, robótica, visión artificial, domótica y fabricación digital.</p>',
+        '                <p>Casos breves de IoT, ESP32, LoRa, robótica, automatización y visión artificial, junto con proyectos de Arduino y fabricación digital.</p>',
         '            </div>',
         '        </section>',
         '        <section class="section-v2" aria-label="Todos los proyectos">',
@@ -249,6 +249,7 @@ function projectsIndexPage() {
 }
 
 function projectSchema(project) {
+    const relatedProjects = projects.filter((candidate) => project.relatedProjects?.includes(candidate.slug));
     return {
         '@context': 'https://schema.org',
         '@graph': [
@@ -261,7 +262,14 @@ function projectSchema(project) {
                 image: siteOrigin + project.image,
                 inLanguage: 'es-CL',
                 keywords: project.tags.join(', '),
-                creator: { '@id': siteOrigin + '/#person' }
+                creator: { '@id': siteOrigin + '/#person' },
+                ...(relatedProjects.length ? {
+                    isRelatedTo: relatedProjects.map((related) => ({
+                        '@type': 'CreativeWork',
+                        name: related.title,
+                        url: siteOrigin + '/proyectos/' + related.slug + '/'
+                    }))
+                } : {})
             },
             {
                 '@type': 'BreadcrumbList',
@@ -275,20 +283,42 @@ function projectSchema(project) {
     };
 }
 
-function projectDetailPage(project, nextProject) {
+function projectDetailPage(project) {
     const canonicalPath = '/proyectos/' + project.slug + '/';
     const tags = project.tags.map((tag) => '<span>' + escapeHtml(tag) + '</span>').join('');
-    const features = project.features.map((feature, index) => [
-        '                    <article>',
-        '                        <span aria-hidden="true">0' + (index + 1) + '</span>',
-        '                        <h3>' + escapeHtml(feature) + '</h3>',
-        '                    </article>'
-    ].join('\n')).join('\n');
+    const relatedProjects = projects.filter((candidate) => project.relatedProjects?.includes(candidate.slug));
+    const optionalDetails = [
+        ['objective', 'Objetivo'],
+        ['howItWorks', 'Cómo funciona'],
+        ['result', 'Resultado']
+    ].flatMap(([field, heading]) => project[field] ? [
+        '        <section class="section-v2 project-detail-section" aria-labelledby="project-' + field + '">',
+        '            <div class="shell">',
+        '                <h2 id="project-' + field + '">' + heading + '</h2>',
+        '                <p>' + escapeHtml(project[field]) + '</p>',
+        '            </div>',
+        '        </section>'
+    ] : []);
+    const relatedMarkup = relatedProjects.length ? [
+        '        <section class="section-v2 related-project-section" aria-labelledby="related-projects-title">',
+        '            <div class="shell">',
+        '                <h2 id="related-projects-title" class="related-projects-title">Proyectos relacionados</h2>',
+        '                <div class="feature-grid related-projects-grid">',
+        relatedProjects.map((relatedProject) => [
+            '                    <article>',
+            '                        <h3><a href="' + localFile('/proyectos/' + relatedProject.slug + '/index.html', 2) + '">Ver ' + escapeHtml(relatedProject.title) + '</a></h3>',
+            '                        <p class="project-tags-v2">' + relatedProject.tags.map(escapeHtml).join(' · ') + '</p>',
+            '                    </article>'
+        ].join('\n')).join('\n'),
+        '                </div>',
+        '            </div>',
+        '        </section>'
+    ] : [];
 
     return [
         headMarkup({
-            title: project.title + ' | Proyectos de Felipe Flores',
-            description: project.description,
+            title: project.seoTitle,
+            description: project.seoDescription,
             canonicalPath,
             image: project.image,
             imageWidth: project.imageWidth,
@@ -299,13 +329,16 @@ function projectDetailPage(project, nextProject) {
         }),
         headerMarkup(2),
         '    <main id="main-content">',
+        '        <article class="project-detail-article" aria-labelledby="project-title">',
         '        <section class="project-detail-hero" aria-labelledby="project-title">',
         '            <div class="shell">',
-        '                <ol class="breadcrumb" aria-label="Migas de pan">',
+        '                <nav aria-label="Migas de pan">',
+        '                    <ol class="breadcrumb">',
         '                    <li><a href="' + homeFile(2) + '">Inicio</a></li><li aria-hidden="true">›</li>',
         '                    <li><a href="' + localFile('/proyectos/index.html', 2) + '">Proyectos</a></li><li aria-hidden="true">›</li>',
         '                    <li aria-current="page">' + escapeHtml(project.cardTitle) + '</li>',
-        '                </ol>',
+        '                    </ol>',
+        '                </nav>',
         '                <div class="project-detail-grid">',
         '                    <div class="project-detail-copy">',
         '                        <div class="tag-row">' + tags + '</div>',
@@ -323,45 +356,15 @@ function projectDetailPage(project, nextProject) {
         '                </div>',
         '            </div>',
         '        </section>',
-        '        <section class="section-v2 project-facts-section" aria-label="Información técnica">',
+        '        <section class="section-v2 project-facts-section" aria-labelledby="project-technologies-title">',
         '            <div class="shell project-facts">',
-        '                <div><h2>Tecnologías y áreas</h2><div class="tag-row">' + tags + '</div></div>',
-        '                <a href="' + project.videoUrl + '" target="_blank" rel="noopener noreferrer">Demostración en YouTube <span aria-hidden="true">↗</span></a>',
+        '                <div><h2 id="project-technologies-title">Tecnologías</h2><div class="tag-row">' + tags + '</div></div>',
         '            </div>',
         '        </section>',
-        '        <section class="section-v2">',
-        '            <div class="shell detail-content-grid">',
-        '                <article><h2>Descripción del proyecto</h2><p>' + escapeHtml(project.description) + '</p></article>',
-        '                <article><h2>¿Qué resuelve?</h2><p>' + escapeHtml(project.resolves) + '</p></article>',
-        '            </div>',
-        '        </section>',
-        '        <section class="section-v2 project-features">',
-        '            <div class="shell">',
-        '                <h2>Características principales</h2>',
-        '                <div class="feature-grid">',
-        features,
-        '                </div>',
-        '            </div>',
-        '        </section>',
-        '        <section class="section-v2 project-technologies">',
-        '            <div class="shell">',
-        '                <h2>Tecnologías utilizadas</h2>',
-        '                <div class="technology-badges">' + tags + '</div>',
-        '            </div>',
-        '        </section>',
-        '        <section class="section-v2 project-gallery">',
-        '            <div class="shell">',
-        '                <h2>Galería del proyecto</h2>',
-        '                <figure>',
-        '                    <img src="' + localFile(project.image, 2) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" loading="lazy" decoding="async" alt="' + escapeHtml(project.alt) + '">',
-        '                    <figcaption>Imagen real disponible en el proyecto.</figcaption>',
-        '                </figure>',
-        '            </div>',
-        '        </section>',
+        ...optionalDetails,
+        ...relatedMarkup,
+        '        </article>',
         contactMarkup(),
-        '        <nav class="project-next" aria-label="Siguiente proyecto">',
-        '            <a class="shell" href="' + localFile('/proyectos/' + nextProject.slug + '/index.html', 2) + '"><span><small>Siguiente proyecto</small><strong>' + escapeHtml(nextProject.cardTitle) + '</strong></span><span aria-hidden="true">→</span></a>',
-        '        </nav>',
         '    </main>',
         footerMarkup(2)
     ].join('\n');
@@ -371,14 +374,13 @@ const projectsDirectory = path.join(rootDirectory, 'proyectos');
 await mkdir(projectsDirectory, { recursive: true });
 await writeFile(path.join(projectsDirectory, 'index.html'), projectsIndexPage(), 'utf8');
 
-for (const [index, project] of projects.entries()) {
+for (const project of projects) {
     const projectDirectory = path.join(projectsDirectory, project.slug);
-    const nextProject = projects[(index + 1) % projects.length];
     await mkdir(projectDirectory, { recursive: true });
-    await writeFile(path.join(projectDirectory, 'index.html'), projectDetailPage(project, nextProject), 'utf8');
+    await writeFile(path.join(projectDirectory, 'index.html'), projectDetailPage(project), 'utf8');
 }
 
-const siteLastModified = '2026-09-06';
+const siteLastModified = new Date().toISOString().slice(0, 10);
 const sitemapEntries = [
     { path: '/', lastmod: siteLastModified, priority: '1.0', changefreq: 'monthly' },
     { path: '/proyectos/', lastmod: siteLastModified, priority: '0.9', changefreq: 'monthly' },

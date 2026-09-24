@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Arduino UNO + Módulo Bluetooth + Relé | Proyectos de Felipe Flores</title>
-    <meta name="description" content="Prototipo de domótica con app móvil, Bluetooth y control de actuadores.">
-    <meta name="author" content="Felipe Igor Flores Valdebenito">
+    <title>Arduino UNO con Bluetooth y relé | Felipe Flores</title>
+    <meta name="description" content="Prototipo de domótica con Arduino UNO, un módulo Bluetooth, una app móvil y un relé para controlar actuadores.">
+    <meta name="author" content="Felipe Flores Valdebenito">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#07111F">
     <link rel="canonical" href="https://felipeflores.tech/proyectos/arduino-bluetooth-rele/">
 
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="Felipe Flores">
-    <meta property="og:title" content="Arduino UNO + Módulo Bluetooth + Relé | Proyectos de Felipe Flores">
-    <meta property="og:description" content="Prototipo de domótica con app móvil, Bluetooth y control de actuadores.">
+    <meta property="og:title" content="Arduino UNO con Bluetooth y relé | Felipe Flores">
+    <meta property="og:description" content="Prototipo de domótica con Arduino UNO, un módulo Bluetooth, una app móvil y un relé para controlar actuadores.">
     <meta property="og:image" content="https://felipeflores.tech/images/img5.webp">
     <meta property="og:image:width" content="500">
     <meta property="og:image:height" content="333">
@@ -22,11 +22,11 @@
     <meta property="og:type" content="website">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Arduino UNO + Módulo Bluetooth + Relé | Proyectos de Felipe Flores">
-    <meta name="twitter:description" content="Prototipo de domótica con app móvil, Bluetooth y control de actuadores.">
+    <meta name="twitter:title" content="Arduino UNO con Bluetooth y relé | Felipe Flores">
+    <meta name="twitter:description" content="Prototipo de domótica con Arduino UNO, un módulo Bluetooth, una app móvil y un relé para controlar actuadores.">
     <meta name="twitter:image" content="https://felipeflores.tech/images/img5.webp">
     <meta name="twitter:image:alt" content="Proyecto de domótica con Arduino, Bluetooth y relé">
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/arduino-bluetooth-rele/#project","name":"Arduino UNO + Módulo Bluetooth + Relé","description":"Prototipo de domótica con app móvil, Bluetooth y control de actuadores.","url":"https://felipeflores.tech/proyectos/arduino-bluetooth-rele/","image":"https://felipeflores.tech/images/img5.webp","inLanguage":"es-CL","keywords":"Arduino UNO, Bluetooth, Domótica","creator":{"@id":"https://felipeflores.tech/#person"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"Arduino UNO + Módulo Bluetooth + Relé","item":"https://felipeflores.tech/proyectos/arduino-bluetooth-rele/"}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/arduino-bluetooth-rele/#project","name":"Arduino UNO + Módulo Bluetooth + Relé","description":"Prototipo de domótica con app móvil, Bluetooth y control de actuadores.","url":"https://felipeflores.tech/proyectos/arduino-bluetooth-rele/","image":"https://felipeflores.tech/images/img5.webp","inLanguage":"es-CL","keywords":"Arduino UNO, Bluetooth, Domótica","creator":{"@id":"https://felipeflores.tech/#person"},"isRelatedTo":[{"@type":"CreativeWork","name":"Robot Otto RC - Arduino + Impresión 3D","url":"https://felipeflores.tech/proyectos/robot-otto-arduino-3d/"},{"@type":"CreativeWork","name":"Vehículo con Arduino + RC + Cámara Wi-Fi","url":"https://felipeflores.tech/proyectos/vehiculo-arduino-camara-wifi/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"Arduino UNO + Módulo Bluetooth + Relé","item":"https://felipeflores.tech/proyectos/arduino-bluetooth-rele/"}]}]}</script>
     <link rel="stylesheet" href="../../css/portfolio.css">
     <link rel="icon" href="../../images/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
@@ -79,13 +79,16 @@
         </div>
     </aside>
     <main id="main-content">
+        <article class="project-detail-article" aria-labelledby="project-title">
         <section class="project-detail-hero" aria-labelledby="project-title">
             <div class="shell">
-                <ol class="breadcrumb" aria-label="Migas de pan">
+                <nav aria-label="Migas de pan">
+                    <ol class="breadcrumb">
                     <li><a href="../../">Inicio</a></li><li aria-hidden="true">›</li>
                     <li><a href="../../proyectos/">Proyectos</a></li><li aria-hidden="true">›</li>
                     <li aria-current="page">Arduino + Bluetooth + Relé</li>
-                </ol>
+                    </ol>
+                </nav>
                 <div class="project-detail-grid">
                     <div class="project-detail-copy">
                         <div class="tag-row"><span>Arduino UNO</span><span>Bluetooth</span><span>Domótica</span></div>
@@ -103,52 +106,27 @@
                 </div>
             </div>
         </section>
-        <section class="section-v2 project-facts-section" aria-label="Información técnica">
+        <section class="section-v2 project-facts-section" aria-labelledby="project-technologies-title">
             <div class="shell project-facts">
-                <div><h2>Tecnologías y áreas</h2><div class="tag-row"><span>Arduino UNO</span><span>Bluetooth</span><span>Domótica</span></div></div>
-                <a href="https://www.youtube.com/watch?v=chEfriniOsw" target="_blank" rel="noopener noreferrer">Demostración en YouTube <span aria-hidden="true">↗</span></a>
+                <div><h2 id="project-technologies-title">Tecnologías</h2><div class="tag-row"><span>Arduino UNO</span><span>Bluetooth</span><span>Domótica</span></div></div>
             </div>
         </section>
-        <section class="section-v2">
-            <div class="shell detail-content-grid">
-                <article><h2>Descripción del proyecto</h2><p>Prototipo de domótica con app móvil, Bluetooth y control de actuadores.</p></article>
-                <article><h2>¿Qué resuelve?</h2><p>Permite controlar actuadores desde una aplicación móvil mediante Arduino UNO y Bluetooth.</p></article>
-            </div>
-        </section>
-        <section class="section-v2 project-features">
+        <section class="section-v2 related-project-section" aria-labelledby="related-projects-title">
             <div class="shell">
-                <h2>Características principales</h2>
-                <div class="feature-grid">
+                <h2 id="related-projects-title" class="related-projects-title">Proyectos relacionados</h2>
+                <div class="feature-grid related-projects-grid">
                     <article>
-                        <span aria-hidden="true">01</span>
-                        <h3>Aplicación móvil</h3>
+                        <h3><a href="../../proyectos/robot-otto-arduino-3d/">Ver Robot Otto RC - Arduino + Impresión 3D</a></h3>
+                        <p class="project-tags-v2">Arduino · Impresión 3D · Robótica</p>
                     </article>
                     <article>
-                        <span aria-hidden="true">02</span>
-                        <h3>Comunicación Bluetooth</h3>
-                    </article>
-                    <article>
-                        <span aria-hidden="true">03</span>
-                        <h3>Control de actuadores</h3>
+                        <h3><a href="../../proyectos/vehiculo-arduino-camara-wifi/">Ver Vehículo con Arduino + RC + Cámara Wi-Fi</a></h3>
+                        <p class="project-tags-v2">Arduino MEGA · Control remoto · Wi-Fi</p>
                     </article>
                 </div>
             </div>
         </section>
-        <section class="section-v2 project-technologies">
-            <div class="shell">
-                <h2>Tecnologías utilizadas</h2>
-                <div class="technology-badges"><span>Arduino UNO</span><span>Bluetooth</span><span>Domótica</span></div>
-            </div>
-        </section>
-        <section class="section-v2 project-gallery">
-            <div class="shell">
-                <h2>Galería del proyecto</h2>
-                <figure>
-                    <img src="../../images/img5.webp" width="500" height="333" loading="lazy" decoding="async" alt="Proyecto de domótica con Arduino, Bluetooth y relé">
-                    <figcaption>Imagen real disponible en el proyecto.</figcaption>
-                </figure>
-            </div>
-        </section>
+        </article>
         <section class="contact-section" id="contacto" aria-labelledby="contact-title">
             <div class="shell contact-grid">
                 <div>
@@ -167,9 +145,6 @@
                 </address>
             </div>
         </section>
-        <nav class="project-next" aria-label="Siguiente proyecto">
-            <a class="shell" href="../../proyectos/vehiculo-arduino-camara-wifi/"><span><small>Siguiente proyecto</small><strong>Vehículo Arduino + Cámara Wi-Fi</strong></span><span aria-hidden="true">→</span></a>
-        </nav>
     </main>
     <footer class="site-footer">
         <div class="shell footer-grid">
