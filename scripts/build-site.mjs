@@ -526,13 +526,13 @@ function projectDetailPage(project) {
         ].join('\n')).join('\n'),
         '            </div>',
         '        </div></section>'
-    ] : '';
+    ].join('\n') : '';
     const resourcesMarkup = project.resources?.length ? [
         '        <section class="section-v2 project-detail-section" aria-labelledby="project-resources-title"><div class="shell">',
         '            <h2 id="project-resources-title">Recursos relacionados</h2>',
         '            <ul class="case-study-list">' + project.resources.map((resource) => '<li><a href="' + escapeHtml(resource.url) + '"' + (/^https?:\/\//i.test(resource.url) ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + escapeHtml(resource.label) + '</a></li>').join('') + '</ul>',
         '        </div></section>'
-    ] : '';
+    ].join('\n') : '';
     const topicLinks = topics.filter((topic) => project.topics?.includes(topic.slug));
     const relatedMarkup = relatedProjects.length ? [
         '        <section class="section-v2 related-project-section" aria-labelledby="related-projects-title">',
