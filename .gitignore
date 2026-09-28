@@ -1,7 +1,7 @@
 # Dependencias instaladas localmente
 node_modules/
 
-# Salida generada por el build del worker estático
+# Salida generada y reportes de pruebas
 dist/
 test-results/
 playwright-report/

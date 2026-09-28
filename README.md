@@ -34,7 +34,7 @@ Me interesa transformar ideas en soluciones concretas y compartir experiencias q
 
 ## Contenido del sitio
 
-El sitio es HTML, CSS y JavaScript estáticos. `data/projects.json` alimenta las nueve fichas, el índice y las páginas temáticas mediante `scripts/build-site.mjs`. `data/publications.json` alimenta la página de publicaciones. Ejecuta `npm run build` tras editar los datos; el comando regenera las páginas, el sitemap, valida el sitio y crea el worker de alojamiento.
+El sitio es HTML, CSS y JavaScript estáticos. `data/projects.json` alimenta las nueve fichas, el índice y las páginas temáticas mediante `scripts/build-site.mjs`. `data/publications.json` alimenta la página de publicaciones. Ejecuta `npm run build` tras editar los datos; el comando regenera las páginas y el sitemap, y valida el sitio para GitHub Pages.
 
 Las fichas admiten `objective`, `problem`, `architecture`, `hardware`, `software`, `howItWorks`, `development`, `challenges`, `result`, `applications`, `learning`, `images` (con `src`, `alt`, `width`, `height` y `caption` opcional) y `resources` (con `label` y `url`). Cada campo solo se muestra cuando tiene contenido. Para ampliarlas hacen falta datos reales sobre componentes, arquitectura, dificultades, resultados, fechas, fotografías y repositorios. No se deben publicar cifras o características deducidas de los vídeos sin verificarlas.
 
