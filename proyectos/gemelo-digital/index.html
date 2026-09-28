@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gemelo Digital con ESP32 y visualización web | Felipe Flores</title>
-    <meta name="description" content="Proyecto de gemelo digital con ESP32 y visualización web para monitorear y representar procesos en tiempo real.">
+    <title>Gemelo Digital con ESP32-C3 y Android | Felipe Flores</title>
+    <meta name="description" content="Gemelo digital de orientación con ESP32-C3, BNO08x y Bluetooth Low Energy. App Android con visor 3D, calibración y retorno a cero.">
     <meta name="author" content="Felipe Flores Valdebenito">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#07111F">
@@ -12,21 +12,21 @@
 
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="Felipe Flores">
-    <meta property="og:title" content="Gemelo Digital con ESP32 y visualización web | Felipe Flores">
-    <meta property="og:description" content="Proyecto de gemelo digital con ESP32 y visualización web para monitorear y representar procesos en tiempo real.">
+    <meta property="og:title" content="Gemelo Digital con ESP32-C3 y Android | Felipe Flores">
+    <meta property="og:description" content="Gemelo digital de orientación con ESP32-C3, BNO08x y Bluetooth Low Energy. App Android con visor 3D, calibración y retorno a cero.">
     <meta property="og:image" content="https://felipeflores.tech/images/img7.webp">
     <meta property="og:image:width" content="500">
     <meta property="og:image:height" content="333">
-    <meta property="og:image:alt" content="Figura física junto a su representación 3D en una pantalla">
+    <meta property="og:image:alt" content="Demostración original de Cubone: figura física junto a su representación 3D en una pantalla">
     <meta property="og:url" content="https://felipeflores.tech/proyectos/gemelo-digital/">
     <meta property="og:type" content="article">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Gemelo Digital con ESP32 y visualización web | Felipe Flores">
-    <meta name="twitter:description" content="Proyecto de gemelo digital con ESP32 y visualización web para monitorear y representar procesos en tiempo real.">
+    <meta name="twitter:title" content="Gemelo Digital con ESP32-C3 y Android | Felipe Flores">
+    <meta name="twitter:description" content="Gemelo digital de orientación con ESP32-C3, BNO08x y Bluetooth Low Energy. App Android con visor 3D, calibración y retorno a cero.">
     <meta name="twitter:image" content="https://felipeflores.tech/images/img7.webp">
-    <meta name="twitter:image:alt" content="Figura física junto a su representación 3D en una pantalla">
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/gemelo-digital/#project","name":"Gemelo Digital","description":"Integración de ESP32 y visualización web para monitoreo y representación digital de procesos en tiempo real.","url":"https://felipeflores.tech/proyectos/gemelo-digital/","image":"https://felipeflores.tech/images/img7.webp","inLanguage":"es-CL","keywords":"ESP32, IoT, Visualización web","creator":{"@id":"https://felipeflores.tech/#person"},"isRelatedTo":[{"@type":"CreativeWork","name":"HuskyLens + ESP32","url":"https://felipeflores.tech/proyectos/huskylens-esp32/"},{"@type":"CreativeWork","name":"Sensor HiGrow (ESP32) + App","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"Gemelo Digital","item":"https://felipeflores.tech/proyectos/gemelo-digital/"}]}]}</script>
+    <meta name="twitter:image:alt" content="Demostración original de Cubone: figura física junto a su representación 3D en una pantalla">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/gemelo-digital/#project","name":"Gemelo Digital","description":"Un ESP32-C3 y un sensor BNO08x transmiten la orientación por Bluetooth Low Energy a una app Android que la reproduce en un modelo 3D de Cubone.","url":"https://felipeflores.tech/proyectos/gemelo-digital/","image":"https://felipeflores.tech/images/img7.webp","inLanguage":"es-CL","keywords":"ESP32-C3, BNO08x, BLE, Android","creator":{"@id":"https://felipeflores.tech/#person"},"isRelatedTo":[{"@type":"CreativeWork","name":"HuskyLens + ESP32","url":"https://felipeflores.tech/proyectos/huskylens-esp32/"},{"@type":"CreativeWork","name":"Sensor HiGrow (ESP32) + App","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"Gemelo Digital","item":"https://felipeflores.tech/proyectos/gemelo-digital/"}]}]}</script>
     <link rel="stylesheet" href="../../css/portfolio.css">
     <link rel="icon" href="../../images/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
@@ -91,16 +91,16 @@
                 </nav>
                 <div class="project-detail-grid">
                     <div class="project-detail-copy">
-<ul class="tag-row"><li>ESP32</li><li>IoT</li><li>Visualización web</li></ul>
+<ul class="tag-row"><li>ESP32-C3</li><li>BNO08x</li><li>BLE</li><li>Android</li></ul>
                         <h1 id="project-title">Gemelo Digital</h1>
-                        <p>Integración de ESP32 y visualización web para monitoreo y representación digital de procesos en tiempo real.</p>
+                        <p>Un ESP32-C3 y un sensor BNO08x transmiten la orientación por Bluetooth Low Energy a una app Android que la reproduce en un modelo 3D de Cubone.</p>
                         <div class="project-detail-actions">
                             <button class="button-v2 button-primary-v2" type="button" data-inline-video="3qvjLGoXVLs" data-video-title="Gemelo Digital">Ver demostración <span aria-hidden="true">▶</span></button>
                             <a class="button-v2 button-outline-v2" href="https://www.youtube.com/watch?v=3qvjLGoXVLs" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                     <div class="inline-video">
-                        <img src="../../images/img7.webp" width="500" height="333" decoding="async" fetchpriority="high" alt="Figura física junto a su representación 3D en una pantalla">
+                        <img src="../../images/img7.webp" width="500" height="333" decoding="async" fetchpriority="high" alt="Demostración original de Cubone: figura física junto a su representación 3D en una pantalla">
                         <button type="button" data-inline-video="3qvjLGoXVLs" data-video-title="Gemelo Digital" aria-label="Reproducir demostración de Gemelo Digital"><span aria-hidden="true">▶</span></button>
                     </div>
                 </div>
@@ -108,30 +108,60 @@
         </section>
         <section class="section-v2 project-facts-section" aria-labelledby="project-technologies-title">
             <div class="shell project-facts">
-                <div><h2 id="project-technologies-title">Tecnologías</h2><ul class="tag-row"><li>ESP32</li><li>IoT</li><li>Visualización web</li></ul></div>
+                <div><h2 id="project-technologies-title">Tecnologías</h2><ul class="tag-row"><li>ESP32-C3</li><li>BNO08x</li><li>BLE</li><li>Android</li></ul></div>
                 <nav aria-label="Áreas relacionadas"><ul class="project-topic-links"><li><a href="../../esp32/">Más proyectos de ESP32</a></li><li><a href="../../iot/">Más proyectos de IoT</a></li><li><a href="../../industria-4-0/">Más proyectos de Industria 4.0</a></li></ul></nav>
             </div>
         </section>
         <section class="section-v2 project-detail-section" aria-labelledby="project-objective">
             <div class="shell">
                 <h2 id="project-objective">Objetivo del proyecto</h2>
-                <p>Monitorear procesos con ESP32 y representarlos digitalmente mediante una visualización web.</p>
+                <p>Sincronizar la inclinación y el giro de un dispositivo físico con la orientación de un modelo 3D, utilizando un sensor inercial y una conexión Bluetooth Low Energy.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-architecture">
+            <div class="shell">
+                <h2 id="project-architecture">Arquitectura o funcionamiento</h2>
+                <p>El BNO08x entrega la orientación al ESP32-C3 por I²C. El microcontrolador la transmite por BLE a la app Android, que adapta los ejes al montaje físico y actualiza el modelo de Cubone mediante un visor nativo con SceneView y Filament. La OLED muestra el estado del sensor y de la conexión.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-howItWorks">
+            <div class="shell">
+                <h2 id="project-howItWorks">Flujo de funcionamiento</h2>
+                <p>Al conectar por Bluetooth, la app recibe la orientación como cuaterniones y mueve el modelo, incluso sin calibración previa. El asistente opcional registra tres posturas —neutra, inclinada hacia adelante e inclinada hacia la derecha— para adaptar los ejes al montaje real. La calibración se guarda y el control Cero permite establecer una referencia de orientación. El firmware solicita reportes del sensor cada 20 ms y limita las notificaciones BLE a una cada 40 ms; estos intervalos son valores configurados en el código.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-development">
+            <div class="shell">
+                <h2 id="project-development">Desarrollo e implementación</h2>
+                <p>El proyecto evolucionó desde una visualización web hacia una app Android con escena 3D nativa. El firmware gestiona el sensor, la pantalla y la transmisión BLE; la app integra recepción, calibración, interpolación de orientación y controles del visor. El modelo GLB se genera a partir de una malla OBJ y su textura. La imagen y el video de esta ficha corresponden a la demostración original del proyecto.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-challenges">
+            <div class="shell">
+                <h2 id="project-challenges">Desafíos técnicos</h2>
+                <p>La implementación contempla cambios de orientación del montaje físico, recuperación de reportes del sensor y reintentos de conexión BLE. La app conserva la escena y la conexión al girar la pantalla. Como el Game Rotation Vector utilizado no aporta un rumbo absoluto, cada conexión establece una referencia inicial para el giro.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-result">
+            <div class="shell">
+                <h2 id="project-result">Resultados</h2>
+                <p>El repositorio publica el firmware BLE y una app Android instalable con visor 3D, calibración opcional, retorno a cero, zoom y vista ampliada. Incluye pruebas automatizadas de orientación y de interfaz con datos de sensor simulados, entre ellas la conservación de la referencia y los controles al girar la pantalla.</p>
             </div>
         </section>
         <section class="section-v2 project-detail-section" aria-labelledby="project-hardware">
             <div class="shell">
                 <h2 id="project-hardware">Hardware utilizado</h2>
-                <ul class="case-study-list"><li>ESP32</li></ul>
+                <ul class="case-study-list"><li>ESP32-C3</li><li>Sensor de orientación BNO08x conectado por I²C</li><li>Pantalla OLED SSD1306 integrada de 72 × 40 píxeles</li><li>Tablet o dispositivo compatible con Android 7.0 o superior y Bluetooth Low Energy</li></ul>
             </div>
         </section>
         <section class="section-v2 project-detail-section" aria-labelledby="project-software">
             <div class="shell">
                 <h2 id="project-software">Software y tecnologías</h2>
-                <ul class="case-study-list"><li>Visualización web</li></ul>
+                <ul class="case-study-list"><li>Firmware Arduino en C++</li><li>Bibliotecas SparkFun BNO08x y U8g2</li><li>App Android desarrollada en Java y Kotlin</li><li>SceneView y Filament para el visor 3D nativo</li><li>Modelo de Cubone en formato GLB</li><li>Android Studio y Gradle</li></ul>
             </div>
         </section>
 
-
+        <section class="section-v2 project-detail-section" aria-labelledby="project-resources-title"><div class="shell">,            <h2 id="project-resources-title">Recursos relacionados</h2>,            <ul class="case-study-list"><li><a href="https://github.com/ffelipev2/GemeloDigitalEsp32" target="_blank" rel="noopener noreferrer">Código del proyecto en GitHub</a></li><li><a href="https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentación, conexión y uso</a></li><li><a href="https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/GemeloDigitalEsp32.ino" target="_blank" rel="noopener noreferrer">Firmware del ESP32-C3</a></li></ul>,        </div></section>
         <section class="section-v2 related-project-section" aria-labelledby="related-projects-title">
             <div class="shell">
                 <h2 id="related-projects-title" class="related-projects-title">Proyectos relacionados</h2>

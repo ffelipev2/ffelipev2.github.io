@@ -22,7 +22,7 @@ Soy Felipe Flores, Ingeniero Civil Informático y Magíster en Alta Dirección y
 
 ## Proyectos destacados
 
-- **[Gemelo Digital](https://felipeflores.tech/proyectos/gemelo-digital/):** monitoreo y representación digital de procesos mediante dispositivos conectados.
+- **[Gemelo Digital](https://felipeflores.tech/proyectos/gemelo-digital/):** orientación de un dispositivo con ESP32-C3 y BNO08x reproducida en un modelo 3D en Android mediante BLE. [Código del proyecto](https://github.com/ffelipev2/GemeloDigitalEsp32).
 - **[Chat con LoRa](https://felipeflores.tech/proyectos/chat-lora/):** intercambio de mensajes entre dispositivos mediante comunicación de largo alcance.
 - **[UFACTORY LITE 6](https://felipeflores.tech/proyectos/ufactory-lite-6/):** robótica aplicada a la educación y la industria.
 
