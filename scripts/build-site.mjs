@@ -452,6 +452,9 @@ function projectSchema(project) {
 
 function projectDetailPage(project) {
     const canonicalPath = '/proyectos/' + project.slug + '/';
+    const heroImage = project.heroImage || {
+        src: project.image, width: project.imageWidth, height: project.imageHeight, alt: project.alt
+    };
     const tags = '<ul class="tag-row">' + project.tags.map((tag) => '<li>' + escapeHtml(tag) + '</li>').join('') + '</ul>';
     const relatedProjects = projects.filter((candidate) => project.relatedProjects?.includes(candidate.slug));
     const optionalDetails = [
@@ -560,8 +563,8 @@ function projectDetailPage(project) {
             '                        <button type="button" data-inline-video="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Reproducir demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span></button>',
             '                    </div>'
         ].join('\n') : [
-            '                    <a class="project-hero-image" href="' + localFile(project.image, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(project.alt) + '">',
-            '                        <img src="' + localFile(project.image, 2) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" decoding="async" fetchpriority="high" alt="' + escapeHtml(project.alt) + '">',
+            '                    <a class="project-hero-image' + (heroImage.width < heroImage.height ? ' project-hero-image--portrait' : '') + '" href="' + localFile(heroImage.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(heroImage.alt) + '">',
+            '                        <img src="' + localFile(heroImage.src, 2) + '" width="' + heroImage.width + '" height="' + heroImage.height + '" decoding="async" fetchpriority="high" alt="' + escapeHtml(heroImage.alt) + '">',
             '                    </a>'
         ].join('\n'),
         '                </div>',

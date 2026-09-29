@@ -39,6 +39,12 @@
     "imageWidth": 1600,
     "imageHeight": 960,
     "alt": "Pantalla principal de la app de calidad del aire con CO₂, temperatura, humedad, partículas y estado de ventilación",
+    "heroImage": {
+      "src": "/images/calidad-aire-esp32-s3/montaje-prototipo-esp32-s3.jpg",
+      "width": 3072,
+      "height": 4096,
+      "alt": "Montaje real del monitor de calidad del aire con ESP32-S3, sensores, cables y pantalla redonda encendida"
+    },
     "tags": ["ESP32-S3", "SCD41", "PM2.5", "BLE", "Android"],
     "description": "Un ESP32-S3 mide CO₂, temperatura, humedad y partículas, muestra las lecturas en una pantalla y las envía por BLE a una app Android con historial y reportes.",
     "topics": ["esp32", "iot", "industria-4-0"],

@@ -317,6 +317,14 @@ for (const project of projectData) {
         errors.push('projects.json: missing image ' + project.image);
     }
     if (!project.seoTitle || !project.seoDescription) errors.push('projects.json: missing unique SEO fields for ' + project.slug);
+    if (project.heroImage) {
+        const image = project.heroImage;
+        if (!image.src || !image.alt || !Number.isInteger(image.width) || !Number.isInteger(image.height)) {
+            errors.push('projects.json: incomplete hero image for ' + project.slug);
+        } else if (!await fileExists(path.join(rootDirectory, image.src.replace(/^\/+/, '')))) {
+            errors.push('projects.json: missing hero image ' + image.src);
+        }
+    }
     for (const image of project.images || []) {
         if (!image.src || !image.alt || !Number.isInteger(image.width) || !Number.isInteger(image.height)) {
             errors.push('projects.json: incomplete gallery image for ' + project.slug);
