@@ -6,15 +6,15 @@ export const topics = [
         name: 'ESP32',
         title: 'Proyectos con ESP32',
         seoTitle: 'Proyectos con ESP32: IoT, sensores y automatización | Felipe Flores',
-        description: 'Proyectos de Felipe Flores con ESP32: gemelo digital, reconocimiento de colores con HuskyLens y monitoreo ambiental con HiGrow.',
-        intro: 'En estos proyectos, ESP32 se integra con visualización web, sensores o reconocimiento de colores para explorar aplicaciones de monitoreo y automatización.'
+        description: 'Proyectos de Felipe Flores con ESP32: gemelo digital, monitor de calidad del aire, reconocimiento de colores con HuskyLens y sensor HiGrow.',
+        intro: 'En estos proyectos, ESP32 se integra con sensores, Bluetooth y aplicaciones de visualización para explorar el monitoreo y la automatización.'
     },
     {
         slug: 'iot',
         name: 'IoT',
         title: 'Proyectos de IoT e Internet de las Cosas',
         seoTitle: 'Proyectos de IoT con ESP32 y sensores | Felipe Flores',
-        description: 'Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.',
+        description: 'Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.',
         intro: 'Mi trabajo con IoT combina dispositivos conectados, sensores y herramientas de visualización. Estos proyectos muestran distintas formas de observar procesos y registrar información.'
     },
     {

@@ -207,7 +207,7 @@ function projectCardMarkup(project, pageDepth, headingLevel = 2) {
         '                        <a class="project-image-v2" href="' + projectPath + '" aria-label="Conocer el proyecto ' + escapeHtml(project.title) + '">',
         '                            <img src="' + localFile(project.image, pageDepth) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" loading="lazy" decoding="async" alt="' + escapeHtml(project.alt) + '">',
         '                        </a>',
-        '                        <button class="play-chip" type="button" data-video-id="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Ver demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span> Demo</button>',
+        project.videoId ? '                        <button class="play-chip" type="button" data-video-id="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Ver demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span> Demo</button>' : '',
         '                    </div>',
         '                    <div class="project-body-v2">',
         '                        <p class="project-tags-v2">' + project.tags.map(escapeHtml).join(' · ') + '</p>',
@@ -484,7 +484,7 @@ function projectDetailPage(project) {
         '            <div class="case-study-gallery">',
         project.images.map((item) => [
             '                <figure>',
-            '                    <img src="' + localFile(item.src, 2) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async" alt="' + escapeHtml(item.alt) + '">',
+            '                    <a href="' + localFile(item.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(item.alt) + '"><img src="' + localFile(item.src, 2) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async" alt="' + escapeHtml(item.alt) + '"></a>',
             item.caption ? '                    <figcaption>' + escapeHtml(item.caption) + '</figcaption>' : '',
             '                </figure>'
         ].join('\n')).join('\n'),
@@ -540,14 +540,25 @@ function projectDetailPage(project) {
         '                        <h1 id="project-title">' + escapeHtml(project.title) + '</h1>',
         '                        <p>' + escapeHtml(project.description) + '</p>',
         '                        <div class="project-detail-actions">',
-        '                            <button class="button-v2 button-primary-v2" type="button" data-inline-video="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '">Ver demostración <span aria-hidden="true">▶</span></button>',
-        '                            <a class="button-v2 button-outline-v2" href="' + project.videoUrl + '" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>',
+        project.videoId ? [
+            '                            <button class="button-v2 button-primary-v2" type="button" data-inline-video="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '">Ver demostración <span aria-hidden="true">▶</span></button>',
+            '                            <a class="button-v2 button-outline-v2" href="' + project.videoUrl + '" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>'
+        ].join('\n') : [
+            project.resources?.[0] ? '                            <a class="button-v2 button-primary-v2" href="' + escapeHtml(project.resources[0].url) + '" target="_blank" rel="noopener noreferrer">Ver repositorio <span aria-hidden="true">↗</span></a>' : '',
+            project.images?.length ? '                            <a class="button-v2 button-outline-v2" href="#project-gallery-title">Ver imágenes <span aria-hidden="true">↓</span></a>' : ''
+        ].filter(Boolean).join('\n'),
         '                        </div>',
         '                    </div>',
-        '                    <div class="inline-video">',
-        '                        <img src="' + localFile(project.image, 2) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" decoding="async" fetchpriority="high" alt="' + escapeHtml(project.alt) + '">',
-        '                        <button type="button" data-inline-video="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Reproducir demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span></button>',
-        '                    </div>',
+        project.videoId ? [
+            '                    <div class="inline-video">',
+            '                        <img src="' + localFile(project.image, 2) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" decoding="async" fetchpriority="high" alt="' + escapeHtml(project.alt) + '">',
+            '                        <button type="button" data-inline-video="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Reproducir demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span></button>',
+            '                    </div>'
+        ].join('\n') : [
+            '                    <a class="project-hero-image" href="' + localFile(project.image, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(project.alt) + '">',
+            '                        <img src="' + localFile(project.image, 2) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" decoding="async" fetchpriority="high" alt="' + escapeHtml(project.alt) + '">',
+            '                    </a>'
+        ].join('\n'),
         '                </div>',
         '            </div>',
         '        </section>',

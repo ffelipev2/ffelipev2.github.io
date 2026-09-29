@@ -1866,6 +1866,21 @@ body.menu-open {
     box-shadow: var(--shadow-sm);
 }
 
+.project-hero-image {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-background);
+    box-shadow: var(--shadow-sm);
+}
+
+.project-hero-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 .inline-video img {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -1952,6 +1967,10 @@ body.menu-open {
     width: 100%;
     height: auto;
     border-radius: var(--radius-md);
+}
+
+.case-study-gallery a {
+    display: block;
 }
 
 .related-projects-grid article > p:last-child {

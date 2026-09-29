@@ -237,7 +237,7 @@ if (!/<p\s+class=["']hero-identity-v2["']>\s*Felipe Flores Valdebenito/i.test(ho
 }
 
 const slugs = projectData.map((project) => project.slug);
-const videoIds = projectData.map((project) => project.videoId);
+const videoIds = projectData.map((project) => project.videoId).filter(Boolean);
 const topicSlugs = topics.map((topic) => topic.slug);
 if (new Set(slugs).size !== slugs.length) errors.push('projects.json: duplicate slug');
 if (new Set(videoIds).size !== videoIds.length) errors.push('projects.json: duplicate video ID');
@@ -343,6 +343,9 @@ for (const project of projectData) {
         const detailHtml = await readFile(detailFile, 'utf8');
         if (!detailHtml.includes('<title>' + project.seoTitle + '</title>')) errors.push(project.slug + ': SEO title was not generated from projects.json');
         if (!detailHtml.includes('<meta name="description" content="' + project.seoDescription + '">')) errors.push(project.slug + ': SEO description was not generated from projects.json');
+        if (!project.videoId && (/data-inline-video=|Ver en YouTube|Reproducir demostración/.test(detailHtml))) {
+            errors.push(project.slug + ': video controls generated without a video');
+        }
         if (!/<nav\s+aria-label=["']Migas de pan["']>\s*<ol\s+class=["']breadcrumb["']>/i.test(detailHtml)) {
             errors.push(project.slug + ': breadcrumb should use a labelled nav around its ordered list');
         }

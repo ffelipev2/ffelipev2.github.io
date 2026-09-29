@@ -27,7 +27,42 @@
       { "label": "Documentación, conexión y uso", "url": "https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/README.md" },
       { "label": "Firmware del ESP32-C3", "url": "https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/GemeloDigitalEsp32.ino" }
     ],
-    "relatedProjects": ["sensor-higrow-esp32-app", "huskylens-esp32"]
+    "relatedProjects": ["sensor-higrow-esp32-app", "huskylens-esp32", "calidad-aire-esp32-s3"]
+  },
+  {
+    "slug": "calidad-aire-esp32-s3",
+    "title": "Monitor de calidad del aire con ESP32-S3",
+    "cardTitle": "Calidad del aire con ESP32-S3",
+    "seoTitle": "Monitor de calidad del aire con ESP32-S3 y Android | Felipe Flores",
+    "seoDescription": "Monitor de CO₂, temperatura, humedad y partículas con ESP32-S3, pantalla TFT, microSD y app Android por Bluetooth Low Energy.",
+    "image": "/images/calidad-aire-esp32-s3/app-monitor-principal.jpeg",
+    "imageWidth": 1600,
+    "imageHeight": 960,
+    "alt": "Pantalla principal de la app de calidad del aire con CO₂, temperatura, humedad, partículas y estado de ventilación",
+    "tags": ["ESP32-S3", "SCD41", "PM2.5", "BLE", "Android"],
+    "description": "Un ESP32-S3 mide CO₂, temperatura, humedad y partículas, muestra las lecturas en una pantalla y las envía por BLE a una app Android con historial y reportes.",
+    "topics": ["esp32", "iot", "industria-4-0"],
+    "objective": "Medir variables de calidad del aire interior, mostrar su evolución y conservar registros tanto en el equipo como en un teléfono Android.",
+    "architecture": "El sensor SCD41 entrega CO₂, temperatura y humedad por I²C; un Plantower PMSx003/PMS5003 comunica PM2.5 y PM10 por UART. El ESP32-S3 muestra las lecturas en una TFT GC9A01, guarda resúmenes CSV en microSD y notifica las mediciones a la app mediante Bluetooth Low Energy. La app mantiene un historial independiente en SQLite.",
+    "howItWorks": "El firmware actualiza la pantalla y BLE aproximadamente cada cinco segundos y escribe un resumen en microSD cada 30 segundos. Al conectarse, la app envía la hora del teléfono al ESP32-S3 y registra muestras locales cada 30 segundos mientras permanece abierta y conectada. Los reportes de 24 horas, 7 días y 30 días se consultan desde SQLite incluso sin conexión al equipo; la microSD continúa como respaldo cuando la app está desconectada.",
+    "development": "El firmware Arduino en C++ integra sensores I²C y UART, pantalla SPI, registro CSV y un servicio BLE para mediciones, sincronización horaria y diagnóstico. La app Android 1.2 reúne el monitor en vivo, gráficos históricos, reportes, exportación CSV y el estado de sensores y almacenamiento. El repositorio publica el firmware y una APK instalable; no incluye el código fuente de Android.",
+    "challenges": "El SCD41 se consulta sin bloquear el ciclo principal y reinicia la medición ante esperas o errores I²C. El firmware valida las tramas de partículas y confirma las escrituras antes de informar que la microSD está grabando. La app mantiene BLE al girar la pantalla y distingue su historial SQLite del respaldo CSV, que no importa automáticamente.",
+    "result": "El prototipo presenta las mediciones en la TFT y en Android, clasifica la ventilación a partir del CO₂, conserva resúmenes en microSD y ofrece reportes y exportación CSV desde la app. La clasificación de ventilación es un indicador basado en CO₂, no una evaluación completa de todos los contaminantes del aire.",
+    "hardware": ["ESP32-S3", "Sensor Sensirion SCD41 por I²C", "Sensor de partículas Plantower PMSx003/PMS5003 por UART", "Pantalla TFT GC9A01 de 1,28 pulgadas", "Módulo microSD y tarjeta FAT32", "Teléfono o tablet con Android 6.0 o superior y BLE"],
+    "software": ["Firmware Arduino en C++", "Bibliotecas Sensirion I2C SCD4x, Adafruit GFX y Adafruit GC9A01A", "App Android 1.2 distribuida como APK", "Historial SQLite y exportación CSV"],
+    "images": [
+      { "src": "/images/calidad-aire-esp32-s3/montaje-componentes.png", "width": 1448, "height": 1086, "alt": "Montaje del monitor con ESP32-S3, Plantower, SCD41, pantalla TFT, microSD y alimentación identificados", "caption": "Montaje físico y conexiones principales del prototipo." },
+      { "src": "/images/calidad-aire-esp32-s3/app-monitor-principal.jpeg", "width": 1600, "height": 960, "alt": "App Android conectada con gráficos de CO₂, temperatura, humedad y lecturas de partículas", "caption": "Monitor en tiempo real y estado de ventilación." },
+      { "src": "/images/calidad-aire-esp32-s3/app-reporte-ambiental.jpeg", "width": 1600, "height": 960, "alt": "Reporte ambiental de la app con gráficos históricos y resumen de mediciones", "caption": "Reporte ambiental con historial y exportación CSV." },
+      { "src": "/images/calidad-aire-esp32-s3/app-estado-equipo.jpeg", "width": 1600, "height": 960, "alt": "Pantalla de diagnóstico con el estado del SCD41, sensor Plantower y microSD", "caption": "Diagnóstico del equipo y última escritura en microSD." }
+    ],
+    "resources": [
+      { "label": "Código del proyecto en GitHub", "url": "https://github.com/ffelipev2/CalidadAireEsp32S3Publico" },
+      { "label": "Documentación, conexiones e instalación", "url": "https://github.com/ffelipev2/CalidadAireEsp32S3Publico/blob/main/README.md" },
+      { "label": "Firmware del ESP32-S3", "url": "https://github.com/ffelipev2/CalidadAireEsp32S3Publico/blob/main/Calidad_Aire/Calidad_Aire.ino" },
+      { "label": "APK de la app Android 1.2", "url": "https://github.com/ffelipev2/CalidadAireEsp32S3Publico/blob/main/apk/CalidadAire-v1.2.apk" }
+    ],
+    "relatedProjects": ["gemelo-digital", "sensor-higrow-esp32-app"]
   },
   {
     "slug": "chat-lora",

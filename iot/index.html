@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Proyectos de IoT con ESP32 y sensores | Felipe Flores</title>
-    <meta name="description" content="Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.">
+    <meta name="description" content="Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.">
     <meta name="author" content="Felipe Flores Valdebenito">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#07111F">
@@ -13,7 +13,7 @@
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="Felipe Flores">
     <meta property="og:title" content="Proyectos de IoT con ESP32 y sensores | Felipe Flores">
-    <meta property="og:description" content="Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.">
+    <meta property="og:description" content="Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.">
     <meta property="og:image" content="https://felipeflores.tech/images/img7.webp">
     <meta property="og:image:width" content="500">
     <meta property="og:image:height" content="333">
@@ -23,10 +23,10 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Proyectos de IoT con ESP32 y sensores | Felipe Flores">
-    <meta name="twitter:description" content="Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.">
+    <meta name="twitter:description" content="Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.">
     <meta name="twitter:image" content="https://felipeflores.tech/images/img7.webp">
     <meta name="twitter:image:alt" content="Demostración original de Cubone: figura física junto a su representación 3D en una pantalla">
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"Proyectos de IoT e Internet de las Cosas","description":"Conoce proyectos de IoT de Felipe Flores: monitoreo con ESP32 y HiGrow, gemelo digital y control de acceso biométrico con Ethernet.","url":"https://felipeflores.tech/iot/","inLanguage":"es-CL","author":{"@id":"https://felipeflores.tech/#person"},"hasPart":[{"@type":"CreativeWork","name":"Gemelo Digital","url":"https://felipeflores.tech/proyectos/gemelo-digital/"},{"@type":"CreativeWork","name":"Sensor HiGrow (ESP32) + App","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"},{"@type":"CreativeWork","name":"Shield Ethernet + Sensor biométrico","url":"https://felipeflores.tech/proyectos/ethernet-sensor-biometrico/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"IoT","item":"https://felipeflores.tech/iot/"}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"Proyectos de IoT e Internet de las Cosas","description":"Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.","url":"https://felipeflores.tech/iot/","inLanguage":"es-CL","author":{"@id":"https://felipeflores.tech/#person"},"hasPart":[{"@type":"CreativeWork","name":"Gemelo Digital","url":"https://felipeflores.tech/proyectos/gemelo-digital/"},{"@type":"CreativeWork","name":"Monitor de calidad del aire con ESP32-S3","url":"https://felipeflores.tech/proyectos/calidad-aire-esp32-s3/"},{"@type":"CreativeWork","name":"Sensor HiGrow (ESP32) + App","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"},{"@type":"CreativeWork","name":"Shield Ethernet + Sensor biométrico","url":"https://felipeflores.tech/proyectos/ethernet-sensor-biometrico/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"IoT","item":"https://felipeflores.tech/iot/"}]}]}</script>
     <link rel="stylesheet" href="../css/portfolio.css">
     <link rel="icon" href="../images/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
@@ -106,6 +106,20 @@
                         <h3><a href="../proyectos/gemelo-digital/">Gemelo Digital</a></h3>
                         <p>Un ESP32-C3 y un sensor BNO08x transmiten la orientación por Bluetooth Low Energy a una app Android que la reproduce en un modelo 3D de Cubone.</p>
                         <a href="../proyectos/gemelo-digital/">Explorar Gemelo Digital <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+                <article class="project-card-v2">
+                    <div class="project-media-v2">
+                        <a class="project-image-v2" href="../proyectos/calidad-aire-esp32-s3/" aria-label="Conocer el proyecto Monitor de calidad del aire con ESP32-S3">
+                            <img src="../images/calidad-aire-esp32-s3/app-monitor-principal.jpeg" width="1600" height="960" loading="lazy" decoding="async" alt="Pantalla principal de la app de calidad del aire con CO₂, temperatura, humedad, partículas y estado de ventilación">
+                        </a>
+
+                    </div>
+                    <div class="project-body-v2">
+                        <p class="project-tags-v2">ESP32-S3 · SCD41 · PM2.5 · BLE · Android</p>
+                        <h3><a href="../proyectos/calidad-aire-esp32-s3/">Calidad del aire con ESP32-S3</a></h3>
+                        <p>Un ESP32-S3 mide CO₂, temperatura, humedad y partículas, muestra las lecturas en una pantalla y las envía por BLE a una app Android con historial y reportes.</p>
+                        <a href="../proyectos/calidad-aire-esp32-s3/">Explorar Calidad del aire con ESP32-S3 <span aria-hidden="true">→</span></a>
                     </div>
                 </article>
                 <article class="project-card-v2">
