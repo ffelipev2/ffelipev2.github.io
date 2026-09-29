@@ -8,7 +8,7 @@ test('la portada y las imágenes del proyecto de calidad del aire mantienen su t
         await expect(page.locator('link[href*="portfolio.css"]')).toHaveAttribute('href', /\?v=[a-f0-9]{12}$/);
         const image = page.locator('.project-hero-image img');
         await expect(image).toBeVisible();
-        await expect.poll(() => image.evaluate((element) => element.naturalWidth), { timeout: 10000 }).toBe(3072);
+        await expect.poll(() => image.evaluate((element) => element.naturalWidth), { timeout: 10000 }).toBe(4096);
         const bounds = await page.evaluate(() => {
             const shell = document.querySelector('.project-detail-hero .shell').getBoundingClientRect();
             const link = document.querySelector('.project-hero-image').getBoundingClientRect();
@@ -25,4 +25,8 @@ test('la portada y las imágenes del proyecto de calidad del aire mantienen su t
         const heights = await galleryFrames.evaluateAll((frames) => frames.map((frame) => frame.getBoundingClientRect().height));
         expect(Math.max(...heights) - Math.min(...heights), `galería al ancho ${width}`).toBeLessThanOrEqual(1);
     }
+
+    await page.goto('/images/calidad-aire-esp32-s3/montaje-prototipo-esp32-s3-horizontal.jpg');
+    const fullSizeImage = page.locator('img');
+    await expect.poll(() => fullSizeImage.evaluate((image) => [image.naturalWidth, image.naturalHeight])).toEqual([4096, 3072]);
 });
