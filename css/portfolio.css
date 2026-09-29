@@ -1868,6 +1868,7 @@ body.menu-open {
 
 .project-hero-image {
     display: block;
+    min-width: 0;
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -1878,6 +1879,7 @@ body.menu-open {
 .project-hero-image img {
     display: block;
     width: 100%;
+    max-width: 100%;
     height: auto;
 }
 

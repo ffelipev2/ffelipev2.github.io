@@ -1,4 +1,5 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { siteOrigin, topics } from './site-config.mjs';
@@ -11,6 +12,10 @@ const projects = JSON.parse(
 const publications = JSON.parse(
     await readFile(path.join(rootDirectory, 'data', 'publications.json'), 'utf8')
 );
+const stylesheetVersion = createHash('sha256')
+    .update(await readFile(path.join(rootDirectory, 'css', 'portfolio.css')))
+    .digest('hex')
+    .slice(0, 12);
 
 const entities = {
     '&': '&amp;',
@@ -83,7 +88,7 @@ function headMarkup({ title, description, canonicalPath, image, imageWidth, imag
         '    <meta name="twitter:image" content="' + absoluteImage + '">',
         '    <meta name="twitter:image:alt" content="' + escapeHtml(imageAlt) + '">',
         '    <script type="application/ld+json">' + jsonForHtml(schema) + '</script>',
-        '    <link rel="stylesheet" href="' + localFile('/css/portfolio.css', pageDepth) + '">',
+        '    <link rel="stylesheet" href="' + localFile('/css/portfolio.css', pageDepth) + '?v=' + stylesheetVersion + '">',
         '    <link rel="icon" href="' + localFile('/images/favicon.svg', pageDepth) + '" sizes="any" type="image/svg+xml">',
         '    <link rel="icon" href="' + localFile('/images/favicon.ico', pageDepth) + '" type="image/x-icon">',
         '</head>'
@@ -581,6 +586,12 @@ function projectDetailPage(project) {
 }
 
 const projectsDirectory = path.join(rootDirectory, 'proyectos');
+const homepagePath = path.join(rootDirectory, 'index.html');
+const homepage = await readFile(homepagePath, 'utf8');
+const homepageStylesheet = /(<link rel="stylesheet" href="\.\/css\/portfolio\.css)(?:\?v=[a-f0-9]+)?(">)/;
+if (!homepageStylesheet.test(homepage)) throw new Error('Homepage stylesheet link not found');
+await writeFile(homepagePath, homepage.replace(homepageStylesheet, '$1?v=' + stylesheetVersion + '$2'), 'utf8');
+
 await mkdir(projectsDirectory, { recursive: true });
 await writeFile(path.join(projectsDirectory, 'index.html'), projectsIndexPage(), 'utf8');
 
