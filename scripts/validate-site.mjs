@@ -2,6 +2,7 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { siteOrigin, topics } from './site-config.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const rootDirectory = path.resolve(scriptDirectory, '..');
@@ -54,6 +55,7 @@ const htmlFiles = await collectHtmlFiles(rootDirectory);
 const canonicalValues = new Map();
 const titleValues = new Map();
 const descriptionValues = new Map();
+const internalLinkGraph = new Map();
 
 for (const htmlFile of htmlFiles) {
     const relativePath = path.relative(rootDirectory, htmlFile).replace(/\\/g, '/');
@@ -90,13 +92,28 @@ for (const htmlFile of htmlFiles) {
         errors.push(relativePath + ': Twitter card metadata is incomplete');
     }
     if (/name=["']keywords["']/i.test(html)) errors.push(relativePath + ': meta keywords should not be used');
-    if (canonicals[0] && (!canonicals[0].startsWith('https://felipeflores.tech/') || !canonicals[0].endsWith('/'))) {
+    if (canonicals[0] && (!canonicals[0].startsWith(siteOrigin + '/') || !canonicals[0].endsWith('/'))) {
         errors.push(relativePath + ': canonical must use the preferred host and trailing-slash route');
     }
     const expectedRoute = relativePath === 'index.html' ? '/' : '/' + relativePath.replace(/index\.html$/, '');
-    if (canonicals[0] !== 'https://felipeflores.tech' + expectedRoute) {
+    if (canonicals[0] !== siteOrigin + expectedRoute) {
         errors.push(relativePath + ': canonical does not match the page route');
     }
+    const linkedUrls = new Set();
+    for (const anchor of anchorTags) {
+        const href = anchor.match(/\shref=["']([^"']+)["']/i)?.[1];
+        if (!href || /\brel=["'][^"']*\bnofollow\b/i.test(anchor)) continue;
+        try {
+            const target = new URL(href, siteOrigin + expectedRoute);
+            if (target.origin !== siteOrigin) continue;
+            target.hash = '';
+            target.search = '';
+            linkedUrls.add(target.href);
+        } catch {
+            errors.push(relativePath + ': invalid link URL ' + href);
+        }
+    }
+    internalLinkGraph.set(siteOrigin + expectedRoute, linkedUrls);
     if (h1Count !== 1) errors.push(relativePath + ': expected exactly one h1, found ' + h1Count);
     const schemaMatch = html.match(/<script\s+type=["']application\/ld\+json["']>\s*([\s\S]*?)\s*<\/script>/i);
     try {
@@ -186,14 +203,13 @@ if (/autoplay=1/i.test(portfolioJs)) errors.push('portfolio.js: autoplay paramet
 if (!/youtube-nocookie\.com/.test(portfolioJs)) errors.push('portfolio.js: privacy-enhanced YouTube embed missing');
 if (!/event\.key === 'Escape'/.test(portfolioJs)) errors.push('portfolio.js: Escape handling missing');
 if (!/document\.body\.classList\.add\('menu-open'\)/.test(portfolioJs)) errors.push('portfolio.js: body scroll lock missing');
-if (projectData.length !== 9) errors.push('projects.json: expected 9 projects, found ' + projectData.length);
+if (!projectData.length) errors.push('projects.json: project catalog is empty');
 if (!/^User-agent:\s*\*\s*\r?\nAllow:\s*\/\s*\r?\nSitemap:\s*https:\/\/felipeflores\.tech\/sitemap\.xml\s*$/i.test(robots.trim())) {
     errors.push('robots.txt: expected open crawling and the canonical sitemap URL');
 }
 if ((portfolioCss.match(/{/g) || []).length !== (portfolioCss.match(/}/g) || []).length) {
     errors.push('portfolio.css: unbalanced braces');
 }
-if ((sitemap.match(/<url>/g) || []).length !== 16) errors.push('sitemap.xml: expected 16 URL entries');
 
 const homepageSchemaMatch = homepage.match(/<script\s+type=["']application\/ld\+json["']>\s*([\s\S]*?)\s*<\/script>/i);
 if (!homepageSchemaMatch) {
@@ -209,7 +225,7 @@ if (!homepageSchemaMatch) {
         if (!Array.isArray(person?.alternateName) || !person.alternateName.includes('Felipe Flores')) {
             errors.push('index.html: Person schema must include Felipe Flores as an alternate name');
         }
-        if (profilePage?.mainEntity?.['@id'] !== 'https://felipeflores.tech/#person') {
+        if (profilePage?.mainEntity?.['@id'] !== siteOrigin + '/#person') {
             errors.push('index.html: ProfilePage schema must identify the Person as its main entity');
         }
     } catch {
@@ -222,33 +238,72 @@ if (!/<p\s+class=["']hero-identity-v2["']>\s*Felipe Flores Valdebenito/i.test(ho
 
 const slugs = projectData.map((project) => project.slug);
 const videoIds = projectData.map((project) => project.videoId);
+const topicSlugs = topics.map((topic) => topic.slug);
 if (new Set(slugs).size !== slugs.length) errors.push('projects.json: duplicate slug');
 if (new Set(videoIds).size !== videoIds.length) errors.push('projects.json: duplicate video ID');
+if (new Set(topicSlugs).size !== topicSlugs.length) errors.push('site-config.mjs: duplicate topic slug');
+for (const slug of [...slugs, ...topicSlugs]) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) errors.push('Invalid route slug: ' + slug);
+}
 const sitemapUrls = captureAll(sitemap, /<loc>([^<]+)<\/loc>/g);
 const expectedSitemapUrls = [
-    'https://felipeflores.tech/',
-    'https://felipeflores.tech/proyectos/',
-    ...slugs.map((slug) => 'https://felipeflores.tech/proyectos/' + slug + '/'),
-    ...['esp32', 'iot', 'industria-4-0', 'robotica', 'publicaciones'].map((slug) => 'https://felipeflores.tech/' + slug + '/')
+    siteOrigin + '/',
+    siteOrigin + '/proyectos/',
+    ...slugs.map((slug) => siteOrigin + '/proyectos/' + slug + '/'),
+    ...topicSlugs.map((slug) => siteOrigin + '/' + slug + '/'),
+    siteOrigin + '/publicaciones/'
 ];
+if (!/<urlset\s+xmlns=["']http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9["']\s*>/i.test(sitemap) || !/<\/urlset>\s*$/.test(sitemap)) {
+    errors.push('sitemap.xml: missing Sitemap XML namespace or closing urlset');
+}
+if ((sitemap.match(/<url>/g) || []).length !== sitemapUrls.length || sitemapUrls.length !== expectedSitemapUrls.length) {
+    errors.push('sitemap.xml: expected ' + expectedSitemapUrls.length + ' URL entries from the current data and routes, found ' + sitemapUrls.length);
+}
+if (new Set(expectedSitemapUrls).size !== expectedSitemapUrls.length) errors.push('Site configuration: conflicting indexable routes');
 if (new Set(sitemapUrls).size !== sitemapUrls.length) errors.push('sitemap.xml: duplicate URL entries');
 for (const url of expectedSitemapUrls) {
     if (!sitemapUrls.includes(url)) errors.push('sitemap.xml: missing indexable URL ' + url);
+    if (!canonicalValues.has(url)) errors.push('Missing indexable HTML page with canonical ' + url);
 }
 for (const url of sitemapUrls) {
-    if (url.startsWith('http://') || url.includes('?')) errors.push('sitemap.xml: non-canonical URL ' + url);
+    if (!url.startsWith(siteOrigin + '/') || !url.endsWith('/') || /[?#]/.test(url)) errors.push('sitemap.xml: non-canonical URL ' + url);
     if (!expectedSitemapUrls.includes(url)) errors.push('sitemap.xml: unexpected URL ' + url);
 }
+for (const [url, file] of canonicalValues) {
+    if (!expectedSitemapUrls.includes(url)) errors.push(file + ': indexable HTML page is absent from the configured routes and sitemap');
+}
 
-for (const topic of ['esp32', 'iot', 'industria-4-0', 'robotica']) {
+if (!internalLinkGraph.get(siteOrigin + '/')?.has(siteOrigin + '/proyectos/')) {
+    errors.push('index.html: missing conventional HTML link to /proyectos/');
+}
+for (const slug of slugs) {
+    if (!internalLinkGraph.get(siteOrigin + '/proyectos/')?.has(siteOriginForCheck(slug))) {
+        errors.push('proyectos/index.html: missing conventional HTML link to ' + slug);
+    }
+}
+const reachableUrls = new Set();
+const pendingUrls = [siteOrigin + '/'];
+while (pendingUrls.length) {
+    const url = pendingUrls.pop();
+    if (reachableUrls.has(url)) continue;
+    reachableUrls.add(url);
+    for (const target of internalLinkGraph.get(url) || []) {
+        if (internalLinkGraph.has(target) && !reachableUrls.has(target)) pendingUrls.push(target);
+    }
+}
+for (const url of expectedSitemapUrls) {
+    if (!reachableUrls.has(url)) errors.push('Page is unreachable from the homepage through HTML links: ' + url);
+}
+
+for (const topic of topicSlugs) {
     if (!projectData.some((project) => project.topics?.includes(topic))) {
         errors.push('projects.json: empty topic ' + topic);
     }
 }
 
 const publications = JSON.parse(await readFile(path.join(rootDirectory, 'data', 'publications.json'), 'utf8'));
-if (publications.length !== 3 || publications.filter((publication) => publication.role === 'Autor').length !== 1) {
-    errors.push('publications.json: expected one authored paper and two recognized collaborations');
+if (!publications.length || publications.some((publication) => !['Autor', 'Colaboración reconocida'].includes(publication.role))) {
+    errors.push('publications.json: expected publications with a supported authorship or collaboration role');
 }
 if (new Set(publications.map((publication) => publication.doi)).size !== publications.length) {
     errors.push('publications.json: duplicate DOI');
@@ -273,7 +328,7 @@ for (const project of projectData) {
         if (!resource.label || !resource.url) errors.push('projects.json: incomplete resource for ' + project.slug);
     }
     for (const topic of project.topics || []) {
-        if (!['esp32', 'iot', 'industria-4-0', 'robotica'].includes(topic)) {
+        if (!topicSlugs.includes(topic)) {
             errors.push('projects.json: unknown topic ' + topic + ' from ' + project.slug);
         }
     }
@@ -304,7 +359,7 @@ for (const project of projectData) {
 }
 
 function siteOriginForCheck(slug) {
-    return 'https://felipeflores.tech/proyectos/' + slug + '/';
+    return siteOrigin + '/proyectos/' + slug + '/';
 }
 
 try {
@@ -312,7 +367,9 @@ try {
         execFileSync(process.execPath, ['--check', path.join(rootDirectory, file)], { stdio: 'pipe' });
     }
     execFileSync(process.execPath, ['--check', path.join(rootDirectory, 'js', 'portfolio.js')], { stdio: 'pipe' });
-    execFileSync(process.execPath, ['--check', path.join(rootDirectory, 'scripts', 'build-site.mjs')], { stdio: 'pipe' });
+    for (const file of ['scripts/build-site.mjs', 'scripts/site-config.mjs', 'scripts/validate-site.mjs']) {
+        execFileSync(process.execPath, ['--check', path.join(rootDirectory, file)], { stdio: 'pipe' });
+    }
 } catch (error) {
     errors.push('JavaScript syntax check failed: ' + String(error.stderr || error.message));
 }
@@ -322,5 +379,5 @@ if (errors.length) {
     errors.forEach((error) => console.error('- ' + error));
     process.exitCode = 1;
 } else {
-    console.log('Validated ' + htmlFiles.length + ' HTML pages, ' + projectData.length + ' projects, local links, metadata, accessibility hooks, and JavaScript syntax.');
+    console.log('Validated ' + htmlFiles.length + ' HTML pages, ' + projectData.length + ' projects, ' + sitemapUrls.length + ' sitemap URLs, HTML reachability, local links, metadata, accessibility hooks, and JavaScript syntax.');
 }

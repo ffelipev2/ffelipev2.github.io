@@ -2951,8 +2951,9 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     color: var(--color-accent-dark) !important;
 }
 
+/* Content stays visible before scroll; intersection only starts its motion. */
 html.motion-ready .motion-reveal:not(.motion-is-visible) {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 14px, 0);
 }
 
@@ -2979,7 +2980,7 @@ html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
 
 @keyframes portfolio-motion-reveal {
     from {
-        opacity: 0;
+        opacity: 1;
         transform: translate3d(0, 14px, 0);
     }
 
@@ -2991,7 +2992,7 @@ html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
 
 @keyframes portfolio-motion-reveal-media {
     from {
-        opacity: 0;
+        opacity: 1;
         transform: translate3d(0, 18px, 0) scale(0.985);
     }
 
@@ -3015,7 +3016,7 @@ html.motion-ready.motion-has-started .motion-reveal--media.motion-is-visible {
 }
 
 @keyframes portfolio-motion-fade {
-    from { opacity: 0; }
+    from { opacity: 0.96; }
     to { opacity: 1; }
 }
 

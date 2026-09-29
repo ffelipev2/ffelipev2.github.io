@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
-import { heroRange } from './hero-helpers.js';
+import { heroRange, seekHero } from './hero-helpers.js';
 
 test('scroll progress follows the page without added inertia', async ({ page }) => {
     await page.goto('/');
     await page.locator('.hero-world').scrollIntoViewIfNeeded();
     await expect(page.locator('.hero-v2')).toHaveClass(/has-scene/);
+    // has-scene can precede the first visible frame in WebKit. Complete that
+    // startup before measuring the two-frame response to subsequent scrolls.
+    await seekHero(page, .1);
     const range = await page.evaluate(heroRange);
     const samples = await page.evaluate(async ({ start, length }) => {
         document.documentElement.style.scrollBehavior = 'auto';

@@ -2,19 +2,21 @@
 
 Este documento registra lo que falta después de la auditoría SEO del portafolio. Las fichas publicadas contienen solo datos respaldados por el repositorio; no se deben completar resultados, componentes ni arquitectura por suposición.
 
-Última revisión: **28 de septiembre de 2026**. La comprobación del despliegue y de WebKit/iOS corresponde a la versión `b6c5cb1` del portafolio; la ficha de Gemelo Digital se amplió después con la documentación y el código de su repositorio.
+Última revisión: **29 de septiembre de 2026**. La revisión actual parte de `b2d9314` y sus cambios SEO locales aún no se han desplegado. El informe detallado, las comprobaciones de producción y los resultados de pruebas están en [AUDITORIA-SEO.md](AUDITORIA-SEO.md). Las mediciones anteriores de WebKit/iOS correspondían a `b6c5cb1`.
 
 ## Resultado de la revisión
 
 - [x] Validación local: 17 HTML, nueve proyectos, enlaces locales, metadatos y sintaxis JavaScript sin errores (`npm test`).
 - [x] Las 16 URL del sitemap responden con HTTP 200, declaran su canonical esperada y permiten indexación mediante `index, follow`.
 - [x] `robots.txt` y `sitemap.xml` responden con HTTP 200; el sitemap publicado contiene las 16 URL previstas.
+- [x] Validación derivada de los proyectos y temas configurados, sin exigir cantidades fijas de proyectos ni URLs; comprueba también la navegación HTML desde la portada.
+- [x] Corregida localmente la transparencia inicial de las secciones: las animaciones conservan el desplazamiento sin ocultar texto y enlaces hasta el scroll.
 - [x] El teléfono ya no aparece en las 16 páginas publicadas. El CV publicado coincide byte por byte con el PDF local del que se retiró el teléfono.
 - [x] Confirmados los años, DOI y la distinción entre una autoría y dos reconocimientos en las publicaciones.
 - [ ] La política de la app responde, pero **la versión pública carece de `noindex` y canonical**. Coincide byte por byte con el archivo del repositorio independiente [ffelipev2/politicasffelipev2.github.io](https://github.com/ffelipev2/politicasffelipev2.github.io/blob/main/index.html), que tiene GitHub Pages habilitado. El archivo de este portafolio sí contiene esos metadatos; actualizarlo aquí no ha cambiado la respuesta de esa URL pública.
-- [ ] La suite WebKit/iOS sigue teniendo una falla intermitente de scroll: 20 pruebas aprobadas, 11 omitidas y una fallida. La prueba fallida pasó en tres repeticiones aisladas.
+- [x] La suite final de los cuatro perfiles terminó con 104 pruebas aprobadas, 48 omitidas por condiciones de plataforma y cero fallidas. La prueba intermitente de scroll de WebKit se sincronizó con el primer fotograma visible; también aprobó diez repeticiones aisladas.
 
-La disponibilidad HTTP y la canonical declarada se comprobaron mediante solicitudes directas al sitio. Esto no confirma la indexación ni la canonical seleccionada por Google, que siguen requiriendo revisión en Search Console.
+La disponibilidad HTTP y la canonical declarada se comprobaron mediante solicitudes directas al sitio. Según lo informado por el propietario, Search Console ya está conectado, recibió el sitemap con 16 URL, muestra la portada indexada y tres alternativas excluidas por redirección. Gemelo Digital figura como «Descubierta: actualmente sin indexar»; su prueba publicada permite indexación y valida las migas de pan, y ya se solicitó su indexación. Estos datos proceden del propietario y no de una sesión autenticada revisada en esta ejecución.
 
 ## 1. Completar los casos de estudio
 
@@ -61,14 +63,14 @@ La revisión legal requiere conocer el funcionamiento y los servicios actuales d
 
 ## 3. Después del despliegue
 
-- [ ] Enviar `https://felipeflores.tech/sitemap.xml` a Google Search Console.
-- [ ] Inspeccionar las 16 URL indexables de abajo y solicitar indexación donde corresponda.
+- [x] Enviar `https://felipeflores.tech/sitemap.xml` a Google Search Console: realizado, según lo informado por el propietario.
+- [ ] Seguir la indexación de las 16 URL de abajo y revisar la evolución de Gemelo Digital; su solicitud de indexación ya se realizó y no debe reiterarse automáticamente.
 - [ ] Comprobar la canonical elegida, cobertura, resultados enriquecidos y posibles errores de rastreo.
 - [x] Verificar que `https://felipeflores.tech/politicasffelipev2.github.io/` siga respondiendo: HTTP 200.
 - [ ] Actualizar los metadatos del despliegue de la política en el repositorio independiente y comprobar que la URL pública entregue `noindex, follow` y su canonical. Después, revisar en Search Console que Google la excluya por `noindex`. No está incluida en el sitemap del portafolio.
 - [ ] Medir Core Web Vitals con datos reales de usuarios tras el despliegue; priorizar problemas observados antes de modificar el hero 3D o los vídeos.
 
-El envío del sitemap, la cobertura, la canonical elegida por Google y los datos reales de Core Web Vitals no se verificaron en esta revisión. Las pruebas locales y las respuestas HTTP no sustituyen esos datos.
+La conexión y el envío del sitemap fueron informados por el propietario. La evolución de la indexación, la canonical elegida por Google y los datos reales de Core Web Vitals requieren revisión dentro de Search Console. Las pruebas locales y las respuestas HTTP no sustituyen esos datos. Tras un despliegue autorizado, comprobar primero la versión realmente publicada antes de ejecutar una nueva prueba de URL publicada; esa prueba no exige volver a solicitar indexación.
 
 ### URL que inspeccionar
 
@@ -91,5 +93,5 @@ El envío del sitemap, la cobertura, la canonical elegida por Google y los datos
 
 ## 4. Validación técnica pendiente
 
-- [x] Repetir la suite completa en WebKit/iOS y comprobar que el runner cierre: `npx playwright test --project=ios-webkit --reporter=line`. La ejecución terminó en 1,4 minutos con 20 aprobadas, 11 omitidas por las condiciones de plataforma y una fallida. Las dos pruebas de SEO aprobaron.
-- [ ] Investigar y resolver la falla intermitente de [tests/scroll-quality.spec.js](../tests/scroll-quality.spec.js), prueba `scroll progress follows the page without added inertia`: progreso esperado `0.3`, observado `0`. La repetición aislada con `--grep 'scroll progress follows' --repeat-each=3` aprobó tres de tres en 7,3 segundos. El resultado mantiene abierto el pendiente; no demuestra por sí solo un fallo visible de la interfaz ni permite dar la suite por estable. Revisar la sincronización del scroll, la visibilidad y el momento de lectura antes de cambiar la animación.
+- [x] Ejecutar la suite completa en desktop-chrome, tablet-chrome, android-chrome e ios-webkit: `npm run test:browser -- --reporter=line`. La ejecución final terminó en 5,8 minutos con 104 aprobadas, 48 omitidas por condiciones de plataforma y cero fallidas. Las pruebas nuevas de metadatos y visibilidad inicial aprobaron con y sin JavaScript en los cuatro perfiles.
+- [x] Investigar la falla intermitente de [tests/scroll-quality.spec.js](../tests/scroll-quality.spec.js), prueba `scroll progress follows the page without added inertia`: cuatro de ocho ensayos instrumentados reprodujeron la lectura inicial `0` coincidiendo con la activación de visibilidad y el primer fotograma. La prueba prepara ese fotograma con el helper existente antes de medir scroll; conserva la precisión y la observación tras dos fotogramas, sin cambiar la animación. La repetición con `--grep 'scroll progress follows' --repeat-each=10` aprobó diez de diez, y la suite completa posterior también pasó. Estos resultados describen las ejecuciones comprobadas, sin garantizar que ningún entorno pueda producir futuras fallas.
