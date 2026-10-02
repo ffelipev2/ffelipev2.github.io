@@ -1859,6 +1859,7 @@ body.menu-open {
 
 .inline-video {
     position: relative;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -1889,7 +1890,9 @@ body.menu-open {
 }
 
 .inline-video img {
+    display: block;
     width: 100%;
+    height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     opacity: 0.76;
