@@ -95,10 +95,10 @@
     "cardTitle": "UFACTORY LITE 6",
     "seoTitle": "UFACTORY Lite 6 con visión artificial | Felipe Flores",
     "seoDescription": "Demostración educativa con UFACTORY LITE 6, cámara USB y OpenCV para clasificar objetos por códigos QR, con supervisión desde un panel web Flask.",
-    "image": "/images/img0.webp",
-    "imageWidth": 500,
-    "imageHeight": 333,
-    "alt": "Brazo robótico UFACTORY LITE 6 junto a bloques de colores en un laboratorio",
+    "image": "/images/ufactory-lite-6/estacion-deteccion-qr.webp",
+    "imageWidth": 1600,
+    "imageHeight": 1200,
+    "alt": "Brazo UFACTORY LITE 6 junto a la cámara y el panel web mostrando un código QR detectado",
     "videoId": "hlzT7cw9UgI",
     "videoUrl": "https://www.youtube.com/watch?v=hlzT7cw9UgI",
     "tags": ["Robótica", "Visión artificial", "Python", "OpenCV"],
@@ -113,6 +113,29 @@
     "applications": "Demostraciones y actividades educativas sobre robótica, visión artificial y automatización, utilizando la clasificación de objetos etiquetados para explicar la relación entre percepción, decisión y movimiento.",
     "hardware": ["Brazo robótico UFACTORY LITE 6", "Pinza del Lite 6", "Cámara USB", "Computador con Python y conexión de red al brazo", "Objetos con etiquetas QR caja1, caja2 y caja3"],
     "software": ["Python", "OpenCV para captura de video y lectura de códigos QR", "NumPy para validación de los puntos del QR", "SDK local xArm para control del brazo", "Flask para el panel web y la consulta del estado", "HTML, CSS y JavaScript para la interfaz de supervisión"],
+    "images": [
+      {
+        "src": "/images/ufactory-lite-6/estacion-deteccion-qr.webp",
+        "width": 1600,
+        "height": 1200,
+        "alt": "Brazo UFACTORY LITE 6 junto a la cámara y el panel web mostrando un código QR detectado",
+        "caption": "Estación de la demostración con detección de QR y supervisión desde el panel web."
+      },
+      {
+        "src": "/images/ufactory-lite-6/brazo-recogiendo-pieza.webp",
+        "width": 1600,
+        "height": 1200,
+        "alt": "Pinza del brazo robótico sobre una pieza azul junto a los recipientes de clasificación",
+        "caption": "El brazo se acerca a la pieza en la posición de recogida."
+      },
+      {
+        "src": "/images/ufactory-lite-6/pieza-etiquetada-qr.webp",
+        "width": 1200,
+        "height": 1600,
+        "alt": "Detalle de una pieza morada con etiqueta QR sostenida frente al brazo robótico",
+        "caption": "Las etiquetas QR identifican la categoría que determina el destino de cada pieza."
+      }
+    ],
     "resources": [
       {"label": "Repositorio del proyecto en GitHub", "url": "https://github.com/ffelipev2/BrazoRoboticoUfactory"},
       {"label": "Documentación, configuración y uso", "url": "https://github.com/ffelipev2/BrazoRoboticoUfactory/blob/main/README.md"},
