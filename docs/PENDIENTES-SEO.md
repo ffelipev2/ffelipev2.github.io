@@ -1,5 +1,25 @@
 # Pendientes de contenido y SEO
 
+## Seguimiento actual: 17 de octubre de 2026
+
+La revisión vigente está en [AUDITORIA-SEO-2026-10-17.md](AUDITORIA-SEO-2026-10-17.md), con [evidencias HTTP de producción](seo-production-audit-2026-10-17.json). Actualmente hay **17 URLs canónicas y diez proyectos**. Las diez páginas prioritarias responden 200 con contenido HTML, canonical propia y permiso de indexación. No se ha demostrado un fallo técnico que explique su estado en Search Console.
+
+- [ ] Revisar y autorizar el despliegue de las dos imágenes WebP y sus enlaces a originales. Los cambios siguen locales.
+- [ ] Después de publicar, comprobar las diez rutas, nuevos recursos, robots, sitemap y metadatos realmente servidos.
+- [ ] En Search Console, verificar la lectura del sitemap actual y sus 17 URLs; inspeccionar `/esp32/` y las demás prioritarias con «Probar URL publicada».
+- [ ] Revisar fecha de rastreo, canonical seleccionada, disponibilidad del host, acciones manuales y seguridad. Solicitar indexación cuando proceda, respetando las cuotas y sin reiterarla continuamente.
+- [ ] Completar con datos reales las siete fichas breves: LoRa, HuskyLens, HiGrow, biometría con Ethernet, Robot Otto, Arduino con Bluetooth y relé, y vehículo Arduino. Gemelo Digital, calidad del aire y UFACTORY ya tienen casos más desarrollados; revisar también sus evidencias y contexto cuando haya información nueva.
+- [ ] Confirmar en el repositorio que publica la política de la app si se mantiene la intención de `noindex, follow`; su respuesta pública aún no coincide con esta copia local.
+- [ ] Revisar Core Web Vitals cuando haya datos reales suficientes. La reducción de transferencia de imágenes no equivale a una medición de esos indicadores.
+
+Validación actual: `npm run build` y `npm test` correctos. La suite completa sobre el HTML anterior a la regeneración terminó con 108 aprobadas y 48 omitidas; después del cambio, las pruebas de SEO e imágenes terminaron con 27 aprobadas y nueve omitidas. Ambas ejecuciones tuvieron cero fallos y cubrieron los cuatro perfiles de navegador. Las inspecciones de Search Console pueden hacerse antes de publicar esta mejora de imágenes.
+
+La configuración privada de GitHub Pages, las peticiones desde IP reales de Google, el estado autenticado de Search Console y la indexación efectiva siguen sin comprobarse. Las exclusiones por redirección de las variantes HTTP/WWW son esperables cuando consolidan el dominio oficial.
+
+## Registro histórico del 29 de septiembre de 2026
+
+Las cifras, listas de contenido, referencias al propietario y resultados que siguen corresponden a aquella revisión y pueden haber cambiado. Se conservan como antecedentes; para el estado actual se aplica el seguimiento anterior.
+
 Este documento registra lo que falta después de la auditoría SEO del portafolio. Las fichas publicadas contienen solo datos respaldados por el repositorio; no se deben completar resultados, componentes ni arquitectura por suposición.
 
 Última revisión: **29 de septiembre de 2026**. La revisión actual parte de `b2d9314` y sus cambios SEO locales aún no se han desplegado. El informe detallado, las comprobaciones de producción y los resultados de pruebas están en [AUDITORIA-SEO.md](AUDITORIA-SEO.md). Las mediciones anteriores de WebKit/iOS correspondían a `b6c5cb1`.

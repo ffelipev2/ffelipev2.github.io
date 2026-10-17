@@ -40,9 +40,10 @@
     "imageHeight": 960,
     "alt": "Pantalla principal de la app de calidad del aire con CO₂, temperatura, humedad, partículas y estado de ventilación",
     "heroImage": {
-      "src": "/images/calidad-aire-esp32-s3/montaje-prototipo-esp32-s3-horizontal.jpg",
-      "width": 4096,
-      "height": 3072,
+      "src": "/images/calidad-aire-esp32-s3/montaje-prototipo-esp32-s3-1600.webp",
+      "originalSrc": "/images/calidad-aire-esp32-s3/montaje-prototipo-esp32-s3-horizontal.jpg",
+      "width": 1600,
+      "height": 1200,
       "alt": "Montaje real del monitor de calidad del aire con ESP32-S3, sensores, cables y pantalla redonda encendida"
     },
     "tags": ["ESP32-S3", "SCD41", "PM2.5", "BLE", "Android"],
@@ -57,7 +58,7 @@
     "hardware": ["ESP32-S3", "Sensor Sensirion SCD41 por I²C", "Sensor de partículas Plantower PMSx003/PMS5003 por UART", "Pantalla TFT GC9A01 de 1,28 pulgadas", "Módulo microSD y tarjeta FAT32", "Teléfono o tablet con Android 6.0 o superior y BLE"],
     "software": ["Firmware Arduino en C++", "Bibliotecas Sensirion I2C SCD4x, Adafruit GFX y Adafruit GC9A01A", "App Android 1.2 distribuida como APK", "Historial SQLite y exportación CSV"],
     "images": [
-      { "src": "/images/calidad-aire-esp32-s3/montaje-componentes.png", "width": 1448, "height": 1086, "alt": "Montaje del monitor con ESP32-S3, Plantower, SCD41, pantalla TFT, microSD y alimentación identificados", "caption": "Montaje físico y conexiones principales del prototipo." },
+      { "src": "/images/calidad-aire-esp32-s3/montaje-componentes.webp", "originalSrc": "/images/calidad-aire-esp32-s3/montaje-componentes.png", "width": 1448, "height": 1086, "alt": "Montaje del monitor con ESP32-S3, Plantower, SCD41, pantalla TFT, microSD y alimentación identificados", "caption": "Montaje físico y conexiones principales del prototipo." },
       { "src": "/images/calidad-aire-esp32-s3/app-monitor-principal.jpeg", "width": 1600, "height": 960, "alt": "App Android conectada con gráficos de CO₂, temperatura, humedad y lecturas de partículas", "caption": "Monitor en tiempo real y estado de ventilación." },
       { "src": "/images/calidad-aire-esp32-s3/app-reporte-ambiental.jpeg", "width": 1600, "height": 960, "alt": "Reporte ambiental de la app con gráficos históricos y resumen de mediciones", "caption": "Reporte ambiental con historial y exportación CSV." },
       { "src": "/images/calidad-aire-esp32-s3/app-estado-equipo.jpeg", "width": 1600, "height": 960, "alt": "Pantalla de diagnóstico con el estado del SCD41, sensor Plantower y microSD", "caption": "Diagnóstico del equipo y última escritura en microSD." }

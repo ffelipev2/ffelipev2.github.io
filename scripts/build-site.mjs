@@ -492,7 +492,7 @@ function projectDetailPage(project) {
         '            <div class="case-study-gallery">',
         project.images.map((item) => [
             '                <figure>',
-            '                    <a href="' + localFile(item.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(item.alt) + '"><img src="' + localFile(item.src, 2) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async" alt="' + escapeHtml(item.alt) + '"></a>',
+            '                    <a href="' + localFile(item.originalSrc || item.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(item.alt) + '"><img src="' + localFile(item.src, 2) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async" alt="' + escapeHtml(item.alt) + '"></a>',
             item.caption ? '                    <figcaption>' + escapeHtml(item.caption) + '</figcaption>' : '',
             '                </figure>'
         ].join('\n')).join('\n'),
@@ -563,7 +563,7 @@ function projectDetailPage(project) {
             '                        <button type="button" data-inline-video="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Reproducir demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span></button>',
             '                    </div>'
         ].join('\n') : [
-            '                    <a class="project-hero-image' + (heroImage.width < heroImage.height ? ' project-hero-image--portrait' : '') + '" href="' + localFile(heroImage.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(heroImage.alt) + '">',
+            '                    <a class="project-hero-image' + (heroImage.width < heroImage.height ? ' project-hero-image--portrait' : '') + '" href="' + localFile(heroImage.originalSrc || heroImage.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(heroImage.alt) + '">',
             '                        <img src="' + localFile(heroImage.src, 2) + '" width="' + heroImage.width + '" height="' + heroImage.height + '" decoding="async" fetchpriority="high" alt="' + escapeHtml(heroImage.alt) + '">',
             '                    </a>'
         ].join('\n'),

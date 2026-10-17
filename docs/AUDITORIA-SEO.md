@@ -1,5 +1,7 @@
 # Auditoría y preparación SEO
 
+> Informe histórico del 29 de septiembre. La revisión vigente, con 17 URLs y diez proyectos, está en [Auditoría SEO del 17 de octubre de 2026](AUDITORIA-SEO-2026-10-17.md). Las afirmaciones sobre despliegue y pruebas que siguen describen aquella ejecución.
+
 Fecha: **29 de septiembre de 2026**. Base: `b2d9314`. Los cambios están únicamente en el repositorio local y no se han publicado.
 
 ## Diagnóstico y alcance
