@@ -7,7 +7,7 @@ export const topics = [
         title: 'Proyectos con ESP32',
         seoTitle: 'Proyectos con ESP32: IoT, sensores y automatización | Felipe Flores',
         description: 'Proyectos de Felipe Flores con ESP32: gemelo digital, monitor de calidad del aire, reconocimiento de colores con HuskyLens y sensor HiGrow.',
-        intro: 'En estos proyectos, ESP32 se integra con sensores, Bluetooth y aplicaciones de visualización para explorar el monitoreo y la automatización.'
+        intro: 'Uso ESP32 en proyectos que conectan sensores, comunicación y software. Aquí puedes explorar un gemelo digital de orientación, un monitor de calidad del aire y otros prototipos con HuskyLens y HiGrow.'
     },
     {
         slug: 'iot',
@@ -15,7 +15,7 @@ export const topics = [
         title: 'Proyectos de IoT e Internet de las Cosas',
         seoTitle: 'Proyectos de IoT con ESP32 y sensores | Felipe Flores',
         description: 'Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.',
-        intro: 'Mi trabajo con IoT combina dispositivos conectados, sensores y herramientas de visualización. Estos proyectos muestran distintas formas de observar procesos y registrar información.'
+        intro: 'Aquí exploro cómo conectar dispositivos, datos y aplicaciones. Gemelo Digital y el monitor de calidad del aire enlazan el equipo con Android mediante BLE. También reúno proyectos de monitoreo con HiGrow y de registro biométrico con Ethernet.'
     },
     {
         slug: 'industria-4-0',
@@ -33,6 +33,6 @@ export const topics = [
         title: 'Proyectos de robótica aplicada',
         seoTitle: 'Proyectos de robótica: UFACTORY y Robot Otto | Felipe Flores',
         description: 'Explora proyectos de robótica de Felipe Flores: clasificación de objetos con UFACTORY LITE 6 y un robot Otto con Arduino e impresión 3D.',
-        intro: 'Estos proyectos reúnen robótica aplicada a clasificación de objetos y aprendizaje práctico de electrónica, control remoto y fabricación digital.'
+        intro: 'Aquí reúno una demostración de clasificación por QR con UFACTORY Lite 6 y un robot Otto con Arduino e impresión 3D. Son dos formas de explorar cómo el software y la electrónica se convierten en movimiento.'
     }
 ];

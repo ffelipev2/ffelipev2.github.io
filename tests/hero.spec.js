@@ -34,7 +34,7 @@ test('hero, traveling, navigation and project detail remain functional', async (
     }
     await page.locator('.project-body-v2 h3 a').first().click();
     await expect(page).toHaveURL(/proyectos\/gemelo-digital\/$/);
-    await expect(page.locator('h1')).toContainText('Gemelo Digital');
+    await expect(page.locator('h1')).toHaveText('Gemelo digital con ESP32-C3, BNO08x y Android');
     expect(errors).toEqual([]);
 });
 

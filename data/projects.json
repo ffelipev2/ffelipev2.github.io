@@ -1,7 +1,7 @@
 [
   {
     "slug": "gemelo-digital",
-    "title": "Gemelo Digital",
+    "title": "Gemelo digital con ESP32-C3, BNO08x y Android",
     "cardTitle": "Gemelo Digital",
     "seoTitle": "Gemelo Digital con ESP32-C3 y Android | Felipe Flores",
     "seoDescription": "Gemelo digital de orientación con ESP32-C3, BNO08x y Bluetooth Low Energy. App Android con visor 3D, calibración y retorno a cero.",
@@ -12,10 +12,10 @@
     "videoId": "3qvjLGoXVLs",
     "videoUrl": "https://www.youtube.com/watch?v=3qvjLGoXVLs",
     "tags": ["ESP32-C3", "BNO08x", "BLE", "Android"],
-    "description": "Un ESP32-C3 y un sensor BNO08x transmiten la orientación por Bluetooth Low Energy a una app Android que la reproduce en un modelo 3D de Cubone.",
+    "description": "Un sensor BNO08x mide la orientación del dispositivo. El ESP32-C3 envía esa información por Bluetooth Low Energy a una app Android, que la reproduce en un modelo 3D de Cubone.",
     "topics": ["esp32", "iot", "industria-4-0"],
     "objective": "Sincronizar la inclinación y el giro de un dispositivo físico con la orientación de un modelo 3D, utilizando un sensor inercial y una conexión Bluetooth Low Energy.",
-    "architecture": "El BNO08x entrega la orientación al ESP32-C3 por I²C. El microcontrolador la transmite por BLE a la app Android, que adapta los ejes al montaje físico y actualiza el modelo de Cubone mediante un visor nativo con SceneView y Filament. La OLED muestra el estado del sensor y de la conexión.",
+    "architecture": "El BNO08x entrega la orientación al ESP32-C3 por I²C. El ESP32-C3 envía esos datos por Bluetooth Low Energy (BLE) a la app Android. La app adapta los ejes al montaje físico y actualiza el modelo 3D de Cubone en un visor nativo con SceneView y Filament. La pantalla OLED muestra el estado del sensor y de la conexión.",
     "hardware": ["ESP32-C3", "Sensor de orientación BNO08x conectado por I²C", "Pantalla OLED SSD1306 integrada de 72 × 40 píxeles", "Tablet o dispositivo compatible con Android 7.0 o superior y Bluetooth Low Energy"],
     "software": ["Firmware Arduino en C++", "Bibliotecas SparkFun BNO08x y U8g2", "App Android desarrollada en Java y Kotlin", "SceneView y Filament para el visor 3D nativo", "Modelo de Cubone en formato GLB", "Android Studio y Gradle"],
     "howItWorks": "Al conectar por Bluetooth, la app recibe la orientación como cuaterniones y mueve el modelo, incluso sin calibración previa. El asistente opcional registra tres posturas —neutra, inclinada hacia adelante e inclinada hacia la derecha— para adaptar los ejes al montaje real. La calibración se guarda y el control Cero permite establecer una referencia de orientación. El firmware solicita reportes del sensor cada 20 ms y limita las notificaciones BLE a una cada 40 ms; estos intervalos son valores configurados en el código.",
@@ -25,7 +25,7 @@
     "resources": [
       { "label": "Código del proyecto en GitHub", "url": "https://github.com/ffelipev2/GemeloDigitalEsp32" },
       { "label": "Documentación, conexión y uso", "url": "https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/README.md" },
-      { "label": "Firmware del ESP32-C3", "url": "https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/GemeloDigitalEsp32.ino" }
+      { "label": "Firmware del ESP32-C3", "url": "https://github.com/ffelipev2/GemeloDigitalEsp32/blob/main/GemeloDigitalEsp32/GemeloDigitalEsp32.ino" }
     ],
     "relatedProjects": ["sensor-higrow-esp32-app", "huskylens-esp32", "calidad-aire-esp32-s3"]
   },
@@ -92,9 +92,9 @@
   },
   {
     "slug": "ufactory-lite-6",
-    "title": "Brazo robótico UFACTORY LITE 6",
+    "title": "Brazo UFACTORY Lite 6: clasificación de objetos por QR",
     "cardTitle": "UFACTORY LITE 6",
-    "seoTitle": "UFACTORY Lite 6 con visión artificial | Felipe Flores",
+    "seoTitle": "UFACTORY Lite 6: clasificación QR con OpenCV | Felipe Flores",
     "seoDescription": "Demostración educativa con UFACTORY LITE 6, cámara USB y OpenCV para clasificar objetos por códigos QR, con supervisión desde un panel web Flask.",
     "image": "/images/img0.webp",
     "imageWidth": 500,
@@ -106,7 +106,7 @@
     "description": "Demostración educativa de clasificación por códigos QR con un brazo UFACTORY LITE 6, cámara USB y OpenCV. Un panel web muestra el video, el estado del proceso y los contadores por categoría.",
     "topics": ["robotica", "industria-4-0"],
     "objective": "Mostrar a estudiantes cómo funciona un brazo robótico y cómo la visión artificial permite automatizar tareas de clasificación sin que una persona deba identificar visualmente cada objeto durante la operación.",
-    "architecture": "Una cámara USB entrega imágenes a una aplicación Python. OpenCV detecta y decodifica las etiquetas QR; la lógica de clasificación asigna cada etiqueta a un destino y envía los movimientos al brazo mediante el SDK xArm y una conexión de red. Flask sirve un panel local con video y el estado compartido del proceso.",
+    "architecture": "Una cámara USB captura las etiquetas QR de las piezas. OpenCV detecta y decodifica cada código, y el programa en Python asocia la etiqueta a un destino predefinido. El SDK xArm envía las órdenes de movimiento al brazo mediante una conexión de red. El panel web, hecho con Flask, muestra el vídeo y el estado del proceso.",
     "howItWorks": "El programa reconoce las etiquetas caja1, caja2 y caja3 y selecciona una posición de destino predefinida. El brazo abre la pinza, recoge el objeto desde una posición fija, lo eleva, lo transporta al destino y lo libera antes de regresar a la posición inicial. Mientras ejecuta una rutina, ignora nuevas solicitudes de movimiento. El panel muestra la imagen de la cámara, el estado del proceso, la última categoría y los contadores de rutinas iniciadas.",
     "development": "Preparé esta demostración para acercar a los estudiantes al funcionamiento de un brazo robótico y a su integración con visión artificial, utilizando la clasificación de objetos como ejemplo de una tarea automatizada. La aplicación integra captura y lectura de QR con OpenCV, control del brazo mediante el SDK xArm y supervisión desde una interfaz web Flask.",
     "challenges": "La implementación valida los puntos detectados del QR y contempla errores de decodificación. Coordina la cámara, el movimiento y el panel mediante hilos y un estado compartido protegido para evitar rutinas simultáneas. La clasificación requiere etiquetas QR reconocidas y posiciones de recogida y depósito configuradas previamente; los contadores se incrementan al iniciar una rutina y no verifican que el objeto haya sido depositado correctamente.",
