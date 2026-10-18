@@ -2,7 +2,7 @@
 
 Fecha: **17 de octubre de 2026**. Base del sitio: `27f05d3`.
 
-**Estado: propuesta pendiente de revisión y aprobación.** Se ha leído completo [PLAN-SEO-CONTENIDOS.md](PLAN-SEO-CONTENIDOS.md) y se han contrastado sus propuestas con los textos y fuentes actuales. No se repite la auditoría técnica ni se aplican cambios al sitio. Este documento desarrolla el plan SEO con el objetivo de marca que Felipe acaba de definir.
+**Estado: referencia editorial tras la publicación de la fase 1.** El objetivo de marca y los criterios de comunicación siguen vigentes y tienen prioridad sobre las alternativas del [plan SEO](PLAN-SEO-CONTENIDOS.md). Las tablas conservan los textos y variantes propuestos antes de implementar: el [registro de la fase 1](IMPLEMENTACION-SEO-MARCA-FASE-1.md) identifica exactamente qué se aplicó y publicó en `48b6d2b`. Las variantes restantes no quedan aprobadas automáticamente. No se repite la auditoría técnica.
 
 ## 1. Qué debe recordar quien visite el sitio
 
@@ -262,7 +262,9 @@ Las tareas de documentación de la prioridad 4 pueden empezar mientras se revisa
 - **HiGrow:** identificar revisión de la placa, variables usadas, sensores, transporte, app/plataforma y flujo de datos; aportar código o capturas si existen.
 - **CV, cuando se retome:** confirmar las fechas correctas de EQA y facilitar el editable. El plan SEO registra **2021–2020** en el texto extraído del PDF frente a **2020–2021** en la web. Ambas referencias quedan como discrepancia pendiente, sin elegir una ni corregirla.
 
-## 9. Implementación coordinada tras la aprobación
+## 9. Implementación prevista en la propuesta original
+
+La fase 1 ya está publicada. Esta tabla conserva el mapa de fuentes y el alcance previsto; el informe de implementación distingue los cambios realizados de las alternativas pospuestas.
 
 | Etapa | Fuente que se editaría | Alcance |
 | --- | --- | --- |
@@ -285,8 +287,8 @@ Observar consultas técnicas visibles y visitas a los proyectos, separando los d
 
 Como evaluación cualitativa, comprobar si un lector puede explicar qué hace el proyecto, identificar sus etapas principales y encontrar su evidencia. Registrar preguntas, referencias o comentarios recibidos si llegan; no tratarlos como datos que ya existan. Search Console no mide clics al código, comprensión ni contactos dentro del sitio, y esta propuesta no instala seguimiento adicional.
 
-## 10. Alcance de esta entrega
+## 10. Alcance y mantenimiento del documento
 
-Solo se crea `docs/PROPUESTA-MARCA-PERSONAL.md`. Se conserva intacto el plan SEO anterior, que permanece como referencia de datos y decisiones; este documento plantea la coordinación editorial para revisión.
+Se conserva este documento porque define la identidad editorial y contiene criterios útiles para las siguientes fichas. El plan SEO concentra datos, pendientes y medición; el informe de implementación registra el resultado publicado.
 
-No se modifica el sitio, el PDF ni sus fuentes; tampoco se corrige todavía el enlace del firmware ni se publica ningún cambio. El pendiente de EQA permanece abierto hasta recibir confirmación.
+La corrección del firmware y las demás mejoras autorizadas están registradas en la fase 1. Los datos de LoRa y HiGrow, los relatos personales y las fechas de EQA siguen pendientes de confirmación. Esta actualización documental no modifica el sitio ni el PDF.

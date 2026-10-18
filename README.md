@@ -42,4 +42,10 @@ Las fichas admiten `objective`, `problem`, `architecture`, `hardware`, `software
 
 El CV en `docs/Felipe-CV.pdf` sigue disponible y puede indexarse aunque esté fuera del sitemap. La copia local de la política de la app «Arduino y Componentes» en `/politicasffelipev2.github.io/` contiene `noindex, follow` y está fuera del sitemap. La versión pública se sirve desde el repositorio independiente `ffelipev2/politicasffelipev2.github.io` y aún carece de esos metadatos; modificar esta copia no corrige esa publicación. Conviene revisar manualmente su vigencia legal antes de modificar su texto.
 
-La revisión técnica actual está en [Auditoría SEO del 17 de octubre de 2026](docs/AUDITORIA-SEO-2026-10-17.md), con [evidencias públicas](docs/seo-production-audit-2026-10-17.json). Se conserva el [informe histórico de septiembre](docs/AUDITORIA-SEO.md). Los datos que faltan y las comprobaciones posteriores al despliegue están en [Pendientes de contenido y SEO](docs/PENDIENTES-SEO.md).
+La documentación de SEO y marca personal se concentra en tres archivos:
+
+- [Plan SEO de contenidos](docs/PLAN-SEO-CONTENIDOS.md): datos de Search Console, oportunidades pendientes y medición a 30/60 días.
+- [Propuesta de marca personal](docs/PROPUESTA-MARCA-PERSONAL.md): objetivo de marca, tono y criterios editoriales; tiene prioridad sobre el plan SEO cuando difieren.
+- [Implementación de la fase 1](docs/IMPLEMENTACION-SEO-MARCA-FASE-1.md): cambios aplicados, pruebas y publicación verificada del commit `48b6d2b`.
+
+Las auditorías anteriores, su captura técnica y la lista antigua de pendientes se retiraron de la documentación activa. Los pendientes útiles se conservan en el plan SEO y los antecedentes siguen disponibles en el [historial de Git](https://github.com/ffelipev2/ffelipev2.github.io/tree/27f05d3/docs).

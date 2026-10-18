@@ -2,7 +2,9 @@
 
 Fecha: **17 de octubre de 2026**. Base del sitio revisada: `27f05d3`.
 
-**Estado: propuesta para revisión.** Este documento no aplica cambios editoriales ni autoriza una publicación. Se mantienen el diseño, las rutas, canonical, robots y sitemap. El propietario confirma que Google Search Console ya ha verificado individualmente la indexación de las diez páginas prioritarias; el trabajo siguiente se centra en visibilidad, CTR y visitas relevantes.
+**Estado: plan de referencia tras la publicación de la fase 1.** El diagnóstico, los textos «actuales» y las propuestas originales describen la base `27f05d3`, anterior a los cambios. La [implementación de la fase 1](IMPLEMENTACION-SEO-MARCA-FASE-1.md) registra lo aplicado y publicado en `48b6d2b` el 17 de octubre de 2026. La [propuesta de marca personal](PROPUESTA-MARCA-PERSONAL.md) tiene prioridad sobre las alternativas de objetivo y tono de este plan; las propuestas restantes no quedan autorizadas automáticamente.
+
+Se mantienen el diseño, las rutas, canonical, robots y sitemap. El propietario confirma que Google Search Console ya ha verificado individualmente la indexación de las diez páginas prioritarias; el trabajo se centra en visibilidad, CTR y visitas relevantes. Los pendientes de documentación se concentran en la sección 8 y el seguimiento en la sección 9.
 
 ## 1. Evidencia y límites del diagnóstico
 
@@ -40,7 +42,7 @@ La posición media 6,6 no significa que todas las páginas o consultas estén en
 - La principal oportunidad de contenido está en explicar mejor **qué se hizo, cómo funciona, qué puede consultar el lector y cuáles son sus límites**. En UFACTORY y Gemelo hay material real disponible; en LoRa y HiGrow faltan datos básicos.
 - Las intenciones descritas en este plan son hipótesis editoriales. Las consultas nuevas propuestas no tienen demanda demostrada en los datos entregados.
 
-El tráfico relevante se entiende provisionalmente como visitas interesadas en los proyectos de ingeniería y en la trayectoria profesional. Antes de redactar la portada, confirmar si se priorizan colaboración técnica, docencia, oportunidades laborales o divulgación. No se presupone disponibilidad para empleo, servicios comerciales ni consultoría.
+El objetivo de marca ya está confirmado: construir una reputación tecnológica mostrando cómo Felipe construye proyectos, entiende su funcionamiento y comparte lo que aprende. El tráfico relevante corresponde a personas interesadas en esos proyectos y explicaciones. La formación y trayectoria sostienen esa identidad; la venta de servicios y la búsqueda de empleo no son la finalidad principal.
 
 ## 2. Fuentes revisadas y dónde se editaría después
 
@@ -245,23 +247,30 @@ Mantener los enlaces temáticos recíprocos existentes. La relación con Industr
 
 | Área | Información necesaria | Para qué decisión o contenido |
 | --- | --- | --- |
-| Objetivo del portafolio | Audiencia prioritaria y tipo de contacto que se desea recibir; vigencia de la presentación | Ajustar el mensaje profesional de inicio sin inventar servicios ni disponibilidad |
 | CV | Original editable, fechas de EQA, cargos vigentes y forma pública preferida del nombre | Metadatos, coherencia documental y enlace al portafolio |
 | UFACTORY | Mediciones con condiciones, fallos observados, contexto/fecha de la actividad y participación si se quieren ampliar | Resultados y experiencia del caso; QR, Python, arquitectura y repositorio ya están disponibles |
 | Gemelo | Confirmación de versión/contexto de las fotos y registros de pruebas con hardware real | Evidencia visual y resultados físicos; no hace falta volver a aportar el código público o describir sus pines |
 | LoRa | Identificadores de placas/módulos, configuración, entrada/salida de mensajes, topología, conexiones, repositorio, fotos y pruebas | Convertir una demostración breve en un caso técnico reproducible hasta donde exista documentación |
 | HiGrow | Modelo/revisión, variables y unidades usadas, app/plataforma, transporte, conexiones, código, capturas, alimentación y resultados si están medidos | Describir qué hace este prototipo, sin copiar especificaciones genéricas de otra revisión de HiGrow |
 | Otto | Controlador y servos usados, control remoto, archivos de impresión, montaje y contexto educativo | Dar más utilidad al tema Robótica y a su segunda ficha |
+| HuskyLens | Modo y clases de colores utilizados, comunicación con ESP32, conexiones, respuesta del prototipo y pruebas reales | Ampliar la ficha y las comparaciones del tema ESP32 cuando exista documentación |
+| Arduino, Bluetooth y relé | Módulo Bluetooth, aplicación, conexiones, órdenes, actuador, alimentación, código y pruebas | Describir el montaje real en una fase posterior |
 | Vehículo y biometría | Componentes, conexión, código, pruebas y participación real en cada caso | Ampliaciones posteriores con menor prioridad por los datos disponibles |
 | Search Console | Exportación diaria y por URL; filtro de cada página con consultas visibles, país, dispositivo y tipo de búsqueda; fechas de publicaciones anteriores si se conocen | Construir una referencia comparable y separar hipótesis de demanda observada |
 
 Puede aportarse documentación existente: README, esquemas, archivos fuente, fotos, capturas y notas de pruebas. No hace falta rellenar todas las secciones por proyecto. Un campo sin evidencia permanece ausente; la estructura actual ya lo permite. No usar un mínimo artificial de palabras como criterio de calidad.
 
+### Otros pendientes conservados
+
+- **Publicaciones:** revisar la normalización de los dos primeros autores de la cita de *Fractal and Fractional* en `data/publications.json`: actualmente `Hernández, P.P.; Ahumada, G.N.`; el pendiente registrado propone `Pacheco Hernández, P.; Navarro Ahumada, G.`. Contrastar con la fuente antes de editar. No se modifica la publicación en esta limpieza documental.
+- **Política de la app:** la revisión anterior detectó que la versión pública se sirve desde el repositorio independiente `ffelipev2/politicasffelipev2.github.io` y difiere de la copia local. Confirmar allí si se mantiene la intención de publicar `noindex, follow` y canonical; revisar la vigencia del texto con información actual de la app antes de editarlo. Este punto no se ha vuelto a auditar ni se considera un bloqueo de las páginas del portafolio.
+- **Core Web Vitals:** revisar datos reales de usuarios cuando haya una muestra suficiente. La reducción del peso de las imágenes y las pruebas locales no sustituyen esos datos ni justifican por sí solas cambios en las animaciones.
+
 ## 9. Medición a 30 y 60 días
 
 ### Referencia y registro antes de publicar
 
-**T0 será la fecha de la primera publicación editorial autorizada**, no la fecha de este plan ni la del despliegue previo de imágenes. Si las fichas se publican en fechas diferentes, registrar un T0 por URL.
+**T0 de la fase 1: 17 de octubre de 2026, zona America/Santiago**, fecha efectiva de publicación del commit `48b6d2b`, verificada en el registro de implementación. No corresponde al despliegue previo de imágenes. Para futuras ampliaciones publicadas en fechas diferentes, registrar un T0 por URL.
 
 1. Conservar sin alterar la referencia global del 16 de julio al 15 de octubre. Ese agregado no permite reconstruir la evolución diaria ni comparar directamente tres meses con 30 días.
 2. Exportar los últimos **30 días completos y consolidados anteriores a T0**, o el tramo disponible más próximo, indicando cualquier separación. Usar el mismo tipo de búsqueda, propiedad y filtros en la comparación. Mantener una vista global y otra filtrada por cada URL.
@@ -269,7 +278,7 @@ Puede aportarse documentación existente: README, esquemas, archivos fuente, fot
 4. En cada ficha, abrir Consultas después de filtrar la URL. Separar nombre personal de consultas de proyecto dentro del conjunto visible. No asumir que la lista exportada contiene las consultas anonimizadas o toda la demanda.
 5. Registrar que la primera ventana posterior empieza cuando el cambio está publicado. Anotar cuándo se observa el nuevo texto en resultados, porque Google puede tardar en actualizarlo. No cambiar de nuevo los títulos cada pocos días.
 
-Estos registros son una propuesta para una fase autorizada; no se han creado exportaciones de Search Console ni se ha instalado medición adicional.
+La publicación y los cambios están registrados en el informe de implementación. Siguen pendientes las exportaciones de Search Console necesarias para esta comparación; no se ha instalado medición adicional.
 
 ### Día 30
 
@@ -298,7 +307,9 @@ Comparar **días 31–60 con días 1–30** y ambos tramos con la referencia pre
 
 El seguimiento es **observacional**, no un experimento A/B controlado. Estacionalidad, mezcla de consultas, otros cambios del sitio y actualizaciones de los resultados pueden influir. Las consultas visibles sirven para analizar su subconjunto, no para calcular porcentajes completos de tráfico de marca o no marca.
 
-## 10. Las cinco primeras mejoras propuestas
+## 10. Las cinco primeras mejoras propuestas originalmente
+
+Esta priorización es un antecedente. El objetivo de marca desplazó el CV y la fase 1 ya aplicó los ajustes autorizados de inicio, destacados, UFACTORY, Gemelo y temas. Consultar el registro de implementación antes de retomar una propuesta.
 
 1. **Inicio: profesión y propuesta profesional claras en el resultado.** Es la URL con más impresiones aportadas. Los hechos ya existen; confirmar antes la audiencia prioritaria.
 2. **CV: título documental, coherencia y enlace al portafolio.** Tiene exposición propia y puede conducir a los casos de ingeniería. Requiere el editable y confirmar las fechas de EQA.
@@ -308,8 +319,8 @@ El seguimiento es **observacional**, no un experimento A/B controlado. Estaciona
 
 **HiGrow sería la siguiente ficha**, iniciando desde ahora la recogida de sus datos. Su déficit de información es claro; sus nueve impresiones no justifican promesas sobre CTR ni especificaciones deducidas de otras placas.
 
-## 11. Alcance de esta entrega
+## 11. Alcance y mantenimiento del documento
 
-Solo se crea `docs/PLAN-SEO-CONTENIDOS.md`. No se ejecuta el generador ni se modifican el PDF, los enlaces, los textos o los metadatos del sitio. No se publica nada. Los cambios editoriales descritos requieren una etapa posterior autorizada y validación de las fuentes indicadas.
+El plan conserva los datos y las propuestas de partida, incorpora los pendientes útiles de los informes retirados y enlaza el resultado de la fase 1. Las comparaciones originales no se presentan como una nueva auditoría de la versión publicada. Las ampliaciones pendientes requieren sus fuentes y una autorización posterior.
 
-La validación de este documento consiste en contrastar datos y metadatos actuales, revisar fuentes y comprobar que el árbol de trabajo solo incorpora este archivo. No corresponde repetir el build o las pruebas de interfaz por una entrega exclusivamente documental.
+La limpieza de documentación no modifica el sitio, el PDF ni sus fuentes y no requiere regenerar HTML o repetir pruebas de interfaz. Se comprueban las referencias locales y el alcance de los archivos modificados.

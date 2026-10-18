@@ -2,7 +2,7 @@
 
 Fecha: **17 de octubre de 2026**. Base: `27f05d3`.
 
-**Estado: implementación validada; publicación autorizada por Felipe el 17 de octubre de 2026.** Se leyeron completos [PLAN-SEO-CONTENIDOS.md](PLAN-SEO-CONTENIDOS.md) y [PROPUESTA-MARCA-PERSONAL.md](PROPUESTA-MARCA-PERSONAL.md). Se aplicó la autorización de esta fase, con prioridad al objetivo y tono de marca y al mensaje de referencia aportado por Felipe.
+**Estado: publicada y verificada el 17 de octubre de 2026 (America/Santiago), commit `48b6d2b`.** Se leyeron completos [PLAN-SEO-CONTENIDOS.md](PLAN-SEO-CONTENIDOS.md) y [PROPUESTA-MARCA-PERSONAL.md](PROPUESTA-MARCA-PERSONAL.md). Se aplicó la autorización de esta fase, con prioridad al objetivo y tono de marca y al mensaje de referencia aportado por Felipe.
 
 ## Cambios realizados
 
@@ -99,12 +99,23 @@ La propagación adicional corresponde a nombres, resúmenes y referencias estruc
 
 Las capturas y comprobaciones locales están en `dist/seo-marca-fase1/`, excluido de Git. Incluyen `before/`, `after/`, `baseline.json`, `validation.json`, `integrity.json` y `external-links.json`. Las pruebas de navegador conservan sus artefactos en `test-results/`.
 
+## Publicación verificada
+
+Felipe autorizó la publicación el 17 de octubre de 2026 con la instrucción «publicalo». El commit `48b6d2b611041a411c26b1c5adc37807c4ffdfb5` se subió a `main` y el [despliegue de GitHub Pages](https://github.com/ffelipev2/ffelipev2.github.io/actions/runs/39091572852) terminó con estado `completed` y conclusión `success`.
+
+Las comprobaciones de producción quedaron registradas con fecha **23:53 del 17 de octubre, America/Santiago** (`2026-10-18T02:53:02.783Z`):
+
+- Las 17 páginas del sitemap respondieron HTTP 200 por HTTPS, sin redirecciones, y coincidieron byte por byte con los HTML locales validados.
+- Se confirmaron la nueva presentación de inicio, los encabezados y títulos publicados y el enlace correcto al firmware de Gemelo, cuyo destino respondió HTTP 200.
+- `robots.txt`, `sitemap.xml` y el CV PDF respondieron HTTP 200 y coincidieron con sus archivos locales, conservados sin cambios.
+
+El resultado local está en `dist/seo-marca-fase1/deployment.json`, excluido de Git. **T0 para la medición editorial de 30/60 días es el 17 de octubre de 2026.** No se ha obtenido una nueva exportación de Search Console.
+
 ## Pendientes del propietario y límites de esta fase
 
 - **LoRa:** placas, módulos, interfaz, topología, configuración, conexiones, código y pruebas reales. No se han supuesto ESP32, LoRaWAN, malla, cifrado ni alcance.
 - **HiGrow:** revisión, variables, sensores utilizados, transporte, app, conexiones, capturas y código. No se han supuesto riego, plataforma o protocolo.
 - **Decisiones y aprendizajes:** relato de Felipe sobre motivaciones, dificultades realmente encontradas y qué haría distinto. No se añadió ningún campo de aprendizajes ni nuevas historias personales.
 - **CV y EQA:** el plan registra **2021–2020** en el texto extraído del PDF frente a **2020–2021** en la web. Confirmar el rango correcto y aportar el editable cuando se retome ese trabajo. No se corrigió ninguna fecha ni se editó el PDF.
-- **Publicación:** autorizada por Felipe el 17 de octubre de 2026 con la instrucción «publicalo». El resultado del despliegue se comprobará en GitHub Actions y en producción después del push. T0 para la medición editorial de 30/60 días será la fecha efectiva de publicación.
 
-Las comprobaciones de interfaz usan navegadores y dispositivos emulados; no sustituyen pruebas en teléfonos físicos. Esta entrega no verifica variaciones de CTR ni posiciones en Google: documenta el cambio validado y autorizado que se podrá medir después de publicarlo.
+Las comprobaciones de interfaz usan navegadores y dispositivos emulados; no sustituyen pruebas en teléfonos físicos. Este registro no verifica variaciones de CTR ni posiciones en Google: documenta el cambio publicado y su punto de partida para la medición. Los demás pendientes documentales y de mantenimiento están en la sección 8 del plan SEO.
