@@ -113,7 +113,7 @@ El resultado local está en `dist/seo-marca-fase1/deployment.json`, excluido de 
 
 ## Pendientes del propietario y límites de esta fase
 
-- **LoRa, estado al cierre de esta fase:** faltaban placas, módulos, interfaz, configuración, conexiones y código. Este pendiente técnico se resolvió posteriormente en la ampliación local del 21 de octubre de 2026; sus fuentes y ampliaciones opcionales están en la sección 6.5 del [plan SEO](PLAN-SEO-CONTENIDOS.md). La fase 1 no supuso ESP32, LoRaWAN, malla, cifrado ni alcance.
+- **LoRa, estado al cierre de esta fase:** faltaban placas, módulos, interfaz, configuración, conexiones y código. Este pendiente técnico se resolvió posteriormente con la ampliación publicada el 21 de octubre de 2026 (`7e6773f`); su publicación verificada, fuentes y ampliaciones opcionales están en la sección 6.5 del [plan SEO](PLAN-SEO-CONTENIDOS.md). La fase 1 no supuso ESP32, LoRaWAN, malla, cifrado ni alcance.
 - **HiGrow:** revisión, variables, sensores utilizados, transporte, app, conexiones, capturas y código. No se han supuesto riego, plataforma o protocolo.
 - **Decisiones y aprendizajes:** relato de Felipe sobre motivaciones, dificultades realmente encontradas y qué haría distinto. No se añadió ningún campo de aprendizajes ni nuevas historias personales.
 - **CV y EQA:** el plan registra **2021–2020** en el texto extraído del PDF frente a **2020–2021** en la web. Confirmar el rango correcto y aportar el editable cuando se retome ese trabajo. No se corrigió ninguna fecha ni se editó el PDF.
