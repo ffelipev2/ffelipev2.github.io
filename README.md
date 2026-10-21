@@ -20,10 +20,10 @@ Soy Felipe Flores, Ingeniero Civil Informático y Magíster en Alta Dirección y
 - **Áreas:** [ESP32](https://felipeflores.tech/esp32/), [IoT](https://felipeflores.tech/iot/), [Industria 4.0](https://felipeflores.tech/industria-4-0/) y [robótica](https://felipeflores.tech/robotica/).
 - **[Contacto](https://felipeflores.tech/#contacto):** un espacio para conversar sobre proyectos, colaboración e iniciativas educativas.
 
-## Proyectos destacados
+## Proyectos y documentación
 
 - **[Gemelo Digital](https://felipeflores.tech/proyectos/gemelo-digital/):** orientación de un dispositivo con ESP32-C3 y BNO08x reproducida en un modelo 3D en Android mediante BLE. [Código del proyecto](https://github.com/ffelipev2/GemeloDigitalEsp32).
-- **[Chat con LoRa](https://felipeflores.tech/proyectos/chat-lora/):** intercambio de mensajes entre dispositivos mediante comunicación de largo alcance.
+- **[Chat con LoRa](https://felipeflores.tech/proyectos/chat-lora/):** mensajería entre placas Heltec WiFi LoRa 32 V2 desde una interfaz web local, con detección de nodos y pantalla OLED. [Código y documentación](https://github.com/ffelipev2/Heltecv2_Chat).
 - **[UFACTORY LITE 6](https://felipeflores.tech/proyectos/ufactory-lite-6/):** robótica aplicada a la educación y la industria.
 
 ## Conectemos

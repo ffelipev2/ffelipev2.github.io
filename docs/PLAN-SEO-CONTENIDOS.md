@@ -6,6 +6,8 @@ Fecha: **17 de octubre de 2026**. Base del sitio revisada: `27f05d3`.
 
 Se mantienen el diseño, las rutas, canonical, robots y sitemap. El propietario confirma que Google Search Console ya ha verificado individualmente la indexación de las diez páginas prioritarias; el trabajo se centra en visibilidad, CTR y visitas relevantes. Los pendientes de documentación se concentran en la sección 8 y el seguimiento en la sección 9.
 
+**Actualización local del 21 de octubre de 2026:** Felipe identificó el repositorio de Chat LoRa y autorizó completar su ficha. Se amplía con el README, el firmware y la interfaz de [Heltecv2_Chat, revisión 9e58e49](https://github.com/ffelipev2/Heltecv2_Chat/tree/9e58e49184c134df20accf55412d7c721d710fc4). La sección 6.5 registra esta ampliación y la sección 8 conserva únicamente las necesidades adicionales. Las propuestas originales de las demás secciones siguen siendo antecedentes. La publicación de esta ampliación aún no se ha registrado; su T0 se fijará cuando se publique.
+
 ## 1. Evidencia y límites del diagnóstico
 
 Los datos de rendimiento que siguen fueron aportados por el propietario para el período **16 de julio–15 de octubre de 2026**. No proceden de una nueva consulta autenticada a Search Console.
@@ -182,16 +184,17 @@ El H1 **Sensor HiGrow (ESP32) + App** y los metadatos identifican el equipo, per
 
 ### 6.5. Chat LoRa
 
-**Intención probable:** ver un chat basado en LoRa y entender o reproducir la comunicación entre dispositivos. También podría buscar un producto o software concreto; el cruce consulta–página permitirá afinarlo.
+**Estado al 21 de octubre de 2026: ficha ampliada en el proyecto local.** Las fuentes son el [README](https://github.com/ffelipev2/Heltecv2_Chat/blob/9e58e49184c134df20accf55412d7c721d710fc4/README.md), el [firmware](https://github.com/ffelipev2/Heltecv2_Chat/blob/9e58e49184c134df20accf55412d7c721d710fc4/Heltecv2_Chat.ino) y la [interfaz web](https://github.com/ffelipev2/Heltecv2_Chat/tree/9e58e49184c134df20accf55412d7c721d710fc4/data). El vídeo enlazado sigue siendo `X5_BtMeTsko`.
 
-El H1 **Chat con LoRa** es claro. La ficha contiene objetivo, flujo y hardware, pero los dos primeros reiteran la descripción y el hardware solo dice **Dispositivos con comunicación LoRa**. La imagen principal está identificada como ilustración; no debe presentarse como fotografía del montaje.
+- El H1 identifica Heltec WiFi LoRa 32 V2. Se conserva el título SEO y se concreta la metadescripción con las funciones documentadas.
+- Se explican el ESP32, el SX1276, la OLED y el recorrido navegador → Wi-Fi local → Heltec → LoRa → otro nodo. Se añaden configuración, hardware, software, carga del sketch y de LittleFS, recursos y límites del historial y la presencia.
+- Se sustituye la ilustración por una fotografía real del prototipo obtenida de la [miniatura del vídeo](https://i.ytimg.com/vi/X5_BtMeTsko/maxresdefault.jpg), convertida a WebP de 1280 × 720 sin alterar su contenido. No es el archivo original de la imagen adjuntada al chat. La fotografía muestra el montaje; no acredita distancias, autonomía ni entrega de mensajes por sí sola.
+- Se incorpora LoRa al tema ESP32 tras verificar la placa y el firmware. Se mantiene la relación existente con el vehículo como otro proyecto de comunicación remota, sin equiparar sus enlaces.
+- La ficha distingue transmisión y presencia de la confirmación de recepción. Las especificaciones de configuración no se presentan como mediciones de rendimiento físico.
 
-- Conservar al principio título y descripción; ampliar primero con una lista real de materiales, forma de escribir/leer mensajes, arquitectura, protocolo, conexiones y código si está disponible.
-- Sustituir la repetición por respuestas concretas: qué acciona el usuario, qué transmite cada equipo, cómo se recibe y muestra el mensaje, qué errores se observaron y cómo se resolvieron.
-- Añadir capturas o fotos reales y describir la prueba mostrada. El alcance medido debe incluir condiciones y registros; el alcance teórico de LoRa no sirve como resultado del prototipo.
-- Conservar el vínculo con el vehículo cuando se explique como otro proyecto de comunicación remota; no sugerir que ambos implementan el mismo enlace.
+**Ampliaciones opcionales:** alcance y autonomía medidos con sus condiciones, cantidad de equipos utilizados en una prueba concreta, montaje de alimentación y relatos personales de dificultades y aprendizajes. El código y el README ya permiten documentar la implementación sin volver a pedir al propietario placas, interfaz, configuración o repositorio. No se atribuyen malla, LoRaWAN ni cifrado al proyecto.
 
-**Falta:** placas y módulos, banda/configuración usada, número de equipos, interfaz, topología, formato de mensajes, conexiones, repositorio, pruebas y contexto. No afirmar ESP32, malla, LoRaWAN, cifrado, ausencia de Internet o kilómetros de alcance por el nombre LoRa. Actualmente no tiene `topics`; asignarlo a ESP32 o IoT requiere verificar su implementación, no solo su comunicación inalámbrica.
+**Validación local:** `npm run build` genera y valida 18 HTML, diez proyectos y 17 URLs del sitemap. Las pruebas existentes de SEO y navegación (`tests/seo-pages.spec.js`) terminan con 23 aprobadas, nueve omisiones por plataforma y cero fallidas en los cuatro perfiles de navegador, con y sin JavaScript. La revisión adicional a 1440 × 900 y 390 × 844 comprueba fotografía, recursos y navegación recíproca con ESP32, sin desbordes ni errores de JavaScript. Los cuatro enlaces externos responden HTTP 200. Las capturas y el resumen están en `dist/lora-review/`, excluido de Git. Esta comprobación no sustituye pruebas físicas del prototipo ni repite la batería de animación 3D.
 
 ### 6.6. Gemelo Digital
 
@@ -250,7 +253,7 @@ Mantener los enlaces temáticos recíprocos existentes. La relación con Industr
 | CV | Original editable, fechas de EQA, cargos vigentes y forma pública preferida del nombre | Metadatos, coherencia documental y enlace al portafolio |
 | UFACTORY | Mediciones con condiciones, fallos observados, contexto/fecha de la actividad y participación si se quieren ampliar | Resultados y experiencia del caso; QR, Python, arquitectura y repositorio ya están disponibles |
 | Gemelo | Confirmación de versión/contexto de las fotos y registros de pruebas con hardware real | Evidencia visual y resultados físicos; no hace falta volver a aportar el código público o describir sus pines |
-| LoRa | Identificadores de placas/módulos, configuración, entrada/salida de mensajes, topología, conexiones, repositorio, fotos y pruebas | Convertir una demostración breve en un caso técnico reproducible hasta donde exista documentación |
+| LoRa | Solo para ampliaciones opcionales: mediciones de alcance/autonomía con condiciones, prueba concreta con hardware y experiencia personal | La implementación, el repositorio, la configuración y la imagen real ya están incorporados a la ficha local; no vuelven a solicitarse como datos faltantes |
 | HiGrow | Modelo/revisión, variables y unidades usadas, app/plataforma, transporte, conexiones, código, capturas, alimentación y resultados si están medidos | Describir qué hace este prototipo, sin copiar especificaciones genéricas de otra revisión de HiGrow |
 | Otto | Controlador y servos usados, control remoto, archivos de impresión, montaje y contexto educativo | Dar más utilidad al tema Robótica y a su segunda ficha |
 | HuskyLens | Modo y clases de colores utilizados, comunicación con ESP32, conexiones, respuesta del prototipo y pruebas reales | Ampliar la ficha y las comparaciones del tema ESP32 cuando exista documentación |
