@@ -6,7 +6,7 @@ Fecha: **17 de octubre de 2026**. Base del sitio: `27f05d3`.
 
 **Actualización del 21 de octubre de 2026:** la documentación técnica de LoRa ya está identificada y aplicada a la ficha publicada, con autorización de Felipe, en el commit `7e6773f`. Las referencias a datos faltantes de LoRa en las propuestas originales son históricas; el estado vigente, la publicación verificada, las fuentes y las ampliaciones opcionales están en la sección 6.5 del [plan SEO](PLAN-SEO-CONTENIDOS.md).
 
-**Actualización del 22 de octubre de 2026:** el repositorio HiGrow-ESP32-BLE permite completar la ficha y sus capturas reales locales. Se añade el caso de la app Android para Ziboo ZP2 con las dos capturas aportadas por Felipe y su motivación confirmada de recuperar el uso de la cámara. Las propuestas antiguas sobre información técnica faltante de HiGrow son antecedentes; el estado y las fuentes actuales están en las secciones 6.4 y 6.9 del plan SEO. Se conservan las diferencias entre demostración, pruebas de software y validación de las mediciones.
+**Actualización del 22 de octubre de 2026:** la ficha HiGrow y sus capturas reales locales están publicadas junto al nuevo caso de la app Android para Ziboo ZP2 (`41cc62c`), con las dos capturas aportadas por Felipe y su motivación confirmada de recuperar el uso de la cámara. Las propuestas antiguas sobre información técnica faltante de HiGrow son antecedentes; el estado, las fuentes y la publicación verificada están en las secciones 6.4 y 6.9 del plan SEO. Se conservan las diferencias entre demostración, pruebas de software y validación de las mediciones.
 
 ## 1. Qué debe recordar quien visite el sitio
 
