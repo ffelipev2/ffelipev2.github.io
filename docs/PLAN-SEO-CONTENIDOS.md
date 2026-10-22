@@ -8,6 +8,8 @@ Se mantienen el diseño, las rutas, canonical, robots y sitemap. El propietario 
 
 **Ampliación publicada el 21 de octubre de 2026:** Felipe identificó el repositorio de Chat LoRa y autorizó completar y publicar su ficha. Se amplía con el README, el firmware y la interfaz de [Heltecv2_Chat, revisión 9e58e49](https://github.com/ffelipev2/Heltecv2_Chat/tree/9e58e49184c134df20accf55412d7c721d710fc4). La sección 6.5 registra la ampliación y su publicación verificada; la sección 8 conserva únicamente las necesidades adicionales. Las propuestas originales de las demás secciones siguen siendo antecedentes. **T0 de esta ampliación de LoRa: 21 de octubre de 2026**, independiente del T0 de la fase 1.
 
+**Ampliaciones del 22 de octubre de 2026, implementadas en el proyecto local:** Felipe aportó [HiGrow-ESP32-BLE](https://github.com/ffelipev2/HiGrow-ESP32-BLE) y solicitó una ficha nueva para [camaraZiboo](https://github.com/ffelipev2/camaraZiboo). Se completa HiGrow y se incorpora `/proyectos/camara-termica-ziboo-zp2/` al catálogo y al sitemap. Las secciones 6.4 y 6.9 registran las fuentes y las imágenes locales; las referencias antiguas a información técnica faltante de HiGrow son históricas. Su publicación se verificará al subir los cambios.
+
 ## 1. Evidencia y límites del diagnóstico
 
 Los datos de rendimiento que siguen fueron aportados por el propietario para el período **16 de julio–15 de octubre de 2026**. No proceden de una nueva consulta autenticada a Search Console.
@@ -171,16 +173,14 @@ El H1 actual, **Brazo robótico UFACTORY LITE 6**, puede concretarse como **Braz
 
 ### 6.4. HiGrow ESP32
 
-**Intención probable:** identificar una placa HiGrow o aprender a utilizarla en un proyecto con sensores y una app. La consulta `higrow` por sí sola no acredita que el visitante busque exactamente esta implementación.
+**Estado al 22 de octubre de 2026: ficha ampliada en el proyecto local.** Fuente: [HiGrow-ESP32-BLE, revisión 2a2b39f](https://github.com/ffelipev2/HiGrow-ESP32-BLE/tree/2a2b39f3ac427375a2b7445578c0cdf72e9c17e2), incluidos README, firmware, `BoardConfig.h`, protocolo BLE, repositorio de datos Android y registro de validación.
 
-El H1 **Sensor HiGrow (ESP32) + App** y los metadatos identifican el equipo, pero el contenido solo aporta objetivo general, hardware genérico, app móvil y vídeo. No describe variables exactas, modelo/revisión, transporte, conexiones, pantalla de la app o código.
+- Se identifica el HiGrow original con DHT11 en GPIO22, sustrato en GPIO32 y LDR externo en GPIO35. La alimentación de sensores mediante GPIO16 LOW se describe como configuración de esta placa.
+- Se explica el trayecto sensores → paquete BLE de 12 bytes → app Kotlin/Compose, con medición programada cada dos segundos, gráficos y hasta 60 paquetes de historial de sesión. El historial se vacía al desconectar; sustrato y luz son valores ADC, sin porcentajes ni lux calibrados.
+- Se conserva el vídeo de la demostración original y se añaden las seis capturas reales de la app 1.1.0 documentadas en el repositorio el 22 de octubre. Los PNG originales se copian sin cambios a `images/higrow-esp32-ble/`; las versiones WebP se sirven localmente y enlazan a esos originales.
+- Se conservan la ruta y el título SEO, se concretan H1 y metadescripción y se actualizan las introducciones de ESP32 e IoT con el transporte BLE ahora verificado. Se añaden enlaces a código, firmware, protocolo e instrucciones.
 
-- Cuando existan datos, hacer el H1 más explicativo, por ejemplo **Monitoreo ambiental con HiGrow ESP32 y app móvil**, sin añadir prestaciones no confirmadas.
-- Completar materiales con la revisión real y desarrollar arquitectura y flujo: qué mide, cómo se lee, cómo llega a la app y qué ve el usuario. Esas respuestas deben preceder a una metadescripción más específica.
-- Añadir conexiones, recursos, capturas y resultados únicamente cuando correspondan al montaje mostrado. Una fotografía de una maceta no prueba medición de humedad del suelo ni riego automático.
-- Mantener los enlaces actuales a ESP32, IoT y Gemelo; explicar la relación por monitoreo y aplicaciones de visualización, sin atribuirle el mismo protocolo BLE de Gemelo.
-
-**No afirmar todavía:** variables o unidades, sensores integrados, revisión de placa, Bluetooth/Wi-Fi/MQTT, Android, riego, alimentación o duración de batería. La ficha no los confirma y las capacidades de una placa comercial no prueban que se hayan usado en este proyecto.
+**Ampliaciones opcionales:** calibración y precisión de sensores, alcance y autonomía medidos, pruebas de reconexión y ciclo de vida en más teléfonos y relato personal de decisiones y aprendizajes. Las fuentes ya permiten describir la placa, las variables, la app y sus conexiones sin volver a pedirlos. No se atribuye riego automático.
 
 ### 6.5. Chat LoRa
 
@@ -231,6 +231,16 @@ El vehículo tiene título SEO específico, pero el H1 **Vehículo con Arduino +
 
 Biometría tiene H1 **Shield Ethernet + Sensor biométrico** y metadatos orientados a control de acceso. Faltan modelos, conexiones y la distinción entre registro y autorización. Explicar el procedimiento real permitiría responder preguntas concretas; cinco impresiones no permiten validar una hipótesis de CTR.
 
+### 6.9. App Android para la cámara térmica Ziboo ZP2
+
+**Estado al 22 de octubre de 2026: ficha nueva implementada en el proyecto local.** Ruta: `/proyectos/camara-termica-ziboo-zp2/`. Fuente: [camaraZiboo, revisión 97896a1](https://github.com/ffelipev2/camaraZiboo/tree/97896a1bff8e2f8aaf3c0b6e6dc66d345b3a4194), incluidos README, perfil de cámara, decodificador, actividad Android, configuración de compilación y manifiesto.
+
+El motivo inicial procede de Felipe: desarrollar una app propia ante la dificultad de conseguir una aplicación compatible para su cámara. La ficha explica USB-C/UVC, separación de imagen y matriz térmica, herramientas, paletas, escala de colores y exportación. Enlaza el código y el APK 0.3.2 ARM64. Las dos capturas reales aportadas por Felipe se copian a `images/camara-ziboo-zp2/`, con originales JPEG y copias WebP; las galerías y la portada enlazan a los originales locales. No se usan las vistas sintéticas de prueba del repositorio como evidencia física.
+
+Las capturas corresponden a una versión anterior a la 0.3.2. La conversión térmica mantiene explícitamente su estado de inferencia del protocolo y la necesidad de contraste con una referencia; la corrección local no se presenta como calibración de fábrica. Se distingue la recepción física documentada de las pruebas automatizadas de la actualización, cuya validación física posterior sigue pendiente. La ficha se incorpora al catálogo general y enlaza los proyectos de calidad del aire y Gemelo Digital como otros desarrollos de apps conectadas a hardware.
+
+**Validación web de ambas fichas:** el build valida 19 HTML, once proyectos y 18 URLs del sitemap. Las pruebas de SEO/navegación e imágenes terminan con 31 aprobadas, nueve omisiones por plataforma y cero fallidas en los cuatro perfiles, con y sin JavaScript. Se comprueba que las ocho capturas se solicitan al servidor local, que las pantallas verticales se muestran completas y que los originales responden con el tipo de imagen adecuado; las ocho pruebas de imágenes vuelven a pasar tras completar el MIME JPEG del servidor local. La revisión visual adicional cubre escritorio, tablet y móvil sin desbordes ni errores de JavaScript. Los nueve enlaces de recursos responden HTTP 200. Los PNG de HiGrow y los JPEG de Ziboo conservan sus originales; el sitio sirve copias WebP optimizadas. Se adapta la prueba de generación para admitir un primer proyecto sin tema ni vídeo. Las capturas y comprobaciones están en `dist/ziboo-higrow-review/`, excluido de Git.
+
 ## 7. Enlaces internos propuestos
 
 Los enlaces generales y de navegación ya funcionan. Se proponen relaciones que ayuden a continuar la lectura; no añadir listas idénticas de palabras clave a todas las páginas.
@@ -256,7 +266,8 @@ Mantener los enlaces temáticos recíprocos existentes. La relación con Industr
 | UFACTORY | Mediciones con condiciones, fallos observados, contexto/fecha de la actividad y participación si se quieren ampliar | Resultados y experiencia del caso; QR, Python, arquitectura y repositorio ya están disponibles |
 | Gemelo | Confirmación de versión/contexto de las fotos y registros de pruebas con hardware real | Evidencia visual y resultados físicos; no hace falta volver a aportar el código público o describir sus pines |
 | LoRa | Solo para ampliaciones opcionales: mediciones de alcance/autonomía con condiciones, prueba concreta con hardware y experiencia personal | La implementación, el repositorio, la configuración y la imagen real ya están publicados en la ficha; no vuelven a solicitarse como datos faltantes |
-| HiGrow | Modelo/revisión, variables y unidades usadas, app/plataforma, transporte, conexiones, código, capturas, alimentación y resultados si están medidos | Describir qué hace este prototipo, sin copiar especificaciones genéricas de otra revisión de HiGrow |
+| HiGrow | Para ampliaciones opcionales: calibración, alcance/autonomía medidos, reconexión en más teléfonos y experiencia personal | La implementación BLE, la app, los pines y las seis capturas reales ya están incorporados a la ficha local |
+| Ziboo ZP2 | Para ampliar resultados: comparación térmica con referencia y comprobación física de la actualización 0.3.2 | La ficha nueva ya documenta el código y las capturas reales previas sin atribuir exactitud ni pruebas físicas pendientes a la versión actual |
 | Otto | Controlador y servos usados, control remoto, archivos de impresión, montaje y contexto educativo | Dar más utilidad al tema Robótica y a su segunda ficha |
 | HuskyLens | Modo y clases de colores utilizados, comunicación con ESP32, conexiones, respuesta del prototipo y pruebas reales | Ampliar la ficha y las comparaciones del tema ESP32 cuando exista documentación |
 | Arduino, Bluetooth y relé | Módulo Bluetooth, aplicación, conexiones, órdenes, actuador, alimentación, código y pruebas | Describir el montaje real en una fase posterior |

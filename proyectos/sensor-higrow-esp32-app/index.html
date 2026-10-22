@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sensor HiGrow con ESP32 y app móvil | Felipe Flores</title>
-    <meta name="description" content="Monitoreo de variables ambientales con sensor HiGrow, ESP32 y una aplicación móvil.">
+    <meta name="description" content="HiGrow ESP32 con app Android por BLE: temperatura, humedad ambiental, sustrato y luminosidad. Firmware, protocolo y capturas reales del monitor local.">
     <meta name="author" content="Felipe Flores Valdebenito">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#07111F">
@@ -13,7 +13,7 @@
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="Felipe Flores">
     <meta property="og:title" content="Sensor HiGrow con ESP32 y app móvil | Felipe Flores">
-    <meta property="og:description" content="Monitoreo de variables ambientales con sensor HiGrow, ESP32 y una aplicación móvil.">
+    <meta property="og:description" content="HiGrow ESP32 con app Android por BLE: temperatura, humedad ambiental, sustrato y luminosidad. Firmware, protocolo y capturas reales del monitor local.">
     <meta property="og:image" content="https://felipeflores.tech/images/img2.webp">
     <meta property="og:image:width" content="500">
     <meta property="og:image:height" content="333">
@@ -23,11 +23,11 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Sensor HiGrow con ESP32 y app móvil | Felipe Flores">
-    <meta name="twitter:description" content="Monitoreo de variables ambientales con sensor HiGrow, ESP32 y una aplicación móvil.">
+    <meta name="twitter:description" content="HiGrow ESP32 con app Android por BLE: temperatura, humedad ambiental, sustrato y luminosidad. Firmware, protocolo y capturas reales del monitor local.">
     <meta name="twitter:image" content="https://felipeflores.tech/images/img2.webp">
     <meta name="twitter:image:alt" content="Sensor HiGrow instalado en una maceta junto a una tableta con datos ambientales">
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/#project","name":"Sensor HiGrow (ESP32) + App","description":"Monitoreo de variables ambientales con ESP32, sensor HiGrow y aplicación móvil.","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/","image":"https://felipeflores.tech/images/img2.webp","inLanguage":"es-CL","keywords":"ESP32, Sensor HiGrow, App móvil","creator":{"@id":"https://felipeflores.tech/#person"},"isRelatedTo":[{"@type":"CreativeWork","name":"Gemelo digital con ESP32-C3, BNO08x y Android","url":"https://felipeflores.tech/proyectos/gemelo-digital/"},{"@type":"CreativeWork","name":"HuskyLens + ESP32","url":"https://felipeflores.tech/proyectos/huskylens-esp32/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"Sensor HiGrow (ESP32) + App","item":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"}]}]}</script>
-    <link rel="stylesheet" href="../../css/portfolio.css?v=2f349e28095b">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/#project","name":"HiGrow ESP32 con BLE y app Android","description":"Monitor local con HiGrow ESP32 y una app Android conectada por Bluetooth Low Energy. Reúne temperatura, humedad ambiental, sustrato y luminosidad en tarjetas, gráficos y un historial de la conexión actual.","url":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/","image":"https://felipeflores.tech/images/img2.webp","inLanguage":"es-CL","keywords":"ESP32, BLE, DHT11, Android","creator":{"@id":"https://felipeflores.tech/#person"},"isRelatedTo":[{"@type":"CreativeWork","name":"Gemelo digital con ESP32-C3, BNO08x y Android","url":"https://felipeflores.tech/proyectos/gemelo-digital/"},{"@type":"CreativeWork","name":"Monitor de calidad del aire con ESP32-S3","url":"https://felipeflores.tech/proyectos/calidad-aire-esp32-s3/"},{"@type":"CreativeWork","name":"HuskyLens + ESP32","url":"https://felipeflores.tech/proyectos/huskylens-esp32/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://felipeflores.tech/"},{"@type":"ListItem","position":2,"name":"Proyectos","item":"https://felipeflores.tech/proyectos/"},{"@type":"ListItem","position":3,"name":"HiGrow ESP32 con BLE y app Android","item":"https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/"}]}]}</script>
+    <link rel="stylesheet" href="../../css/portfolio.css?v=b0b354c3c330">
     <link rel="icon" href="../../images/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
 </head>
@@ -91,47 +91,114 @@
                 </nav>
                 <div class="project-detail-grid">
                     <div class="project-detail-copy">
-<ul class="tag-row"><li>ESP32</li><li>Sensor HiGrow</li><li>App móvil</li></ul>
-                        <h1 id="project-title">Sensor HiGrow (ESP32) + App</h1>
-                        <p>Monitoreo de variables ambientales con ESP32, sensor HiGrow y aplicación móvil.</p>
+<ul class="tag-row"><li>ESP32</li><li>BLE</li><li>DHT11</li><li>Android</li></ul>
+                        <h1 id="project-title">HiGrow ESP32 con BLE y app Android</h1>
+                        <p>Monitor local con HiGrow ESP32 y una app Android conectada por Bluetooth Low Energy. Reúne temperatura, humedad ambiental, sustrato y luminosidad en tarjetas, gráficos y un historial de la conexión actual.</p>
                         <div class="project-detail-actions">
-                            <button class="button-v2 button-primary-v2" type="button" data-inline-video="TMQDseOsFwY" data-video-title="Sensor HiGrow (ESP32) + App">Ver demostración <span aria-hidden="true">▶</span></button>
+                            <button class="button-v2 button-primary-v2" type="button" data-inline-video="TMQDseOsFwY" data-video-title="HiGrow ESP32 con BLE y app Android">Ver demostración <span aria-hidden="true">▶</span></button>
                             <a class="button-v2 button-outline-v2" href="https://www.youtube.com/watch?v=TMQDseOsFwY" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                     <div class="inline-video">
                         <img src="../../images/img2.webp" width="500" height="333" decoding="async" fetchpriority="high" alt="Sensor HiGrow instalado en una maceta junto a una tableta con datos ambientales">
-                        <button type="button" data-inline-video="TMQDseOsFwY" data-video-title="Sensor HiGrow (ESP32) + App" aria-label="Reproducir demostración de Sensor HiGrow (ESP32) + App"><span aria-hidden="true">▶</span></button>
+                        <button type="button" data-inline-video="TMQDseOsFwY" data-video-title="HiGrow ESP32 con BLE y app Android" aria-label="Reproducir demostración de HiGrow ESP32 con BLE y app Android"><span aria-hidden="true">▶</span></button>
                     </div>
                 </div>
             </div>
         </section>
         <section class="section-v2 project-facts-section" aria-labelledby="project-technologies-title">
             <div class="shell project-facts">
-                <div><h2 id="project-technologies-title">Tecnologías</h2><ul class="tag-row"><li>ESP32</li><li>Sensor HiGrow</li><li>App móvil</li></ul></div>
+                <div><h2 id="project-technologies-title">Tecnologías</h2><ul class="tag-row"><li>ESP32</li><li>BLE</li><li>DHT11</li><li>Android</li></ul></div>
                 <nav aria-label="Áreas relacionadas"><ul class="project-topic-links"><li><a href="../../esp32/">Más proyectos de ESP32</a></li><li><a href="../../iot/">Más proyectos de IoT</a></li></ul></nav>
             </div>
         </section>
         <section class="section-v2 project-detail-section" aria-labelledby="project-objective">
             <div class="shell">
                 <h2 id="project-objective">Objetivo del proyecto</h2>
-                <p>Monitorear variables ambientales con el sensor HiGrow y consultar la información desde una aplicación móvil.</p>
+                <p>Consultar las mediciones del HiGrow desde un teléfono Android mediante BLE, con visualización y procesamiento locales durante el funcionamiento del monitor.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-architecture">
+            <div class="shell">
+                <h2 id="project-architecture">Arquitectura o funcionamiento</h2>
+                <p>El HiGrow original integra un ESP32, un DHT11 en GPIO22 y la lectura de sustrato en GPIO32. El montaje añade un LDR externo en GPIO35. El firmware envía un paquete BLE de 12 bytes con las mediciones y su estado de validez. La app Android se conecta al servicio GATT, interpreta los paquetes y actualiza sus tarjetas, gráficos y estadísticas. El funcionamiento del monitor no depende de Wi-Fi, Internet ni servicios en la nube.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-howItWorks">
+            <div class="shell">
+                <h2 id="project-howItWorks">Flujo de funcionamiento</h2>
+                <p>Desde Conectar BLE se busca y selecciona HiGrow-ESP32. El firmware programa una medición aproximadamente cada dos segundos y filtra la lectura de sustrato cada 100 ms. La app presenta la temperatura en °C y la humedad ambiental en % HR; sustrato y luminosidad se muestran como valores ADC. Inicio reúne las cuatro variables, Gráficos permite revisar las últimas 15, 30 o 60 muestras, y el detalle de cada sensor muestra mínima, máxima y promedio. Ajustes conserva preferencias locales, umbrales de luz y la opción de reconexión automática.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-development">
+            <div class="shell">
+                <h2 id="project-development">Desarrollo e implementación</h2>
+                <p>El firmware Arduino utiliza el BLE incluido en el core ESP32 y la biblioteca DHT de Adafruit. La configuración del HiGrow original activa la alimentación de sus sensores mediante GPIO16 en LOW antes de leer el DHT11. La app nativa está desarrollada en Kotlin con Jetpack Compose y Material 3. El protocolo define explícitamente la versión, las unidades y la validez de las lecturas; el repositorio incluye pruebas del codificador, el parser y las estadísticas, además de instrucciones de compilación y diagnóstico.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-challenges">
+            <div class="shell">
+                <h2 id="project-challenges">Desafíos técnicos</h2>
+                <p>La app rechaza paquetes malformados y muestra guiones para temperatura y humedad cuando el DHT11 informa un error, conservando las lecturas ADC del mismo paquete. El historial guarda hasta 60 paquetes en memoria y se vacía al desconectar; no es un registro permanente. Los valores de sustrato y luminosidad no están convertidos a porcentaje de humedad ni a lux. La configuración de pines corresponde al HiGrow original y debe revisarse antes de usar otra placa. La app avisa si pasan seis segundos sin un paquete válido y contempla reintentos limitados de conexión.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-result">
+            <div class="shell">
+                <h2 id="project-result">Resultados</h2>
+                <p>La versión 1.1.0 reúne recepción BLE, cuatro paneles de medición, gráficos, historial y ajustes. El repositorio documenta una prueba física con detección del HiGrow, conexión y recepción continua de datos en un teléfono Xiaomi. Las seis capturas de esta ficha proceden de esa ejecución real del 22 de octubre de 2026. El vídeo conserva la demostración original del proyecto; las capturas muestran la app actual. Las pruebas documentadas no acreditan calibración, autonomía ni alcance del enlace.</p>
+            </div>
+        </section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-applications">
+            <div class="shell">
+                <h2 id="project-applications">Aplicaciones posibles</h2>
+                <p>Seguimiento cercano de variables ambientales y del sustrato de una planta, y actividades para explorar adquisición de sensores, protocolos BLE y visualización de datos en Android.</p>
             </div>
         </section>
         <section class="section-v2 project-detail-section" aria-labelledby="project-hardware">
             <div class="shell">
                 <h2 id="project-hardware">Hardware utilizado</h2>
-                <ul class="case-study-list"><li>Sensor HiGrow</li><li>ESP32</li></ul>
+                <ul class="case-study-list"><li>Placa HiGrow original con ESP32</li><li>DHT11 integrado en GPIO22 para temperatura y humedad ambiental</li><li>Lectura de sustrato integrada en GPIO32</li><li>LDR externo con salida analógica en GPIO35 y GND común</li><li>Teléfono Android 8.0 o posterior con Bluetooth Low Energy</li></ul>
             </div>
         </section>
         <section class="section-v2 project-detail-section" aria-labelledby="project-software">
             <div class="shell">
                 <h2 id="project-software">Software y tecnologías</h2>
-                <ul class="case-study-list"><li>Aplicación móvil</li></ul>
+                <ul class="case-study-list"><li>Firmware Arduino para ESP32 con BLE del core Espressif</li><li>Bibliotecas Adafruit DHT y Adafruit Unified Sensor</li><li>App Android nativa en Kotlin, Jetpack Compose y Material 3</li><li>Servicio GATT con lectura inicial y notificaciones de paquetes de 12 bytes</li><li>Historial de sesión en memoria y preferencias locales de la app</li></ul>
             </div>
         </section>
-
-
+        <section class="section-v2 project-gallery" aria-labelledby="project-gallery-title"><div class="shell">
+            <h2 id="project-gallery-title">Imágenes del proyecto</h2>
+            <div class="case-study-gallery case-study-gallery--screenshots">
+                <figure>
+                    <a href="../../images/higrow-esp32-ble/dashboard.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: HiGrow Monitor conectado por BLE con temperatura, humedad ambiental, sustrato y luminosidad reales"><img src="../../images/higrow-esp32-ble/dashboard.webp" width="1280" height="2772" loading="lazy" decoding="async" alt="HiGrow Monitor conectado por BLE con temperatura, humedad ambiental, sustrato y luminosidad reales"></a>
+                    <figcaption>Inicio de HiGrow Monitor 1.1.0 conectado al equipo, con mediciones reales recibidas por BLE.</figcaption>
+                </figure>
+                <figure>
+                    <a href="../../images/higrow-esp32-ble/ble-devices.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: Selector de dispositivos BLE de HiGrow Monitor detectando el equipo HiGrow-ESP32"><img src="../../images/higrow-esp32-ble/ble-devices.webp" width="1280" height="2772" loading="lazy" decoding="async" alt="Selector de dispositivos BLE de HiGrow Monitor detectando el equipo HiGrow-ESP32"></a>
+                    <figcaption>Búsqueda y selección del HiGrow cercano desde la app.</figcaption>
+                </figure>
+                <figure>
+                    <a href="../../images/higrow-esp32-ble/graphs.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: Gráficos de temperatura, humedad ambiental, sustrato y luminosidad de la conexión HiGrow"><img src="../../images/higrow-esp32-ble/graphs.webp" width="1280" height="2772" loading="lazy" decoding="async" alt="Gráficos de temperatura, humedad ambiental, sustrato y luminosidad de la conexión HiGrow"></a>
+                    <figcaption>Gráficos de las muestras recibidas durante la conexión actual.</figcaption>
+                </figure>
+                <figure>
+                    <a href="../../images/higrow-esp32-ble/sensor-detail.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: Detalle de un sensor en HiGrow Monitor con su gráfica y estadísticas de la sesión"><img src="../../images/higrow-esp32-ble/sensor-detail.webp" width="1280" height="2772" loading="lazy" decoding="async" alt="Detalle de un sensor en HiGrow Monitor con su gráfica y estadísticas de la sesión"></a>
+                    <figcaption>Detalle del sensor con mínima, máxima y promedio de las muestras de la sesión.</figcaption>
+                </figure>
+                <figure>
+                    <a href="../../images/higrow-esp32-ble/history.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: Historial de paquetes recibidos por BLE con la hora del teléfono y las mediciones del HiGrow"><img src="../../images/higrow-esp32-ble/history.webp" width="1280" height="2772" loading="lazy" decoding="async" alt="Historial de paquetes recibidos por BLE con la hora del teléfono y las mediciones del HiGrow"></a>
+                    <figcaption>Historial de hasta 60 paquetes en memoria, con la hora de recepción en el teléfono.</figcaption>
+                </figure>
+                <figure>
+                    <a href="../../images/higrow-esp32-ble/settings.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: Ajustes de HiGrow Monitor para reconexión BLE y umbrales de luminosidad"><img src="../../images/higrow-esp32-ble/settings.webp" width="1280" height="2772" loading="lazy" decoding="async" alt="Ajustes de HiGrow Monitor para reconexión BLE y umbrales de luminosidad"></a>
+                    <figcaption>Preferencias de reconexión y umbrales de luminosidad almacenados localmente.</figcaption>
+                </figure>
+            </div>
+        </div></section>
+        <section class="section-v2 project-detail-section" aria-labelledby="project-resources-title"><div class="shell">
+            <h2 id="project-resources-title">Recursos relacionados</h2>
+            <ul class="case-study-list"><li><a href="https://github.com/ffelipev2/HiGrow-ESP32-BLE" target="_blank" rel="noopener noreferrer">Código del proyecto en GitHub</a></li><li><a href="https://github.com/ffelipev2/HiGrow-ESP32-BLE/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentación, instalación y conexiones</a></li><li><a href="https://github.com/ffelipev2/HiGrow-ESP32-BLE/blob/main/firmware/HiGrowMonitor/HiGrowMonitor.ino" target="_blank" rel="noopener noreferrer">Firmware del HiGrow ESP32</a></li><li><a href="https://github.com/ffelipev2/HiGrow-ESP32-BLE/blob/main/docs/PROTOCOL.md" target="_blank" rel="noopener noreferrer">Protocolo BLE y unidades de las mediciones</a></li><li><a href="https://github.com/ffelipev2/HiGrow-ESP32-BLE/tree/main/app" target="_blank" rel="noopener noreferrer">App Android en Kotlin y Compose</a></li></ul>
+        </div></section>
         <section class="section-v2 related-project-section" aria-labelledby="related-projects-title">
             <div class="shell">
                 <h2 id="related-projects-title" class="related-projects-title">Proyectos relacionados</h2>
@@ -140,6 +207,11 @@
                         <h3><a href="../../proyectos/gemelo-digital/">Gemelo digital con ESP32-C3, BNO08x y Android</a></h3>
                         <p class="project-tags-v2">ESP32-C3 · BNO08x · BLE · Android</p>
                         <p>Un sensor BNO08x mide la orientación del dispositivo. El ESP32-C3 envía esa información por Bluetooth Low Energy a una app Android, que la reproduce en un modelo 3D de Cubone.</p>
+                    </article>
+                    <article>
+                        <h3><a href="../../proyectos/calidad-aire-esp32-s3/">Monitor de calidad del aire con ESP32-S3</a></h3>
+                        <p class="project-tags-v2">ESP32-S3 · SCD41 · PM2.5 · BLE · Android</p>
+                        <p>Un ESP32-S3 mide CO₂, temperatura, humedad y partículas, muestra las lecturas en una pantalla y las envía por BLE a una app Android con historial y reportes.</p>
                     </article>
                     <article>
                         <h3><a href="../../proyectos/huskylens-esp32/">HuskyLens + ESP32</a></h3>

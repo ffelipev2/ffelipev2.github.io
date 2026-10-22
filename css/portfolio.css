@@ -448,6 +448,15 @@ body.portfolio-page :is(a, button, summary):focus-visible {
     transform: scale(1.025);
 }
 
+.project-image-v2--portrait img {
+    object-fit: contain;
+    background: var(--color-background);
+}
+
+.project-card-v2:hover .project-image-v2--portrait img {
+    transform: none;
+}
+
 .project-body-v2 {
     padding: 24px 24px 26px;
 }
@@ -1878,7 +1887,7 @@ body.menu-open {
 }
 
 .project-hero-image--portrait {
-    width: min(100%, 460px);
+    width: min(100%, 320px);
     justify-self: center;
 }
 
@@ -2096,6 +2105,22 @@ body.menu-open {
     height: 100%;
     max-height: none;
     object-fit: contain;
+}
+
+.case-study-gallery--screenshots {
+    width: 100%;
+    max-width: 1040px;
+    margin-inline: auto;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.case-study-gallery--screenshots figure {
+    width: min(100%, 320px);
+    justify-self: center;
+}
+
+.case-study-gallery--screenshots a {
+    aspect-ratio: 640 / 1386;
 }
 
 .project-gallery figcaption {

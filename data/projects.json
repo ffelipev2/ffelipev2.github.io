@@ -1,5 +1,46 @@
 [
   {
+    "slug": "camara-termica-ziboo-zp2",
+    "title": "App Android para la cámara térmica Ziboo ZP2",
+    "cardTitle": "Cámara térmica Ziboo ZP2",
+    "seoTitle": "App Android para cámara térmica Ziboo ZP2 | Felipe Flores",
+    "seoDescription": "Desarrollo de una app Android para recuperar el uso de una cámara térmica Ziboo ZP2 por USB-C: visor, paletas, herramientas y exportación. Código y APK.",
+    "image": "/images/camara-ziboo-zp2/zp2-camara-conectada.webp",
+    "imageWidth": 640,
+    "imageHeight": 1386,
+    "alt": "Captura real de ZP2 Térmica conectada a la cámara, con imagen térmica, temperatura del punto y herramientas",
+    "heroImage": {
+      "src": "/images/camara-ziboo-zp2/zp2-camara-conectada.webp",
+      "originalSrc": "/images/camara-ziboo-zp2/zp2-camara-conectada.jpeg",
+      "width": 640,
+      "height": 1386,
+      "alt": "App ZP2 Térmica en un teléfono Android durante una prueba real con la cámara Ziboo"
+    },
+    "tags": ["Android", "Kotlin", "USB-C", "Termografía"],
+    "description": "Desarrollé una app Android para volver a utilizar una cámara térmica Ziboo ZP2 por USB-C. La aplicación muestra la imagen del sensor, permite explorar sus lecturas y reúne paletas, herramientas de selección y exportación local.",
+    "problem": "Quería utilizar la cámara, pero no encontraba una aplicación compatible disponible en Play Store ni en los repositorios habituales. El proyecto nace de esa dificultad: crear un cliente Android propio y documentar cómo recibe y presenta la información del dispositivo.",
+    "objective": "Recuperar el uso de la Ziboo ZP2 desde un teléfono Android, con una interfaz en español para visualizar la escena térmica, consultar puntos y regiones y guardar los datos de la sesión en el propio teléfono.",
+    "architecture": "La cámara se conecta por USB-C a un teléfono con USB Host. La app negocia el formato de vídeo UVC y conserva los fotogramas originales mediante una adaptación de UVCAndroid. El modo solicitado de 256 × 384 contiene una imagen de 256 × 192 y un segundo plano de valores térmicos de 16 bits. El procesamiento en Kotlin separa ambos planos, aplica la escala de colores y calcula las lecturas de la selección.",
+    "howItWorks": "Tras conectar la cámara y conceder los permisos, el usuario inicia el visor y puede tocar un punto, seleccionar un área o trazar una línea. La app presenta sus lecturas, mínima y máxima, permite resaltar un intervalo con la isoterma y ofrece paletas como Hierro, Arcoíris, Escala gris y Glaciar. También permite congelar la imagen, girarla, ampliar el visor y voltear toda la app para usar el conector arriba. Las capturas se guardan como PNG; la matriz se puede exportar a CSV y el fotograma original a un archivo binario.",
+    "development": "El cliente está escrito en Kotlin con interfaz nativa Android. La biblioteca UVC conserva los bytes originales del sensor para procesar la imagen y la matriz por separado. La versión 0.3.2 incorpora una escala de colores automática con adaptación gradual y la posibilidad de fijar un rango, de modo que una variación en los extremos de la escena no cambie bruscamente su apariencia. El repositorio incluye el código Android, las fuentes de la adaptación UVC, instrucciones de compilación, pruebas automatizadas y un APK ARM64.",
+    "challenges": "La conversión de los valores térmicos se apoya en una inferencia del protocolo y su exactitud debe contrastarse con una referencia: el identificador USB por sí solo no certifica calibración. La app distingue matrices válidas de datos incompletos o corruptos y oculta las lecturas cuando no reconoce el plano térmico. La corrección disponible es un ajuste local de lectura, sin modificar la calibración de fábrica. La estabilidad de la escala de colores se trata por separado de los valores medidos.",
+    "result": "Se confirmó la visualización y la recepción de lecturas en el teléfono de prueba. Las dos capturas reales de esta ficha corresponden a una versión anterior a la 0.3.2. El repositorio distribuye esa actualización con pruebas automatizadas y mejoras del visor y la escala de colores; su comprobación física posterior y la exactitud térmica siguen pendientes de validación con una referencia.",
+    "applications": "Exploración de escenas térmicas y desarrollo de herramientas de visualización e instrumentación local, conectando hardware USB con una app Android propia.",
+    "hardware": ["Cámara térmica Ziboo ZP2 USB-C, identificador USB 0BDA:5840", "Teléfono ARM64 con Android 10 o posterior y USB Host/OTG", "Xiaomi 15T con Android 16 como teléfono de prueba documentado"],
+    "software": ["Kotlin e interfaz nativa Android", "UVCAndroid adaptada para conservar el fotograma RAW", "Procesamiento de imagen, matriz térmica y escalas de color", "Exportación local PNG, CSV y fotograma binario", "Android Studio, Gradle y pruebas JUnit/Robolectric"],
+    "images": [
+      {"src": "/images/camara-ziboo-zp2/zp2-camara-conectada.webp", "originalSrc": "/images/camara-ziboo-zp2/zp2-camara-conectada.jpeg", "width": 640, "height": 1386, "alt": "ZP2 Térmica conectada mostrando una escena real, el punto seleccionado y los extremos de lectura", "caption": "Prueba real de conexión y visualización. Captura de una versión anterior a la 0.3.2 publicada en el repositorio."},
+      {"src": "/images/camara-ziboo-zp2/zp2-herramientas-paletas.webp", "originalSrc": "/images/camara-ziboo-zp2/zp2-herramientas-paletas.jpeg", "width": 640, "height": 1386, "alt": "Herramientas de punto, área, línea e isoterma y selector de paletas de la app ZP2 Térmica", "caption": "Herramientas y paletas durante las pruebas de una versión previa. Las cifras visibles no acreditan la exactitud térmica del equipo."}
+    ],
+    "resources": [
+      {"label": "Código del proyecto en GitHub", "url": "https://github.com/ffelipev2/camaraZiboo"},
+      {"label": "Documentación, instalación y estado de validación", "url": "https://github.com/ffelipev2/camaraZiboo/blob/main/README.md"},
+      {"label": "APK ZP2 Térmica 0.3.2 para Android ARM64", "url": "https://github.com/ffelipev2/camaraZiboo/blob/main/entrega/ZP2-Visor-0.3.2.apk"},
+      {"label": "Código Android y procesamiento térmico", "url": "https://github.com/ffelipev2/camaraZiboo/tree/main/app/src/main/java/cl/felipe/zp2viewer"}
+    ],
+    "relatedProjects": ["calidad-aire-esp32-s3", "gemelo-digital"]
+  },
+  {
     "slug": "gemelo-digital",
     "title": "Gemelo digital con ESP32-C3, BNO08x y Android",
     "cardTitle": "Gemelo Digital",
@@ -178,23 +219,44 @@
   },
   {
     "slug": "sensor-higrow-esp32-app",
-    "title": "Sensor HiGrow (ESP32) + App",
+    "title": "HiGrow ESP32 con BLE y app Android",
     "cardTitle": "Sensor HiGrow + App",
     "seoTitle": "Sensor HiGrow con ESP32 y app móvil | Felipe Flores",
-    "seoDescription": "Monitoreo de variables ambientales con sensor HiGrow, ESP32 y una aplicación móvil.",
+    "seoDescription": "HiGrow ESP32 con app Android por BLE: temperatura, humedad ambiental, sustrato y luminosidad. Firmware, protocolo y capturas reales del monitor local.",
     "image": "/images/img2.webp",
     "imageWidth": 500,
     "imageHeight": 333,
     "alt": "Sensor HiGrow instalado en una maceta junto a una tableta con datos ambientales",
     "videoId": "TMQDseOsFwY",
     "videoUrl": "https://www.youtube.com/watch?v=TMQDseOsFwY",
-    "tags": ["ESP32", "Sensor HiGrow", "App móvil"],
-    "description": "Monitoreo de variables ambientales con ESP32, sensor HiGrow y aplicación móvil.",
+    "tags": ["ESP32", "BLE", "DHT11", "Android"],
+    "description": "Monitor local con HiGrow ESP32 y una app Android conectada por Bluetooth Low Energy. Reúne temperatura, humedad ambiental, sustrato y luminosidad en tarjetas, gráficos y un historial de la conexión actual.",
     "topics": ["esp32", "iot"],
-    "objective": "Monitorear variables ambientales con el sensor HiGrow y consultar la información desde una aplicación móvil.",
-    "hardware": ["Sensor HiGrow", "ESP32"],
-    "software": ["Aplicación móvil"],
-    "relatedProjects": ["gemelo-digital", "huskylens-esp32"]
+    "objective": "Consultar las mediciones del HiGrow desde un teléfono Android mediante BLE, con visualización y procesamiento locales durante el funcionamiento del monitor.",
+    "architecture": "El HiGrow original integra un ESP32, un DHT11 en GPIO22 y la lectura de sustrato en GPIO32. El montaje añade un LDR externo en GPIO35. El firmware envía un paquete BLE de 12 bytes con las mediciones y su estado de validez. La app Android se conecta al servicio GATT, interpreta los paquetes y actualiza sus tarjetas, gráficos y estadísticas. El funcionamiento del monitor no depende de Wi-Fi, Internet ni servicios en la nube.",
+    "howItWorks": "Desde Conectar BLE se busca y selecciona HiGrow-ESP32. El firmware programa una medición aproximadamente cada dos segundos y filtra la lectura de sustrato cada 100 ms. La app presenta la temperatura en °C y la humedad ambiental en % HR; sustrato y luminosidad se muestran como valores ADC. Inicio reúne las cuatro variables, Gráficos permite revisar las últimas 15, 30 o 60 muestras, y el detalle de cada sensor muestra mínima, máxima y promedio. Ajustes conserva preferencias locales, umbrales de luz y la opción de reconexión automática.",
+    "development": "El firmware Arduino utiliza el BLE incluido en el core ESP32 y la biblioteca DHT de Adafruit. La configuración del HiGrow original activa la alimentación de sus sensores mediante GPIO16 en LOW antes de leer el DHT11. La app nativa está desarrollada en Kotlin con Jetpack Compose y Material 3. El protocolo define explícitamente la versión, las unidades y la validez de las lecturas; el repositorio incluye pruebas del codificador, el parser y las estadísticas, además de instrucciones de compilación y diagnóstico.",
+    "challenges": "La app rechaza paquetes malformados y muestra guiones para temperatura y humedad cuando el DHT11 informa un error, conservando las lecturas ADC del mismo paquete. El historial guarda hasta 60 paquetes en memoria y se vacía al desconectar; no es un registro permanente. Los valores de sustrato y luminosidad no están convertidos a porcentaje de humedad ni a lux. La configuración de pines corresponde al HiGrow original y debe revisarse antes de usar otra placa. La app avisa si pasan seis segundos sin un paquete válido y contempla reintentos limitados de conexión.",
+    "result": "La versión 1.1.0 reúne recepción BLE, cuatro paneles de medición, gráficos, historial y ajustes. El repositorio documenta una prueba física con detección del HiGrow, conexión y recepción continua de datos en un teléfono Xiaomi. Las seis capturas de esta ficha proceden de esa ejecución real del 22 de octubre de 2026. El vídeo conserva la demostración original del proyecto; las capturas muestran la app actual. Las pruebas documentadas no acreditan calibración, autonomía ni alcance del enlace.",
+    "applications": "Seguimiento cercano de variables ambientales y del sustrato de una planta, y actividades para explorar adquisición de sensores, protocolos BLE y visualización de datos en Android.",
+    "hardware": ["Placa HiGrow original con ESP32", "DHT11 integrado en GPIO22 para temperatura y humedad ambiental", "Lectura de sustrato integrada en GPIO32", "LDR externo con salida analógica en GPIO35 y GND común", "Teléfono Android 8.0 o posterior con Bluetooth Low Energy"],
+    "software": ["Firmware Arduino para ESP32 con BLE del core Espressif", "Bibliotecas Adafruit DHT y Adafruit Unified Sensor", "App Android nativa en Kotlin, Jetpack Compose y Material 3", "Servicio GATT con lectura inicial y notificaciones de paquetes de 12 bytes", "Historial de sesión en memoria y preferencias locales de la app"],
+    "images": [
+      {"src": "/images/higrow-esp32-ble/dashboard.webp", "originalSrc": "/images/higrow-esp32-ble/dashboard.png", "width": 1280, "height": 2772, "alt": "HiGrow Monitor conectado por BLE con temperatura, humedad ambiental, sustrato y luminosidad reales", "caption": "Inicio de HiGrow Monitor 1.1.0 conectado al equipo, con mediciones reales recibidas por BLE."},
+      {"src": "/images/higrow-esp32-ble/ble-devices.webp", "originalSrc": "/images/higrow-esp32-ble/ble-devices.png", "width": 1280, "height": 2772, "alt": "Selector de dispositivos BLE de HiGrow Monitor detectando el equipo HiGrow-ESP32", "caption": "Búsqueda y selección del HiGrow cercano desde la app."},
+      {"src": "/images/higrow-esp32-ble/graphs.webp", "originalSrc": "/images/higrow-esp32-ble/graphs.png", "width": 1280, "height": 2772, "alt": "Gráficos de temperatura, humedad ambiental, sustrato y luminosidad de la conexión HiGrow", "caption": "Gráficos de las muestras recibidas durante la conexión actual."},
+      {"src": "/images/higrow-esp32-ble/sensor-detail.webp", "originalSrc": "/images/higrow-esp32-ble/sensor-detail.png", "width": 1280, "height": 2772, "alt": "Detalle de un sensor en HiGrow Monitor con su gráfica y estadísticas de la sesión", "caption": "Detalle del sensor con mínima, máxima y promedio de las muestras de la sesión."},
+      {"src": "/images/higrow-esp32-ble/history.webp", "originalSrc": "/images/higrow-esp32-ble/history.png", "width": 1280, "height": 2772, "alt": "Historial de paquetes recibidos por BLE con la hora del teléfono y las mediciones del HiGrow", "caption": "Historial de hasta 60 paquetes en memoria, con la hora de recepción en el teléfono."},
+      {"src": "/images/higrow-esp32-ble/settings.webp", "originalSrc": "/images/higrow-esp32-ble/settings.png", "width": 1280, "height": 2772, "alt": "Ajustes de HiGrow Monitor para reconexión BLE y umbrales de luminosidad", "caption": "Preferencias de reconexión y umbrales de luminosidad almacenados localmente."}
+    ],
+    "resources": [
+      {"label": "Código del proyecto en GitHub", "url": "https://github.com/ffelipev2/HiGrow-ESP32-BLE"},
+      {"label": "Documentación, instalación y conexiones", "url": "https://github.com/ffelipev2/HiGrow-ESP32-BLE/blob/main/README.md"},
+      {"label": "Firmware del HiGrow ESP32", "url": "https://github.com/ffelipev2/HiGrow-ESP32-BLE/blob/main/firmware/HiGrowMonitor/HiGrowMonitor.ino"},
+      {"label": "Protocolo BLE y unidades de las mediciones", "url": "https://github.com/ffelipev2/HiGrow-ESP32-BLE/blob/main/docs/PROTOCOL.md"},
+      {"label": "App Android en Kotlin y Compose", "url": "https://github.com/ffelipev2/HiGrow-ESP32-BLE/tree/main/app"}
+    ],
+    "relatedProjects": ["gemelo-digital", "huskylens-esp32", "calidad-aire-esp32-s3"]
   },
   {
     "slug": "ethernet-sensor-biometrico",

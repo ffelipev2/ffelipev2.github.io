@@ -199,7 +199,7 @@ test('generation accepts an additional project and topic, and validation rejects
     };
     try {
         await Promise.all(['index.html', 'robots.txt', 'CNAME', 'scripts', 'data', 'css', 'js', 'images', 'docs', 'politicasffelipev2.github.io'].map((entry) => cp(path.join(rootDirectory, entry), path.join(fixture, entry), { recursive: true })));
-        const addedProject = { ...projects[0], slug: 'seo-fixture', title: 'SEO fixture', cardTitle: 'SEO fixture', seoTitle: 'SEO fixture title', seoDescription: 'SEO generation fixture description.', videoId: 'fixture0001', topics: [...projects[0].topics, 'seo-fixture-topic'], relatedProjects: [] };
+        const addedProject = { ...projects[0], slug: 'seo-fixture', title: 'SEO fixture', cardTitle: 'SEO fixture', seoTitle: 'SEO fixture title', seoDescription: 'SEO generation fixture description.', videoId: 'fixture0001', videoUrl: 'https://www.youtube.com/watch?v=fixture0001', topics: [...(projects[0].topics || []), 'seo-fixture-topic'], relatedProjects: [] };
         const addedTopic = { ...topics[0], slug: 'seo-fixture-topic', name: 'SEO fixture topic', title: 'SEO fixture topic', seoTitle: 'SEO fixture topic title', description: 'SEO topic fixture description.' };
         await writeFile(path.join(fixture, 'data/projects.json'), JSON.stringify([...projects, addedProject]), 'utf8');
         await writeFile(path.join(fixture, 'scripts/site-config.mjs'), 'export const siteOrigin = ' + JSON.stringify(siteOrigin) + ';\nexport const topics = ' + JSON.stringify([...topics, addedTopic]) + ';\n', 'utf8');

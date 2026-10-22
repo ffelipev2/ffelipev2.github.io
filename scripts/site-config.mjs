@@ -7,7 +7,7 @@ export const topics = [
         title: 'Proyectos con ESP32',
         seoTitle: 'Proyectos con ESP32: IoT, sensores y automatización | Felipe Flores',
         description: 'Proyectos de Felipe Flores con ESP32: gemelo digital, monitor de calidad del aire, chat LoRa con Heltec, reconocimiento de colores con HuskyLens y sensor HiGrow.',
-        intro: 'Uso ESP32 en proyectos que conectan sensores, comunicación y software. Aquí puedes explorar un gemelo digital de orientación, un monitor de calidad del aire, un chat LoRa con interfaz web local y otros prototipos con HuskyLens y HiGrow.'
+        intro: 'Uso ESP32 en proyectos que conectan sensores, comunicación y software. Aquí puedes explorar un gemelo digital de orientación, monitores de calidad del aire y HiGrow conectados a Android por BLE, un chat LoRa con interfaz web local y reconocimiento de colores con HuskyLens.'
     },
     {
         slug: 'iot',
@@ -15,7 +15,7 @@ export const topics = [
         title: 'Proyectos de IoT e Internet de las Cosas',
         seoTitle: 'Proyectos de IoT con ESP32 y sensores | Felipe Flores',
         description: 'Conoce proyectos de IoT de Felipe Flores: monitor de calidad del aire con ESP32-S3, sensor HiGrow, gemelo digital y control de acceso por Ethernet.',
-        intro: 'Aquí exploro cómo conectar dispositivos, datos y aplicaciones. Gemelo Digital y el monitor de calidad del aire enlazan el equipo con Android mediante BLE. También reúno proyectos de monitoreo con HiGrow y de registro biométrico con Ethernet.'
+        intro: 'Aquí exploro cómo conectar dispositivos, datos y aplicaciones. Gemelo Digital, el monitor de calidad del aire y HiGrow enlazan el equipo con Android mediante BLE. También reúno un proyecto de registro biométrico con Ethernet.'
     },
     {
         slug: 'industria-4-0',

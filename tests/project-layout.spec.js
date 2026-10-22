@@ -59,3 +59,49 @@ test('las imágenes optimizadas conservan la presentación y los originales acce
     await expect.poll(() => fullSizeImage.evaluate((image) => [image.naturalWidth, image.naturalHeight])).toEqual([4096, 3072]);
     await originalPage.close();
 });
+
+test('las capturas de Ziboo y HiGrow se sirven localmente y conservan la pantalla completa', async ({ page, request }) => {
+    const imageRequests = [];
+    page.on('request', (item) => {
+        if (item.resourceType() === 'image') imageRequests.push(item.url());
+    });
+
+    for (const project of [
+        { slug: 'camara-termica-ziboo-zp2', count: 2, original: '.jpeg' },
+        { slug: 'sensor-higrow-esp32-app', count: 6, original: '.png' },
+    ]) {
+        for (const width of [1440, 390]) {
+            await page.setViewportSize({ width, height: 900 });
+            await page.goto('/proyectos/' + project.slug + '/');
+            const frames = page.locator('.case-study-gallery a');
+            await expect(frames).toHaveCount(project.count);
+
+            for (const frame of await frames.all()) {
+                await frame.scrollIntoViewIfNeeded();
+                const img = frame.locator('img');
+                await expect.poll(() => img.evaluate((element) => element.complete && element.naturalWidth > 0)).toBe(true);
+                const dimensions = await frame.evaluate((element) => {
+                    const image = element.querySelector('img');
+                    const rect = element.getBoundingClientRect();
+                    return { ratio: rect.height / rect.width, natural: image.naturalHeight / image.naturalWidth };
+                });
+                expect(dimensions.ratio).toBeGreaterThan(2);
+                expect(Math.abs(dimensions.ratio - dimensions.natural)).toBeLessThan(.02);
+                await expect(img).toHaveCSS('object-fit', 'contain');
+                const original = new URL(await frame.getAttribute('href'), page.url());
+                expect(original.origin).toBe(new URL(page.url()).origin);
+                expect(original.pathname.endsWith(project.original)).toBe(true);
+                const response = await request.head(original.href);
+                expect(response.status()).toBe(200);
+                expect(response.headers()['content-type']).toContain(project.original === '.png' ? 'image/png' : 'image/jpeg');
+            }
+
+            expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        }
+    }
+
+    await page.goto('/proyectos/');
+    const cover = page.locator('.all-projects-grid a.project-image-v2[href*="camara-termica-ziboo-zp2"] img');
+    await expect(cover).toHaveCSS('object-fit', 'contain');
+    expect(imageRequests.every((url) => new URL(url).origin === new URL(page.url()).origin)).toBe(true);
+});

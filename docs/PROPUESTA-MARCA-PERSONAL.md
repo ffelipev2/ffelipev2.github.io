@@ -4,7 +4,9 @@ Fecha: **17 de octubre de 2026**. Base del sitio: `27f05d3`.
 
 **Estado: referencia editorial tras la publicación de la fase 1.** El objetivo de marca y los criterios de comunicación siguen vigentes y tienen prioridad sobre las alternativas del [plan SEO](PLAN-SEO-CONTENIDOS.md). Las tablas conservan los textos y variantes propuestos antes de implementar: el [registro de la fase 1](IMPLEMENTACION-SEO-MARCA-FASE-1.md) identifica exactamente qué se aplicó y publicó en `48b6d2b`. Las variantes restantes no quedan aprobadas automáticamente. No se repite la auditoría técnica.
 
-**Actualización del 21 de octubre de 2026:** la documentación técnica de LoRa ya está identificada y aplicada a la ficha publicada, con autorización de Felipe, en el commit `7e6773f`. Las referencias a datos faltantes de LoRa en las propuestas originales son históricas; el estado vigente, la publicación verificada, las fuentes y las ampliaciones opcionales están en la sección 6.5 del [plan SEO](PLAN-SEO-CONTENIDOS.md). HiGrow conserva sus necesidades de documentación.
+**Actualización del 21 de octubre de 2026:** la documentación técnica de LoRa ya está identificada y aplicada a la ficha publicada, con autorización de Felipe, en el commit `7e6773f`. Las referencias a datos faltantes de LoRa en las propuestas originales son históricas; el estado vigente, la publicación verificada, las fuentes y las ampliaciones opcionales están en la sección 6.5 del [plan SEO](PLAN-SEO-CONTENIDOS.md).
+
+**Actualización del 22 de octubre de 2026:** el repositorio HiGrow-ESP32-BLE permite completar la ficha y sus capturas reales locales. Se añade el caso de la app Android para Ziboo ZP2 con las dos capturas aportadas por Felipe y su motivación confirmada de recuperar el uso de la cámara. Las propuestas antiguas sobre información técnica faltante de HiGrow son antecedentes; el estado y las fuentes actuales están en las secciones 6.4 y 6.9 del plan SEO. Se conservan las diferencias entre demostración, pruebas de software y validación de las mediciones.
 
 ## 1. Qué debe recordar quien visite el sitio
 
@@ -261,7 +263,7 @@ Las tareas de documentación de la prioridad 4 pueden empezar mientras se revisa
 - **Voz personal:** comentar qué frases del documento usarías tú y cuáles te suenan ajenas. La finalidad de la web ya está definida.
 - **UFACTORY y Gemelo:** para cada uno, contar qué querías explorar, qué decisión te hizo pensar más, qué dificultad encontraste realmente y qué harías distinto. Aportar solo los resultados medidos que tengan registros. Confirmar el contexto y versión de las fotos antes de ampliar su uso.
 - **LoRa, implementación documentada y publicada:** placas, configuración, interfaz, comunicación y código ya están incorporados a la ficha desde el repositorio identificado por Felipe. Para ampliaciones opcionales, aportar una prueba física con sus condiciones y los aprendizajes personales.
-- **HiGrow:** identificar revisión de la placa, variables usadas, sensores, transporte, app/plataforma y flujo de datos; aportar código o capturas si existen.
+- **HiGrow, implementación documentada:** placa, variables, protocolo BLE, app y capturas reales ya se incorporan desde el repositorio identificado por Felipe. Los registros de precisión, alcance, autonomía y aprendizajes personales son ampliaciones opcionales.
 - **CV, cuando se retome:** confirmar las fechas correctas de EQA y facilitar el editable. El plan SEO registra **2021–2020** en el texto extraído del PDF frente a **2020–2021** en la web. Ambas referencias quedan como discrepancia pendiente, sin elegir una ni corregirla.
 
 ## 9. Implementación prevista en la propuesta original
@@ -293,4 +295,4 @@ Como evaluación cualitativa, comprobar si un lector puede explicar qué hace el
 
 Se conserva este documento porque define la identidad editorial y contiene criterios útiles para las siguientes fichas. El plan SEO concentra datos, pendientes y medición; el informe de implementación registra el resultado publicado.
 
-La corrección del firmware y las demás mejoras de la fase 1 están registradas en su informe. La ampliación posterior de LoRa se registra en el plan SEO. Los datos de HiGrow, los relatos personales y las fechas de EQA siguen pendientes de confirmación. La ampliación de LoRa no modifica el PDF.
+La corrección del firmware y las demás mejoras de la fase 1 están registradas en su informe. Las ampliaciones posteriores de LoRa, HiGrow y Ziboo se registran en el plan SEO. Los relatos personales no documentados, las mediciones adicionales y las fechas de EQA siguen pendientes de confirmación. Estas ampliaciones no modifican el PDF.

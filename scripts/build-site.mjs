@@ -209,7 +209,7 @@ function projectCardMarkup(project, pageDepth, headingLevel = 2) {
     return [
         '                <article class="project-card-v2">',
         '                    <div class="project-media-v2">',
-        '                        <a class="project-image-v2" href="' + projectPath + '" aria-label="Conocer el proyecto ' + escapeHtml(project.title) + '">',
+        '                        <a class="project-image-v2' + (project.imageWidth < project.imageHeight ? ' project-image-v2--portrait' : '') + '" href="' + projectPath + '" aria-label="Conocer el proyecto ' + escapeHtml(project.title) + '">',
         '                            <img src="' + localFile(project.image, pageDepth) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" loading="lazy" decoding="async" alt="' + escapeHtml(project.alt) + '">',
         '                        </a>',
         project.videoId ? '                        <button class="play-chip" type="button" data-video-id="' + project.videoId + '" data-video-title="' + escapeHtml(project.title) + '" aria-label="Ver demostración de ' + escapeHtml(project.title) + '"><span aria-hidden="true">▶</span> Demo</button>' : '',
@@ -367,7 +367,7 @@ function projectsIndexPage() {
         '@graph': [{
             '@type': 'CollectionPage',
             name: 'Proyectos tecnológicos de Felipe Flores',
-            description: 'Proyectos de IoT, ESP32, LoRa, robótica, automatización, visión artificial y fabricación digital.',
+            description: 'Proyectos de IoT, ESP32, LoRa, robótica, apps Android, automatización, visión artificial y fabricación digital.',
             url: siteOrigin + '/proyectos/',
             inLanguage: 'es-CL',
             author: { '@id': siteOrigin + '/#person' },
@@ -383,7 +383,7 @@ function projectsIndexPage() {
     return [
         headMarkup({
             title: 'Proyectos de IoT, ESP32 y robótica | Felipe Flores',
-            description: 'Proyectos de Felipe Flores en IoT, ESP32, LoRa, robótica, automatización, visión artificial, Arduino e impresión 3D.',
+            description: 'Proyectos de Felipe Flores en IoT, ESP32, LoRa, robótica y apps Android: sensores, automatización, visión artificial y fabricación digital.',
             canonicalPath: '/proyectos/',
             image: '/images/img7.webp',
             imageWidth: 500,
@@ -399,7 +399,7 @@ function projectsIndexPage() {
         breadcrumbMarkup([{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }], 1),
         '                <p class="eyebrow-v2">Portfolio de proyectos</p>',
         '                <h1 id="all-projects-title">Proyectos de IoT, ESP32 y robótica</h1>',
-        '                <p>Proyectos reales de IoT, Industria 4.0, ESP32, robótica, automatización y tecnologías aplicadas, además de experiencias con LoRa, Arduino y fabricación digital.</p>',
+        '                <p>Proyectos reales de IoT, Industria 4.0, ESP32, robótica y apps Android, además de experiencias con LoRa, Arduino y fabricación digital.</p>',
         '            </div>',
         '        </section>',
         '        <section class="section-v2" aria-label="Todos los proyectos">',
@@ -489,7 +489,7 @@ function projectDetailPage(project) {
     const galleryMarkup = project.images?.length ? [
         '        <section class="section-v2 project-gallery" aria-labelledby="project-gallery-title"><div class="shell">',
         '            <h2 id="project-gallery-title">Imágenes del proyecto</h2>',
-        '            <div class="case-study-gallery">',
+        '            <div class="case-study-gallery' + (project.images.every((item) => item.width < item.height) ? ' case-study-gallery--screenshots' : '') + '">',
         project.images.map((item) => [
             '                <figure>',
             '                    <a href="' + localFile(item.originalSrc || item.src, 2) + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagen a tamaño completo: ' + escapeHtml(item.alt) + '"><img src="' + localFile(item.src, 2) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async" alt="' + escapeHtml(item.alt) + '"></a>',
