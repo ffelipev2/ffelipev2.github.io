@@ -95,6 +95,13 @@ function headMarkup({ title, description, canonicalPath, image, imageWidth, imag
     ].join('\n');
 }
 
+function projectMenuLinksMarkup(pageDepth) {
+    return [
+        ...projects.map((project) => '                    <a href="' + localFile('/proyectos/' + project.slug + '/index.html', pageDepth) + '" data-menu-link>' + escapeHtml(project.cardTitle) + '</a>'),
+        '                    <a href="' + localFile('/proyectos/index.html', pageDepth) + '" data-menu-link>Todos los proyectos</a>'
+    ].join('\n');
+}
+
 function headerMarkup(pageDepth) {
     return [
         '<body class="portfolio-page">',
@@ -124,10 +131,7 @@ function headerMarkup(pageDepth) {
         '            <details open>',
         '                <summary><span><span aria-hidden="true">□</span> Proyectos</span><span aria-hidden="true">⌄</span></summary>',
         '                <div class="mobile-submenu">',
-        '                    <a href="' + localFile('/proyectos/gemelo-digital/index.html', pageDepth) + '" data-menu-link>Gemelo Digital</a>',
-        '                    <a href="' + localFile('/proyectos/chat-lora/index.html', pageDepth) + '" data-menu-link>Chat con LoRa</a>',
-        '                    <a href="' + localFile('/proyectos/ufactory-lite-6/index.html', pageDepth) + '" data-menu-link>UFACTORY LITE 6</a>',
-        '                    <a href="' + localFile('/proyectos/index.html', pageDepth) + '" data-menu-link>Todos los proyectos</a>',
+        projectMenuLinksMarkup(pageDepth),
         '                </div>',
         '            </details>',
         '            <a href="' + homeFile(pageDepth, '#experiencia') + '" data-menu-link><span aria-hidden="true">◇</span> Experiencia</a>',
@@ -204,10 +208,10 @@ function videoDialogMarkup() {
     ].join('\n');
 }
 
-function projectCardMarkup(project, pageDepth, headingLevel = 2) {
+function projectCardMarkup(project, pageDepth, headingLevel = 2, carouselSlide = false) {
     const projectPath = localFile('/proyectos/' + project.slug + '/index.html', pageDepth);
     return [
-        '                <article class="project-card-v2">',
+        '                <article class="project-card-v2"' + (carouselSlide ? ' data-carousel-slide' : '') + '>',
         '                    <div class="project-media-v2">',
         '                        <a class="project-image-v2' + (project.imageWidth < project.imageHeight ? ' project-image-v2--portrait' : '') + '" href="' + projectPath + '" aria-label="Conocer el proyecto ' + escapeHtml(project.title) + '">',
         '                            <img src="' + localFile(project.image, pageDepth) + '" width="' + project.imageWidth + '" height="' + project.imageHeight + '" loading="lazy" decoding="async" alt="' + escapeHtml(project.alt) + '">',
@@ -221,6 +225,23 @@ function projectCardMarkup(project, pageDepth, headingLevel = 2) {
         '                        <a href="' + projectPath + '">Explorar ' + escapeHtml(project.cardTitle) + ' <span aria-hidden="true">→</span></a>',
         '                    </div>',
         '                </article>'
+    ].join('\n');
+}
+
+function homepageProjectsMarkup() {
+    return [
+        '                <div class="project-carousel" data-carousel>',
+        '                    <div class="featured-grid-v2" data-carousel-track>',
+        ...projects.map((project) => projectCardMarkup(project, 0, 3, true).split('\n').map((line) => line ? '        ' + line : '').join('\n')),
+        '                    </div>',
+        '                    <div class="carousel-controls" aria-label="Controles de proyectos destacados">',
+        '                        <button type="button" data-carousel-prev aria-label="Proyecto anterior">←</button>',
+        '                        <div class="carousel-dots" aria-hidden="true">',
+        '                            ' + projects.map((_, index) => '<span' + (index === 0 ? ' class="is-active"' : '') + '></span>').join(''),
+        '                        </div>',
+        '                        <button type="button" data-carousel-next aria-label="Proyecto siguiente">→</button>',
+        '                    </div>',
+        '                </div>'
     ].join('\n');
 }
 
@@ -590,7 +611,19 @@ function projectDetailPage(project) {
 
 const projectsDirectory = path.join(rootDirectory, 'proyectos');
 const homepagePath = path.join(rootDirectory, 'index.html');
-const homepage = await readFile(homepagePath, 'utf8');
+let homepage = await readFile(homepagePath, 'utf8');
+for (const [name, markup] of [
+    ['project-menu', projectMenuLinksMarkup(0)],
+    ['project-cards', homepageProjectsMarkup()]
+]) {
+    const start = '<!-- generated-' + name + ':start -->';
+    const end = '<!-- generated-' + name + ':end -->';
+    const startIndex = homepage.indexOf(start);
+    const endIndex = homepage.indexOf(end);
+    if (startIndex < 0 || endIndex < startIndex) throw new Error('Homepage generated block not found: ' + name);
+    const indentation = ' '.repeat(name === 'project-menu' ? 20 : 16);
+    homepage = homepage.slice(0, startIndex + start.length) + '\n' + markup + '\n' + indentation + homepage.slice(endIndex);
+}
 const homepageStylesheet = /(<link rel="stylesheet" href="\.\/css\/portfolio\.css)(?:\?v=[a-f0-9]+)?(">)/;
 if (!homepageStylesheet.test(homepage)) throw new Error('Homepage stylesheet link not found');
 await writeFile(homepagePath, homepage.replace(homepageStylesheet, '$1?v=' + stylesheetVersion + '$2'), 'utf8');

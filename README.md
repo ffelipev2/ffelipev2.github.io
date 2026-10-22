@@ -22,11 +22,12 @@ Soy Felipe Flores, Ingeniero Civil Informático y Magíster en Alta Dirección y
 
 ## Proyectos y documentación
 
-- **[Cámara térmica Ziboo ZP2](https://felipeflores.tech/proyectos/camara-termica-ziboo-zp2/):** app Android propia para volver a utilizar la cámara por USB-C, con visor, herramientas de selección y exportación local. [Código y APK](https://github.com/ffelipev2/camaraZiboo).
-- **[HiGrow ESP32 y Android](https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/):** monitor local de temperatura, humedad ambiental, sustrato y luminosidad mediante BLE. [Firmware, app y protocolo](https://github.com/ffelipev2/HiGrow-ESP32-BLE).
 - **[Gemelo Digital](https://felipeflores.tech/proyectos/gemelo-digital/):** orientación de un dispositivo con ESP32-C3 y BNO08x reproducida en un modelo 3D en Android mediante BLE. [Código del proyecto](https://github.com/ffelipev2/GemeloDigitalEsp32).
-- **[Chat con LoRa](https://felipeflores.tech/proyectos/chat-lora/):** mensajería entre placas Heltec WiFi LoRa 32 V2 desde una interfaz web local, con detección de nodos y pantalla OLED. [Código y documentación](https://github.com/ffelipev2/Heltecv2_Chat).
+- **[Calidad del aire](https://felipeflores.tech/proyectos/calidad-aire-esp32-s3/):** monitor con ESP32-S3, pantalla local y aplicación Android para consultar mediciones por BLE.
 - **[UFACTORY LITE 6](https://felipeflores.tech/proyectos/ufactory-lite-6/):** robótica aplicada a la educación y la industria.
+- **[HiGrow ESP32 y Android](https://felipeflores.tech/proyectos/sensor-higrow-esp32-app/):** monitor local de temperatura, humedad ambiental, sustrato y luminosidad mediante BLE. [Firmware, app y protocolo](https://github.com/ffelipev2/HiGrow-ESP32-BLE).
+- **[Cámara térmica Ziboo ZP2](https://felipeflores.tech/proyectos/camara-termica-ziboo-zp2/):** app Android propia para volver a utilizar la cámara por USB-C, con visor, herramientas de selección y exportación local. [Código y APK](https://github.com/ffelipev2/camaraZiboo).
+- **[Chat con LoRa](https://felipeflores.tech/proyectos/chat-lora/):** mensajería entre placas Heltec WiFi LoRa 32 V2 desde una interfaz web local, con detección de nodos y pantalla OLED. [Código y documentación](https://github.com/ffelipev2/Heltecv2_Chat).
 
 ## Conectemos
 
@@ -36,7 +37,7 @@ Me interesa transformar ideas en soluciones concretas y compartir experiencias q
 
 ## Contenido del sitio
 
-El sitio es HTML, CSS y JavaScript estáticos. `data/projects.json` alimenta las fichas, el índice y las páginas temáticas mediante `scripts/build-site.mjs`. `scripts/site-config.mjs` reúne el dominio y las áreas temáticas que comparten la generación, la validación y las pruebas. `data/publications.json` alimenta la página de publicaciones. Ejecuta `npm run build` tras editar los datos; el comando regenera las páginas y el sitemap, y valida el sitio para GitHub Pages.
+El sitio es HTML, CSS y JavaScript estáticos. `data/projects.json` alimenta las tarjetas de portada, los menús de proyectos, las fichas, el índice y las páginas temáticas mediante `scripts/build-site.mjs`. Su orden es el orden editorial común: Gemelo Digital, Calidad del aire, UFACTORY, HiGrow, Ziboo, LoRa, HuskyLens, Otto, biometría, vehículo y relé Bluetooth. Los temas y proyectos relacionados conservan ese orden dentro de su selección. La portada mantiene el resto de su HTML manual; los bloques delimitados por comentarios `generated-project-menu` y `generated-project-cards` se regeneran con los datos, junto con la versión del CSS. `scripts/site-config.mjs` reúne el dominio y las áreas temáticas que comparten la generación, la validación y las pruebas. `data/publications.json` alimenta la página de publicaciones. Ejecuta `npm run build` tras editar los datos; el comando regenera las páginas y el sitemap, y valida el sitio para GitHub Pages.
 
 `npm test` comprueba metadatos, URLs del sitemap, recursos y alcance de las páginas mediante enlaces HTML, sin depender de una cantidad fija de proyectos. `npm run test:browser` ejecuta las pruebas de navegación, presentación y SEO, incluidas las comprobaciones con JavaScript desactivado y sin scroll inicial. Las pruebas de generación usan una copia temporal aislada para verificar que un proyecto y un tema nuevos aparezcan en el sitemap; no modifican el catálogo real. Al eliminar o renombrar una ficha, retirar también su HTML anterior y revisar los enlaces existentes: el generador no borra archivos antiguos automáticamente.
 

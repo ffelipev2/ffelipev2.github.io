@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { seekHero } from './hero-helpers.js';
+import { readFile } from 'node:fs/promises';
+
+const projects = JSON.parse(await readFile(new URL('../data/projects.json', import.meta.url), 'utf8'));
 
 test('hero, traveling, navigation and project detail remain functional', async ({ page }, testInfo) => {
     const errors = [];
@@ -88,7 +91,7 @@ test('without JavaScript the professional content remains available', async ({ b
     await expect(page.locator('h1')).toBeVisible();
     await page.locator('.hero-actions-v2 a').first().click();
     await expect(page.locator('#projects-title')).toBeInViewport();
-    await expect(page.locator('.project-card-v2')).toHaveCount(3);
+    await expect(page.locator('.project-card-v2')).toHaveCount(projects.length);
     await context.close();
 });
 

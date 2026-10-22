@@ -10,6 +10,10 @@ Se mantienen el diseño, las rutas, canonical, robots y sitemap. El propietario 
 
 **Ampliaciones publicadas el 22 de octubre de 2026:** Felipe aportó [HiGrow-ESP32-BLE](https://github.com/ffelipev2/HiGrow-ESP32-BLE) y solicitó una ficha nueva para [camaraZiboo](https://github.com/ffelipev2/camaraZiboo). Se completa HiGrow y se incorpora `/proyectos/camara-termica-ziboo-zp2/` al catálogo y al sitemap, en el commit `41cc62c`. Las secciones 6.4 y 6.9 registran las fuentes, las imágenes locales y la publicación verificada; las referencias antiguas a información técnica faltante de HiGrow son históricas. **T0 de estas dos fichas: 22 de octubre de 2026.**
 
+**Orden editorial unificado el 22 de octubre de 2026:** por indicación de Felipe, la portada y el catálogo muestran Gemelo Digital, Calidad del aire, UFACTORY, HiGrow y Ziboo en ese orden. Les siguen LoRa, HuskyLens, Otto, biometría, vehículo y relé Bluetooth, priorizando su relación con las áreas principales del portafolio. Las tarjetas de portada y los menús pasan a generarse desde el orden de `data/projects.json`; los temas y proyectos relacionados conservan ese orden dentro de su selección.
+
+La validación de este orden incluye navegación desde «Ver proyectos» al catálogo, menús, temas, relacionados y recorrido completo del carrusel en teléfonos. Pasaron 45 comprobaciones de navegador de orden, SEO y navegación en escritorio, tablet, Android e iPhone; se omitieron 11 casos que no corresponden al dispositivo, además de validar los 19 HTML y 18 URLs del sitemap. Las vistas sin JavaScript conservan el mismo orden.
+
 ## 1. Evidencia y límites del diagnóstico
 
 Los datos de rendimiento que siguen fueron aportados por el propietario para el período **16 de julio–15 de octubre de 2026**. No proceden de una nueva consulta autenticada a Search Console.
@@ -54,8 +58,8 @@ Se revisaron los archivos fuente, sus HTML de salida y el PDF local. Las ocho p�
 
 | Contenido | Fuente de una futura edición autorizada | Alcance y cuidado |
 | --- | --- | --- |
-| Portada, metadatos y tarjetas destacadas | [index.html](../index.html) | Es HTML mantenido manualmente. El build solo actualiza aquí la versión del CSS; no regenera los textos desde los datos de proyectos. |
-| Fichas, tarjetas del catálogo y de temas | [data/projects.json](../data/projects.json) | `seoTitle`, `seoDescription`, `title`, `cardTitle`, `description`, campos técnicos, `resources`, `topics` y `relatedProjects`. Un cambio puede aparecer en varias páginas. |
+| Portada y metadatos | [index.html](../index.html) | El contenido general se mantiene manualmente. El build actualiza la versión del CSS y regenera los bloques de tarjetas y menú de proyectos desde los datos. |
+| Orden, fichas, menús y tarjetas de portada, catálogo y temas | [data/projects.json](../data/projects.json) | El orden del array fija la prioridad común. `seoTitle`, `seoDescription`, `title`, `cardTitle`, `description`, campos técnicos, `resources`, `topics` y `relatedProjects` alimentan las páginas que corresponden. |
 | Temas ESP32, IoT y Robótica | [scripts/site-config.mjs](../scripts/site-config.mjs) | `seoTitle`, `description`, `title` e `intro`. El filtro de proyectos depende de `topics` en los datos. |
 | Renderizado compartido | [scripts/build-site.mjs](../scripts/build-site.mjs) | Ya admite objetivos, arquitectura, funcionamiento, desarrollo, dificultades, resultados, materiales, software, galería y recursos. No hace falta cambiar la arquitectura. |
 | Índice de proyectos | `projectsIndexPage()` en el generador | Sus metadatos y texto introductorio están en la plantilla. |
