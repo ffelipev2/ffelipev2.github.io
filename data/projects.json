@@ -1,5 +1,136 @@
 [
   {
+    "slug": "auto-rc-v2-esp32",
+    "title": "Auto RC V2: vehículo de orugas con ESP32-S3 y FPV",
+    "cardTitle": "Auto RC V2 con ESP32-S3",
+    "seoTitle": "Auto RC V2 con ESP32-S3, FlySky y FPV | Felipe Flores",
+    "seoDescription": "Versión mejorada del auto RC: ESP32-S3, mando FlySky por iBUS, cámara FPV, luces, audio MP3 y pantalla animada. Fotos, firmware y documentación.",
+    "image": "/images/auto-rc-v2/vista-frontal.webp",
+    "imageWidth": 1280,
+    "imageHeight": 960,
+    "alt": "Vista frontal del auto RC V2 sobre orugas con cámara, parlante y pantalla redonda con un gato",
+    "heroImage": {
+      "src": "/images/auto-rc-v2/vista-frontal.webp",
+      "originalSrc": "/images/auto-rc-v2/vista-frontal.jpeg",
+      "width": 1280,
+      "height": 960,
+      "alt": "Vista frontal del auto RC V2 sobre orugas con cámara, parlante y pantalla redonda con un gato"
+    },
+    "tags": [
+      "ESP32-S3",
+      "iBUS",
+      "FPV",
+      "Audio I2S"
+    ],
+    "description": "Versión mejorada de mi vehículo RC: un chasis de orugas con ESP32-S3, mando FlySky, cámara FPV, luces y sonidos MP3. Una pantalla redonda muestra un gato que mueve la boca durante la reproducción.",
+    "topics": [
+      "esp32",
+      "robotica"
+    ],
+    "objective": "Integrar movimiento, iluminación, audio y una pantalla animada en un vehículo radiocontrolado, con visión desde la cámara frontal mediante un equipo FPV.",
+    "improvements": "La versión anterior del portafolio utilizaba Arduino MEGA y una cámara Wi-Fi. Esta V2 utiliza un ESP32-S3 como controlador y reúne recepción iBUS desde el mando FlySky FS-i6S, tracción por orugas, luces de 12 V con relé, reproducción MP3 desde microSD y una pantalla GC9A01A con un gato animado. La imagen de la cámara se visualiza en un visor FPV mediante un enlace de video separado.",
+    "architecture": "El receptor FlySky entrega las órdenes al ESP32-S3 por iBUS. El ESP32 controla dos motores de 12 V mediante un L298N y activa las luces a través de un relé. La microSD almacena cinco archivos MP3; el audio se envía por I2S al módulo LMD2718+NS4168 y al parlante. La pantalla y la microSD comparten SPI con selección independiente. Una batería LiPo de 12 V alimenta el montaje y un regulador LM2596S proporciona una salida ajustada a 5 V para la electrónica compatible.",
+    "howItWorks": "Los sticks del mando ordenan avance, retroceso y giro sobre el propio eje. CH5 conmuta las luces; CH6, CH7 y CH8 seleccionan o detienen los sonidos. Durante la reproducción, la boca del gato alterna entre abierta y cerrada. El visor FPV permite observar la imagen captada desde el vehículo.",
+    "development": "El firmware Arduino en C++ separa la reproducción de audio en una tarea FreeRTOS y utiliza un mutex para coordinar el acceso SPI de la pantalla y la microSD. El lector iBUS valida las tramas recibidas antes de actualizar los canales. El repositorio reúne el programa completo, dos sketches de prueba de audio y la documentación de conexiones y uso.",
+    "challenges": "La coordinación de audio, pantalla y recepción se distribuye entre el ciclo principal y la tarea de audio. El control detiene los motores y pone la salida de luces en LOW cuando pasan más de 300 ms sin una trama iBUS válida; el audio puede continuar. Si el receptor mantiene tramas con valores retenidos, ese temporizador no detecta la pérdida del enlace de radio. El movimiento usa velocidades fijas por maniobra y no mezcla giro y avance de forma proporcional.",
+    "result": "El montaje fotografiado reúne el vehículo de orugas, el mando, el visor FPV, las luces, el parlante y la pantalla del gato. El código y la documentación permiten consultar cómo se controlan estos subsistemas. La animación responde al estado de reproducción del audio; no analiza la voz ni sincroniza la boca con las palabras.",
+    "hardware": [
+      "Chasis de tanque con orugas y dos motores de 12 V",
+      "ESP32-S3 y controlador de motores L298N",
+      "Mando FlySky FS-i6S y receptor con salida iBUS",
+      "Batería LiPo de 12 V y regulador LM2596S ajustado a 5 V",
+      "Pantalla redonda SPI GC9A01A de 240 × 240 píxeles",
+      "Lector microSD y tarjeta con cinco archivos MP3",
+      "Módulo de audio LMD2718+NS4168 y parlante",
+      "Relé y luces de 12 V",
+      "Cámara frontal, enlace de video y visor FPV"
+    ],
+    "software": [
+      "Firmware C++ con Arduino-ESP32",
+      "FreeRTOS para la tarea de audio y coordinación SPI",
+      "ESP8266Audio para decodificar MP3",
+      "Adafruit GFX y Adafruit GC9A01A para la pantalla",
+      "UART iBUS, PWM de motores, SPI e I2S"
+    ],
+    "images": [
+      {
+        "src": "/images/auto-rc-v2/vista-frontal.webp",
+        "originalSrc": "/images/auto-rc-v2/vista-frontal.jpeg",
+        "width": 1280,
+        "height": 960,
+        "alt": "Vista frontal del auto RC V2 sobre orugas con cámara, parlante y pantalla redonda con un gato",
+        "caption": "El vehículo de orugas integra cámara frontal, parlante y pantalla animada."
+      },
+      {
+        "src": "/images/auto-rc-v2/vehiculo-mando-fpv.webp",
+        "originalSrc": "/images/auto-rc-v2/vehiculo-mando-fpv.jpeg",
+        "width": 1280,
+        "height": 960,
+        "alt": "Vehículo RC V2 con mando FlySky FS-i6S y visor FPV sobre una mesa",
+        "caption": "Conjunto de operación: vehículo, transmisor FlySky y visor FPV."
+      },
+      {
+        "src": "/images/auto-rc-v2/luces-encendidas.webp",
+        "originalSrc": "/images/auto-rc-v2/luces-encendidas.jpeg",
+        "width": 1280,
+        "height": 960,
+        "alt": "Auto RC V2 con luces frontales azules encendidas junto a la cámara y pantalla del gato",
+        "caption": "Luces de 12 V controladas desde el mando mediante un relé."
+      },
+      {
+        "src": "/images/auto-rc-v2/imagen-visor-fpv.webp",
+        "originalSrc": "/images/auto-rc-v2/imagen-visor-fpv.jpeg",
+        "width": 1280,
+        "height": 960,
+        "alt": "Visor FPV mostrando la imagen recibida desde la cámara del vehículo",
+        "caption": "El visor recibe la imagen del vehículo mediante un enlace FPV independiente."
+      },
+      {
+        "src": "/images/auto-rc-v2/electronica-vista-superior.webp",
+        "originalSrc": "/images/auto-rc-v2/electronica-vista-superior.jpeg",
+        "width": 960,
+        "height": 1280,
+        "alt": "Vista superior de la electrónica y el cableado del vehículo de orugas",
+        "caption": "Distribución de los módulos y cableado sobre el chasis."
+      },
+      {
+        "src": "/images/auto-rc-v2/detalle-electronica.webp",
+        "originalSrc": "/images/auto-rc-v2/detalle-electronica.jpeg",
+        "width": 1280,
+        "height": 960,
+        "alt": "Detalle de los módulos electrónicos, conexiones y regulador del auto RC V2",
+        "caption": "Detalle del montaje de control, alimentación y periféricos."
+      }
+    ],
+    "resources": [
+      {
+        "label": "Código del auto RC V2 en GitHub",
+        "url": "https://github.com/ffelipev2/autoRC_ESP32"
+      },
+      {
+        "label": "Documentación, componentes y conexiones",
+        "url": "https://github.com/ffelipev2/autoRC_ESP32/blob/main/README.md"
+      },
+      {
+        "label": "Firmware del ESP32-S3",
+        "url": "https://github.com/ffelipev2/autoRC_ESP32/blob/main/autoRC_ESP32.ino"
+      }
+    ],
+    "relatedProjects": [
+      "vehiculo-arduino-camara-wifi",
+      "robot-otto-arduino-3d"
+    ],
+    "resolves": "Reúne control remoto, iluminación, audio y visualización animada en un mismo vehículo, junto a un enlace FPV para observar desde la cámara frontal.",
+    "features": [
+      "Control FlySky por iBUS con ESP32-S3",
+      "Tracción por orugas con dos motores de 12 V",
+      "Luces controladas mediante relé",
+      "Cinco sonidos MP3 desde microSD",
+      "Pantalla redonda con gato animado",
+      "Cámara y visor FPV"
+    ]
+  },
+  {
     "slug": "gemelo-digital",
     "title": "Gemelo digital con ESP32-C3, BNO08x y Android",
     "cardTitle": "Gemelo Digital",
@@ -312,7 +443,7 @@
     "description": "Vehículo radiocontrolado con Arduino MEGA y cámara Wi-Fi para exploración remota.",
     "objective": "Explorar a distancia con un vehículo radiocontrolado y una cámara Wi-Fi.",
     "hardware": ["Arduino MEGA", "Cámara Wi-Fi"],
-    "relatedProjects": ["chat-lora", "robot-otto-arduino-3d", "arduino-bluetooth-rele"]
+    "relatedProjects": ["auto-rc-v2-esp32", "chat-lora", "robot-otto-arduino-3d"]
   },
   {
     "slug": "arduino-bluetooth-rele",

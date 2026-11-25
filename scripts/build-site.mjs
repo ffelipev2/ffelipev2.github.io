@@ -480,6 +480,7 @@ function projectDetailPage(project) {
     const relatedProjects = projects.filter((candidate) => project.relatedProjects?.includes(candidate.slug));
     const optionalDetails = [
         ['objective', 'Objetivo del proyecto'],
+        ['improvements', 'Qué incorpora la versión 2'],
         ['problem', 'Problema que aborda'],
         ['architecture', 'Arquitectura o funcionamiento'],
         ['howItWorks', 'Flujo de funcionamiento'],

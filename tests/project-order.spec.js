@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const order = [
+    'auto-rc-v2-esp32',
     'gemelo-digital',
     'calidad-aire-esp32-s3',
     'ufactory-lite-6',
